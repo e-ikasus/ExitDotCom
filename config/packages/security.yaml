@@ -15,6 +15,9 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
             lazy: true
             provider: app_user_provider
             custom_authenticator: App\Security\ParticipantAuthenticator

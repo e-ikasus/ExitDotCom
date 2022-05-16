@@ -5,13 +5,11 @@
 {% block body %}
     <h1>Register</h1>
 
+    {% form_theme registrationForm 'bootstrap_5_horizontal_layout.html.twig' %}
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.pseudo) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
 
-        <button type="submit" class="btn">Register</button>
+    {{ form_widget(registrationForm) }}
+
+    <button type="submit" class="btn btn-outline-primary">Register</button>
     {{ form_end(registrationForm) }}
 {% endblock %}
