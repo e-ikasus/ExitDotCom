@@ -1,73 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Diagram>
   <ID>DATABASE</ID>
-  <OriginalElement>d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.campus</OriginalElement>
+  <OriginalElement>88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.campus</OriginalElement>
   <nodes>
-    <node x="-52.223214285714334" y="-127.0">d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.campus</node>
-    <node x="252.77678571428567" y="112.0">d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.etat</node>
-    <node x="92.77678571428567" y="-138.0">d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.ville</node>
-    <node x="106.77678571428567" y="68.0">d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.lieu</node>
-    <node x="34.24999999999994" y="342.0">d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.sortie</node>
-    <node x="425.77678571428567" y="-138.0">d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.doctrine_migration_versions</node>
-    <node x="-116.75000000000006" y="13.0">d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.participant</node>
-    <node x="-19.687500000000043" y="669.0">d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.participant_sortie</node>
+    <node x="-251.20666666666665" y="264.6933333333333">88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.lieu</node>
+    <node x="-264.70666666666665" y="-286.9966666666668">88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.participant_sortie</node>
+    <node x="-232.85666666666663" y="-79.86000000000001">88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.sortie</node>
+    <node x="308.5333333333333" y="-279.2233333333334">88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.doctrine_migration_versions</node>
+    <node x="-44.9766666666668" y="321.77333333333326">88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.ville</node>
+    <node x="-534.1466666666668" y="-334.2066666666667">88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.participant</node>
+    <node x="90.43666666666661" y="76.27499999999992">88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.etat</node>
+    <node x="-511.14666666666676" y="19.139999999999986">88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.campus</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.sortie" target="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.lieu" relationship="REFERENCES">
-      <point x="26.0" y="-137.5" />
-      <point x="164.24999999999994" y="320.0" />
-      <point x="169.77678571428567" y="320.0" />
-      <point x="0.0" y="82.5" />
+    <edge source="88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.participant" target="88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.campus" relationship="REFERENCES">
+      <point x="0.0" y="-137.5" />
+      <point x="0.0" y="38.5" />
     </edge>
-    <edge source="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.lieu" target="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.ville" relationship="REFERENCES">
+    <edge source="88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.sortie" target="88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.etat" relationship="REFERENCES">
+      <point x="105.0" y="57.134999999999934" />
+      <point x="-64.5" y="0.0" />
+    </edge>
+    <edge source="88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.sortie" target="88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.campus" relationship="REFERENCES">
+      <point x="-105.0" y="0.0" />
+      <point x="61.0" y="0.0" />
+    </edge>
+    <edge source="88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.sortie" target="88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.participant" relationship="REFERENCES">
+      <point x="-105.0" y="-130.0" />
+      <point x="84.0" y="124.34666666666669" />
+    </edge>
+    <edge source="88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.sortie" target="88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.lieu" relationship="REFERENCES">
+      <point x="-74.35000000000002" y="137.5" />
+      <point x="-15.0" y="-82.5" />
+    </edge>
+    <edge source="88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.participant_sortie" target="88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.participant" relationship="REFERENCES">
+      <point x="-77.5" y="0.0" />
+      <point x="-465.14666666666676" y="-248.99666666666678" />
+      <point x="-15.0" y="-137.5" />
+    </edge>
+    <edge source="88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.participant_sortie" target="88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.sortie" relationship="REFERENCES">
+      <point x="59.35000000000002" y="38.0" />
+      <point x="0.0" y="-137.5" />
+    </edge>
+    <edge source="88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.lieu" target="88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.ville" relationship="REFERENCES">
       <point x="0.0" y="-82.5" />
+      <point x="-187.20666666666665" y="340.17" />
+      <point x="32.5233333333332" y="340.17" />
       <point x="0.0" y="49.5" />
     </edge>
-    <edge source="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.sortie" target="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.campus" relationship="REFERENCES">
-      <point x="-26.0" y="-137.5" />
-      <point x="112.24999999999994" y="310.0" />
-      <point x="59.74999999999994" y="310.0" />
-      <point x="59.74999999999994" y="-13.0" />
-      <point x="7.776785714285666" y="-13.0" />
-      <point x="0.0" y="38.5" />
-    </edge>
-    <edge source="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.participant_sortie" target="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.participant" relationship="REFERENCES">
-      <point x="-39.5" y="-38.0" />
-      <point x="19.812499999999943" y="643.0" />
-      <point x="-39.00000000000004" y="643.0" />
-      <point x="-39.00000000000004" y="320.0" />
-      <point x="-75.25000000000006" y="320.0" />
-      <point x="-41.5" y="137.5" />
-    </edge>
-    <edge source="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.participant_sortie" target="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.sortie" relationship="REFERENCES">
-      <point x="39.5" y="-38.0" />
-      <point x="98.81249999999994" y="643.0" />
-      <point x="138.24999999999994" y="643.0" />
-      <point x="0.0" y="137.5" />
-    </edge>
-    <edge source="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.sortie" target="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.etat" relationship="REFERENCES">
-      <point x="78.0" y="-137.5" />
-      <point x="216.24999999999994" y="320.0" />
-      <point x="316.77678571428567" y="320.0" />
-      <point x="0.0" y="38.5" />
-    </edge>
-    <edge source="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.sortie" target="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.participant" relationship="REFERENCES">
-      <point x="-78.0" y="-137.5" />
-      <point x="60.24999999999994" y="320.0" />
-      <point x="7.749999999999943" y="320.0" />
-      <point x="41.5" y="137.5" />
-    </edge>
-    <edge source="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.participant" target="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.campus" relationship="REFERENCES">
-      <point x="0.0" y="-137.5" />
-      <point x="-33.75000000000006" y="-13.0" />
-      <point x="7.776785714285666" y="-13.0" />
-      <point x="0.0" y="38.5" />
-    </edge>
   </edges>
-  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="264.5" y="303.5" />
+  <settings layout="Hierarchic" zoom="0.9966777408637872" showDependencies="false" x="-69.87550666666675" y="-53.49166666666662" />
   <SelectedNodes>
-    <node>d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.campus</node>
+    <node>88ddba2f-60a2-43fb-9db8-fb10eb48e3ad.TABLE:exitdotcom.doctrine_migration_versions</node>
   </SelectedNodes>
   <Categories>
     <Category>Columns</Category>
