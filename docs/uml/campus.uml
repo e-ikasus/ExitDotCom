@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.campus</OriginalElement>
+  <nodes>
+    <node x="-52.223214285714334" y="-127.0">d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.campus</node>
+    <node x="252.77678571428567" y="112.0">d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.etat</node>
+    <node x="92.77678571428567" y="-138.0">d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.ville</node>
+    <node x="106.77678571428567" y="68.0">d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.lieu</node>
+    <node x="34.24999999999994" y="342.0">d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.sortie</node>
+    <node x="425.77678571428567" y="-138.0">d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.doctrine_migration_versions</node>
+    <node x="-116.75000000000006" y="13.0">d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.participant</node>
+    <node x="-19.687500000000043" y="669.0">d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.participant_sortie</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.sortie" target="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.lieu" relationship="REFERENCES">
+      <point x="26.0" y="-137.5" />
+      <point x="164.24999999999994" y="320.0" />
+      <point x="169.77678571428567" y="320.0" />
+      <point x="0.0" y="82.5" />
+    </edge>
+    <edge source="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.lieu" target="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.ville" relationship="REFERENCES">
+      <point x="0.0" y="-82.5" />
+      <point x="0.0" y="49.5" />
+    </edge>
+    <edge source="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.sortie" target="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.campus" relationship="REFERENCES">
+      <point x="-26.0" y="-137.5" />
+      <point x="112.24999999999994" y="310.0" />
+      <point x="59.74999999999994" y="310.0" />
+      <point x="59.74999999999994" y="-13.0" />
+      <point x="7.776785714285666" y="-13.0" />
+      <point x="0.0" y="38.5" />
+    </edge>
+    <edge source="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.participant_sortie" target="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.participant" relationship="REFERENCES">
+      <point x="-39.5" y="-38.0" />
+      <point x="19.812499999999943" y="643.0" />
+      <point x="-39.00000000000004" y="643.0" />
+      <point x="-39.00000000000004" y="320.0" />
+      <point x="-75.25000000000006" y="320.0" />
+      <point x="-41.5" y="137.5" />
+    </edge>
+    <edge source="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.participant_sortie" target="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.sortie" relationship="REFERENCES">
+      <point x="39.5" y="-38.0" />
+      <point x="98.81249999999994" y="643.0" />
+      <point x="138.24999999999994" y="643.0" />
+      <point x="0.0" y="137.5" />
+    </edge>
+    <edge source="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.sortie" target="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.etat" relationship="REFERENCES">
+      <point x="78.0" y="-137.5" />
+      <point x="216.24999999999994" y="320.0" />
+      <point x="316.77678571428567" y="320.0" />
+      <point x="0.0" y="38.5" />
+    </edge>
+    <edge source="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.sortie" target="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.participant" relationship="REFERENCES">
+      <point x="-78.0" y="-137.5" />
+      <point x="60.24999999999994" y="320.0" />
+      <point x="7.749999999999943" y="320.0" />
+      <point x="41.5" y="137.5" />
+    </edge>
+    <edge source="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.participant" target="d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.campus" relationship="REFERENCES">
+      <point x="0.0" y="-137.5" />
+      <point x="-33.75000000000006" y="-13.0" />
+      <point x="7.776785714285666" y="-13.0" />
+      <point x="0.0" y="38.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="264.5" y="303.5" />
+  <SelectedNodes>
+    <node>d352bc4a-0152-4094-b3b4-f935e5292846.TABLE:exitdotcom.campus</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+
