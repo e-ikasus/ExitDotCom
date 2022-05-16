@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Etat;
+use App\Entity\Participant;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
@@ -117,6 +118,23 @@ class AppFixtures extends Fixture
 		}
 
 		$manager->flush();
+
+        /********************/
+        /* Ajouter un Admin */
+        /********************/
+
+        $adminUser = new Participant();
+        $adminUser->setNom("admin");
+        $adminUser->setPrenom("admin");
+        $adminUser->setPseudo("admin");
+        $adminUser->setPassword("admin");
+        $adminUser->setEmail("admin@admin.fr");
+        $adminUser->setTelephone(0601020304);
+        $adminUser->setAdministrateur(true);
+        $adminUser->setActif(true);
+
+        $manager->persist($adminUser);
+        $manager->flush();
 
 		/*********************/
 		/* Liste des sorties */
