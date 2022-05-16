@@ -32,7 +32,7 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Prénom'
             ])
             ->add('telephone', null, [
-                'label' => 'Téléphone'
+                'label' => 'Téléphone',
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email'
@@ -66,6 +66,7 @@ class RegistrationFormType extends AbstractType
                 'class' => Campus::class,
                 'choice_label' => 'nom'
             ])
+
             ->add('administrateur', CheckboxType::class, [
                 'label' => 'Administrateur',
                 'attr' => ['class' => 'checkbox-administrateur']

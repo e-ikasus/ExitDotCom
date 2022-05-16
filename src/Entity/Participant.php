@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
@@ -50,7 +51,8 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=10, nullable=true)
+     * @Assert\Regex(pattern="/^(\+33|0)[1-79]\d{8}$/")
+     * @ORM\Column(type="string", length=16, nullable=true)
      */
     private $telephone;
 
