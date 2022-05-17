@@ -8,6 +8,8 @@ use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Entity\Ville;
+use DateInterval;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
@@ -159,11 +161,11 @@ class AppFixtures extends Fixture
 			$sorties[$i]->setnom($faker->colorName());
 			$sorties[$i]->setDuree(rand(1, 23));
 
-			$cloture = $faker->dateTime();
-			$sortie = $cloture->add(new \DateInterval('P1M'));
+			$dateCloture = $faker->dateTime();
+			$dateSortie = (clone $dateCloture)->add(new DateInterval('P1M'));
 
-			$sorties[$i]->setDateHeureDebut($sortie);
-			$sorties[$i]->setDateLimiteInscription($cloture);
+			$sorties[$i]->setDateHeureDebut($dateSortie);
+			$sorties[$i]->setDateLimiteInscription($dateCloture);
 
 			$sorties[$i]->setNbInscriptionsMax(rand(1, 20));
 			$sorties[$i]->setInfosSortie($faker->text());
