@@ -29,18 +29,21 @@
                 <td>{{ sortie in app.user.sortiesInscrit ? "X"}}</td>
                 <td>{{ sortie.organisateur.pseudo}}</td>
                 <td>
-                    <a href="{{ path('sortie_show', {'id': sortie.id}) }}">show</a>
-                    <a href="{{ path('sortie_edit', {'id': sortie.id}) }}">edit</a>
+                    <a href="{{ path('sortie_show', {'id': sortie.id}) }}">Détails</a>
+                    <a href="{{ path('sortie_edit', {'id': sortie.id}) }}">Modifier</a>
                     {% if sortie in app.user.sortiesInscrit %}
                         <a href="{{ path('sortie_show', {'id': sortie.id}) }}">Se désister</a>
                     {% else %}
                         <a href="{{ path('sortie_show', {'id': sortie.id}) }}">S'inscrire</a>
                     {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('sortie_delete') }}">Annuler</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="8">no records found</td>
+                <td colspan="8">Aucune sortie n'est prévue. N'hésitez pas à en organiser une !</td>
             </tr>
         {% endfor %}
         </tbody>
