@@ -52,7 +52,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @Assert\Regex(pattern="/^(\+33|0)[1-79]\d{8}$/")
-     * @ORM\Column(type="string", length=16, nullable=true)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $telephone;
 

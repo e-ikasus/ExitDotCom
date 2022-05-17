@@ -36,7 +36,7 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < self::NBR_VILLES; $i++) {
             $villes[$i] = new Ville();
             $villes[$i]->setNom($faker->city());
-            $villes[$i]->setCodePostal($faker->postcode());
+            $villes[$i]->setCodePostal(substr(str_replace(" ", "", $faker->postcode()), 0, 5));
 
             $manager->persist($villes[$i]);
         }
