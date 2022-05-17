@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Participant index{% endblock %}
+{% block title %} {{ parent() }} | Liste Participant {% endblock %}
 
 {% block body %}
     <h1>Participant index</h1>
@@ -37,8 +37,8 @@
                 <td>{{ participant.actif ? 'Yes' : 'No' }}</td>
                 <td>{{ participant.photo }}</td>
                 <td>
-                    <a href="{{ path('app_participant_show', {'id': participant.id}) }}">show</a>
-                    <a href="{{ path('app_participant_edit', {'id': participant.id}) }}">edit</a>
+                    <a href="{{ path('participant_show', {'id': participant.id}) }}">show</a>
+                    <a href="{{ path('participant_edit', {'id': participant.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -49,5 +49,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_participant_new') }}">Create new</a>
+    <a href="{{ path('participant_new') }}">Create new</a>
 {% endblock %}

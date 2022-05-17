@@ -6,9 +6,11 @@ use App\Entity\Participant;
 use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @Route("/participant")
@@ -16,17 +18,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class ParticipantController extends AbstractController
 {
     /**
-     * @Route("/", name="app_participant_index", methods={"GET"})
+     * @Route("/", name="participant_list", methods={"GET"})
      */
-    public function index(ParticipantRepository $participantRepository): Response
+    public function list(ParticipantRepository $participantRepository): Response
     {
-        return $this->render('participant/index.html.twig', [
+        return $this->render('participant/list.html.twig', [
             'participants' => $participantRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/new", name="app_participant_new", methods={"GET", "POST"})
+     * @Route("/new", name="participant_new", methods={"GET", "POST"})
      */
     public function new(Request $request, ParticipantRepository $participantRepository): Response
     {
@@ -35,9 +37,10 @@ class ParticipantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $participantRepository->add($participant, true);
 
-            return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('participant/new.html.twig', [
@@ -47,7 +50,7 @@ class ParticipantController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_participant_show", methods={"GET"})
+     * @Route("/{id}", name="participant_show", methods={"GET"})
      */
     public function show(Participant $participant): Response
     {
@@ -57,17 +60,38 @@ class ParticipantController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="app_participant_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="participant_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
+    public function edit(Request $request, Participant $participant, ParticipantRepository $participantRepository, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(ParticipantType::class, $participant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $photoFile = $form->get('photo')->getData();
+            if ($photoFile) {
+                $photoName = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($photoName);
+                $newPhotoName = $safeFilename.'-'.uniqid().'.'.$photoFile->guessExtension();
+
+                // Move the file to the directory where covers are stored
+                try {
+                    $photoFile->move(
+                        $this->getParameter('profiles_pictures_directory'),
+                        $newPhotoName
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                $participant->setPhoto($newPhotoName);
+            }
+
             $participantRepository->add($participant, true);
 
-            return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('participant/edit.html.twig', [
@@ -77,7 +101,7 @@ class ParticipantController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_participant_delete", methods={"POST"})
+     * @Route("/{id}", name="participant_delete", methods={"POST"})
      */
     public function delete(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
     {
@@ -85,6 +109,6 @@ class ParticipantController extends AbstractController
             $participantRepository->remove($participant, true);
         }
 
-        return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);
     }
 }

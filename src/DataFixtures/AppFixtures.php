@@ -112,6 +112,7 @@ class AppFixtures extends Fixture
 		$adminUser->setTelephone("0601020304");
 		$adminUser->setAdministrateur(true);
 		$adminUser->setActif(true);
+		$adminUser->setPhoto("default.png");
 
 		$campus[rand(0, self::NBR_CAMPUS - 1)]->addParticipant($adminUser);
 
@@ -137,6 +138,7 @@ class AppFixtures extends Fixture
 			$participants[$i]->setTelephone($faker->phoneNumber());
 			$participants[$i]->setAdministrateur(false);
 			$participants[$i]->setActif(true);
+			$participants[$i]->setPhoto("default.png");
 
 			$campus[rand(0, self::NBR_CAMPUS - 1)]->addParticipant($participants[$i]);
 
