@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Campus index</h1>
 
-    <table class="table">
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>Campus</th>
@@ -13,12 +13,12 @@
             </tr>
         </thead>
         <tbody>
-        {% for campus in campuses %}
-            <tr>
-                <td>{{ campus.nom }}</td>
+        {% for i in 0..campuses|length-1 %}
+            <tr class="table-{% if i is even %}info{% else %}secondary{% endif %}">
+                <td>{{ campuses[i].nom }}</td>
                 <td>
-                    <a href="{{ path('campus_edit', {'id': campus.id}) }}">Modifier</a>
-                    <a href="{{ path('campus_delete', {'id': campus.id}) }}">Supprimer</a>
+                    <a href="{{ path('campus_edit', {'id': campuses[i].id}) }}">Modifier</a>
+                    <a href="{{ path('campus_delete', {'id': campuses[i].id}) }}">Supprimer</a>
                 </td>
             </tr>
         {% else %}
