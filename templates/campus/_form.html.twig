@@ -1,5 +1,5 @@
-{% form_theme registrationForm 'bootstrap_5_horizontal_layout.html.twig' %}
+{% form_theme form 'bootstrap_5_horizontal_layout.html.twig' %}
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn btn-lg btn-primary">{{ button_label|default('Ajouter Campus') }}</button>
+    <button class="btn btn-lg btn-success">{{ button_label|default('Ajouter Campus') }}</button>
 {{ form_end(form) }}
