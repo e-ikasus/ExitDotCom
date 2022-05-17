@@ -3,15 +3,15 @@
 {% block title %} {{ parent() }} | Éditer Participant {% endblock %}
 
 {% block body %}
-    <h1>Edit Participant</h1>
+    <h1>Mon Profil</h1>
 
     <div class="">
         <img class="" src="{{ asset('uploads/profiles_pictures/' ~ participant.photo) }}" alt="pas de photo">
     </div>
 
-    {{ include('participant/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('participant/_form.html.twig', {'button_label': 'Enregistrer'}) }}
 
-    {{ include('participant/_delete_form.html.twig') }}
-
-    <a href="{{ path('participant_list') }}">back to list</a>
+    <a href="{{ path('participant_list') }}">
+        <button type="button" class="btn btn-lg btn-danger">Annuler</button>
+    </a>
 {% endblock %}
