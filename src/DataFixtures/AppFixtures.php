@@ -128,7 +128,7 @@ class AppFixtures extends Fixture
             $participants[$i]->setNom($faker->lastName());
             $participants[$i]->setPrenom($faker->firstName());
             $participants[$i]->setPseudo($faker->userName());
-            $participants[$i]->setPassword(password_hash($faker->password(), PASSWORD_BCRYPT));
+            $participants[$i]->setPassword(password_hash('user', PASSWORD_BCRYPT));
             $participants[$i]->setEmail($faker->email());
             $participants[$i]->setTelephone($faker->phoneNumber());
             $participants[$i]->setAdministrateur(false);
