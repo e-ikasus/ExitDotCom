@@ -1,9 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Sortie index{% endblock %}
+{% block title %}{{ parent() }} | Sortie index{% endblock %}
 
 {% block body %}
-    <h1>Sortie index</h1>
+
+    <div>
+        <p>Date du jour : {{ 'now' | date('d-m-Y') }}</p>
+        <p>Participant : {{ app.user.prenom }} {{ app.user.nom }}</p>
+    </div>
+
+    <div>
+        <h2>Filtrer les sorties</h2>
+        <div>
+            <input type="">
+            <label for="search-campus">Campus</label>
+
+            <input type="search">
+            <label for="search-nom-sortie">Le nom de la sortie contient :</label>
+
+            <span>Entre <input type="date"> et <input type="date"></span>
+        </div>
+        <div>
+            <input type="checkbox" id="sorties-organisateur">
+            <label for="sorties-organisateur">Sorties dont je suis l'organisateur/trice</label>
+
+            <input type="checkbox" id="sorties-non-inscrit">
+            <label for="sorties-non-inscrit">Sorties auxquelles je suis inscrit/e</label>
+
+            <input type="checkbox" id="sorties-inscrit">
+            <label for="sorties-inscrit">Sorties auxquelles je ne suis pas inscrit/e</label>
+
+            <input type="checkbox" id="sorties-passees">
+            <label for="sorties-passees">Sorties passées</label>
+        </div>
+
+        <div>
+            <button type="submit">Rechercher</button>
+        </div>
+    </div>
 
     <table class="table">
         <thead>
@@ -37,7 +71,7 @@
                         <a href="{{ path('sortie_show', {'id': sortie.id}) }}">S'inscrire</a>
                     {% endif %}
                     {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('sortie_delete') }}">Annuler</a>
+                    <a href="{{ path('sortie_delete', {'id': sortie.id}) }}">Annuler</a>
                     {% endif %}
                 </td>
             </tr>
@@ -49,5 +83,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('sortie_new') }}">Create new</a>
+    <a href="{{ path('sortie_new') }}">Organiser une sortie</a>
 {% endblock %}
