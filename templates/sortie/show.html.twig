@@ -17,7 +17,7 @@
             </tr>
             <tr>
                 <th>DateHeureDebut</th>
-                <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i') : '' }}</td>
             </tr>
             <tr>
                 <th>Duree</th>
@@ -25,7 +25,7 @@
             </tr>
             <tr>
                 <th>DateLimiteInscription</th>
-                <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d H:i') : '' }}</td>
             </tr>
             <tr>
                 <th>NbInscriptionsMax</th>
@@ -38,9 +38,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('sortie_list') }}">back to list</a>
+    <a href="{{ path('sortie_list') }}">Retour</a>
 
-    <a href="{{ path('sortie_edit', {'id': sortie.id}) }}">edit</a>
+    <a href="{{ path('sortie_edit', {'id': sortie.id}) }}">Modifier</a>
 
     {{ include('sortie/_delete_form.html.twig') }}
 {% endblock %}
