@@ -8,7 +8,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nom</th>
                 <th>DateHeureDebut</th>
                 <th>Duree</th>
@@ -21,7 +20,6 @@
         <tbody>
         {% for sortie in sorties %}
             <tr>
-                <td>{{ sortie.id }}</td>
                 <td>{{ sortie.nom }}</td>
                 <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ sortie.duree }}</td>
