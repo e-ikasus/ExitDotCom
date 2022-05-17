@@ -1,5 +1,6 @@
 /.idea/
 /docs/uml/
+/public/uploads/profiles_pictures/
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
