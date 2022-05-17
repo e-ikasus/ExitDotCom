@@ -87,12 +87,12 @@ class AppFixtures extends Fixture
 
 		$etats = array();
 
-		$etats[0] = (new Etat())->setLibelle("créée");
-		$etats[1] = (new Etat())->setLibelle("ouverte");
-		$etats[2] = (new Etat())->setLibelle("clôturée");
-		$etats[3] = (new Etat())->setLibelle("activité en cours");
-		$etats[4] = (new Etat())->setLibelle("passée");
-		$etats[5] = (new Etat())->setLibelle("annulée");
+		$etats[0] = (new Etat())->setLibelle("créée")->setIdLibelle(Etat::CREEE);
+		$etats[1] = (new Etat())->setLibelle("ouverte")->setIdLibelle(Etat::OUVERTE);
+		$etats[2] = (new Etat())->setLibelle("clôturée")->setIdLibelle(Etat::CLOTUREE);
+		$etats[3] = (new Etat())->setLibelle("activité en cours")->setIdLibelle(Etat::ENCOURS);
+		$etats[4] = (new Etat())->setLibelle("passée")->setIdLibelle(Etat::PASSEE);
+		$etats[5] = (new Etat())->setLibelle("annulée")->setIdLibelle(Etat::ANNULEE);
 
 		for ($i = 0; $i < 6; $i++) $manager->persist($etats[$i]);
 
@@ -158,7 +158,7 @@ class AppFixtures extends Fixture
 			$sorties[$i]->setDuree(rand(1, 23));
 
 			$cloture = $faker->dateTime();
-			$sortie = $cloture->add(new \DateInterval("P1M"));
+			$sortie = $cloture->add(new \DateInterval('P1M'));
 
 			$sorties[$i]->setDateHeureDebut($sortie);
 			$sorties[$i]->setDateLimiteInscription($cloture);
