@@ -8,12 +8,13 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Nom</th>
-                <th>DateHeureDebut</th>
-                <th>Duree</th>
-                <th>DateLimiteInscription</th>
-                <th>NbInscriptionsMax</th>
-                <th>InfosSortie</th>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Clôture</th>
+                <th>Inscrits/places</th>
+                <th>Etat</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -21,11 +22,12 @@
         {% for sortie in sorties %}
             <tr>
                 <td>{{ sortie.nom }}</td>
-                <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ sortie.duree }}</td>
-                <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ sortie.nbInscriptionsMax }}</td>
-                <td>{{ sortie.infosSortie }}</td>
+                <td>{{ sortie.dateHeureDebut|date('Y-m-d H:i:s')}}</td>
+                <td>{{ sortie.dateLimiteInscription|date('Y-m-d')}}</td>
+                <td>{{ sortie.participants|length }} / {{ sortie.nbInscriptionsMax }}</td>
+                <td>{{ sortie.etat.libelle }}</td>
+                <td>{{ sortie in app.user.sortiesInscrit ? "X"}}</td>
+                <td>{{ sortie.organisateur.pseudo}}</td>
                 <td>
                     <a href="{{ path('sortie_show', {'id': sortie.id}) }}">show</a>
                     <a href="{{ path('sortie_edit', {'id': sortie.id}) }}">edit</a>
