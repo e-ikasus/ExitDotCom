@@ -32,11 +32,11 @@
                         <a class="nav-link" href="#">Mon profil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
+                        <a class="nav-link" href="{{ path('logout') }}">Se déconnecter</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_login') }}">Se connecter</a>
+                        <a class="nav-link" href="{{ path('login') }}">Se connecter</a>
                     </li>
                 {% endif %}
             </ul>
