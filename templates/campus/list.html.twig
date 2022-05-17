@@ -8,24 +8,22 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>actions</th>
+                <th>Campus</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for campus in campuses %}
             <tr>
-                <td>{{ campus.id }}</td>
                 <td>{{ campus.nom }}</td>
                 <td>
-                    <a href="{{ path('campus_show', {'id': campus.id}) }}">show</a>
-                    <a href="{{ path('campus_edit', {'id': campus.id}) }}">edit</a>
+                    <a href="{{ path('campus_edit', {'id': campus.id}) }}">Modifier</a>
+                    <a href="{{ path('campus_delete', {'id': campus.id}) }}">Supprimer</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="3">Aucun campus trouvé</td>
             </tr>
         {% endfor %}
         </tbody>
