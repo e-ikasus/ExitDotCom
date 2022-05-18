@@ -3,43 +3,40 @@
 {% block title %} {{ parent() }} | Liste des Villes {% endblock %}
 
 {% block body %}
-    <h1>Liste des villes</h1>
+	<h1>Liste des villes</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>CodePostal</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for ville in villes %}
-            <tr>
-                <td>{{ ville.nom }}</td>
-                <td>{{ ville.codePostal }}</td>
-                <td>
-                    {{ include('inc/buttons.html.twig', {'update':true, 'delete': true, 'id': ville.id, 'type': 'ville'}) }}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
+	<table class="table">
+		<thead>
+		<tr>
+			<th>Nom</th>
+			<th>CodePostal</th>
+			<th>actions</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for ville in villes %}
+			<tr>
+				<td>{{ ville.nom }}</td>
+				<td>{{ ville.codePostal }}</td>
+				<td>{{ include('inc/buttons.html.twig', {'update':true, 'delete': true, 'id': ville.id, 'type': 'ville'}) }}</td>
+			</tr>
+		{% else %}
+			<tr>
+				<td colspan="4">Aucune ville définie</td>
+			</tr>
+		{% endfor %}
 
-        <tr>
-            {{ form_start(form) }}
+		<tr>
+			{{ form_start(form) }}
 
-            <td>{{ form_widget(form.nom) }}</td>
-            <td>{{ form_widget(form.codePostal) }}</td>
-            <td>
-                {{ include('inc/buttons.html.twig', {'isForm': true, 'new': true}) }}
-            </td>
-            {{ form_end(form) }}
-        </tr>
+			<td>{{ form_widget(form.nom) }}</td>
+			<td>{{ form_widget(form.codePostal) }}</td>
+			<td>{{ include('inc/buttons.html.twig', {'isForm': true, 'new': true}) }}</td>
 
-        </tbody>
-    </table>
+			{{ form_end(form) }}
+		</tr>
+
+		</tbody>
+	</table>
 
 {% endblock %}

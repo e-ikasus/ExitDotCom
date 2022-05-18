@@ -89,7 +89,7 @@ class VilleController extends AbstractController
 	}
 
 	/**
-	 * @Route("/{id}", name="ville_delete", methods={"POST"})
+	 * @Route("/{id}/delete", name="ville_delete", methods={"GET", "POST"})
 	 */
 	public function delete(Request $request, Ville $ville, VilleRepository $villeRepository): Response
 	{
