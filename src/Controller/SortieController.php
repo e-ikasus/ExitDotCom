@@ -29,6 +29,18 @@ class SortieController extends AbstractController
     }
 
     /**
+     * @Route("/list", name="sortie_list", methods={"POST"})
+     */
+    public function searchInList(SortieRepository $sortieRepository): Response
+    {
+        $form = $this->createForm(RechercheSortiesType::class, null);
+        return $this->render('sortie/list.html.twig', [
+            'sorties' => $sortieRepository->findAll(),
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
      * @Route("/new", name="sortie_new", methods={"GET", "POST"})
      */
     public function new(Request $request, SortieRepository $sortieRepository): Response
