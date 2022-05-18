@@ -1,12 +1,18 @@
-.liste-participant:hover {
-    cursor: pointer ;
-    background-color : rgba(255,0,0,0.5) !important;
-}
+/*Global*/
 
 main {
     flex: 1;
 }
 
+/*Fomulaire Login*/
+
 .div_form_login {
     width: 324px
 }
+
+/*Participant*/
+
+.liste-participant:hover {
+     cursor: pointer ;
+     background-color : rgba(255,0,0,0.5) !important;
+ }
