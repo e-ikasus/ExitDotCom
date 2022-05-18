@@ -11,6 +11,7 @@
 
     <div>
         <h2>Filtrer les sorties</h2>
+
         <div>
 
             {{ form_start(form) }}
@@ -22,41 +23,40 @@
             {{ form_row(form.DateOutingStart) }}{{ form_row(form.DateOutingEnd) }}
 
         </div>
+
         <div>
             {{ form_row(form.OutingCheckboxOptions) }}
-
         </div>
-
-        {{ form_end(form)}}
 
         <div>
-            <button type="submit">Rechercher</button>
+            <input type="submit" value="Rechercher">
         </div>
+        {{ form_end(form) }}
     </div>
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Nom de la sortie</th>
-                <th>Date de la sortie</th>
-                <th>Clôture</th>
-                <th>Inscrits/places</th>
-                <th>Etat</th>
-                <th>Inscrit</th>
-                <th>Organisateur</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Nom de la sortie</th>
+            <th>Date de la sortie</th>
+            <th>Clôture</th>
+            <th>Inscrits/places</th>
+            <th>Etat</th>
+            <th>Inscrit</th>
+            <th>Organisateur</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for sortie in sorties %}
             <tr>
                 <td>{{ sortie.nom }}</td>
-                <td>{{ sortie.dateHeureDebut|date('Y-m-d H:i')}}</td>
-                <td>{{ sortie.dateLimiteInscription|date('Y-m-d')}}</td>
+                <td>{{ sortie.dateHeureDebut|date('Y-m-d H:i') }}</td>
+                <td>{{ sortie.dateLimiteInscription|date('Y-m-d') }}</td>
                 <td>{{ sortie.participants|length }} / {{ sortie.nbInscriptionsMax }}</td>
                 <td>{{ sortie.etat.libelle }}</td>
-                <td>{{ sortie in app.user.sortiesInscrit ? "X"}}</td>
-                <td>{{ sortie.organisateur.pseudo}}</td>
+                <td>{{ sortie in app.user.sortiesInscrit ? "X" }}</td>
+                <td>{{ sortie.organisateur.pseudo }}</td>
                 <td>
                     <a href="{{ path('sortie_show', {'id': sortie.id}) }}">Détails</a>
                     <a href="{{ path('sortie_edit', {'id': sortie.id}) }}">Modifier</a>
@@ -66,7 +66,7 @@
                         <a href="{{ path('sortie_show', {'id': sortie.id}) }}">S'inscrire</a>
                     {% endif %}
                     {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('sortie_delete', {'id': sortie.id}) }}">Annuler</a>
+                        <a href="{{ path('sortie_delete', {'id': sortie.id}) }}">Annuler</a>
                     {% endif %}
                 </td>
             </tr>
