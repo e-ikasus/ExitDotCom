@@ -12,27 +12,22 @@
     <div>
         <h2>Filtrer les sorties</h2>
         <div>
-            <input type="select" id="search-campus">
-            <label for="search-campus">Campus</label>
 
-            <input type="search">
-            <label for="search-nom-sortie">Le nom de la sortie contient :</label>
+            {{ form_start(form) }}
 
-            <span>Entre <input type="date"> et <input type="date"></span>
+            {{ form_row(form.Campus) }}
+
+            {{ form_row(form.SearchOutingName) }}
+
+            {{ form_row(form.DateOutingStart) }}{{ form_row(form.DateOutingEnd) }}
+
         </div>
         <div>
-            <input type="checkbox" id="sorties-organisateur">
-            <label for="sorties-organisateur">Sorties dont je suis l'organisateur/trice</label>
+            {{ form_row(form.OutingCheckboxOptions) }}
 
-            <input type="checkbox" id="sorties-non-inscrit">
-            <label for="sorties-non-inscrit">Sorties auxquelles je suis inscrit/e</label>
-
-            <input type="checkbox" id="sorties-inscrit">
-            <label for="sorties-inscrit">Sorties auxquelles je ne suis pas inscrit/e</label>
-
-            <input type="checkbox" id="sorties-passees">
-            <label for="sorties-passees">Sorties passées</label>
         </div>
+
+        {{ form_end(form)}}
 
         <div>
             <button type="submit">Rechercher</button>
