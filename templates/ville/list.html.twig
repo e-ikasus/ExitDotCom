@@ -1,14 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }} | Lister Ville {% endblock %}
+{% block title %} {{ parent() }} | Liste des Villes {% endblock %}
 
 {% block body %}
-    <h1>Ville index</h1>
+    <h1>Liste des villes</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nom</th>
                 <th>CodePostal</th>
                 <th>actions</th>
@@ -17,12 +16,10 @@
         <tbody>
         {% for ville in villes %}
             <tr>
-                <td>{{ ville.id }}</td>
                 <td>{{ ville.nom }}</td>
                 <td>{{ ville.codePostal }}</td>
                 <td>
-                    <a href="{{ path('app_ville_show', {'id': ville.id}) }}">show</a>
-                    <a href="{{ path('app_ville_edit', {'id': ville.id}) }}">edit</a>
+                    {{ include('inc/buttons.html.twig', {'update':true, 'delete': true, 'id': ville.id, 'type': 'ville'}) }}
                 </td>
             </tr>
         {% else %}
@@ -30,8 +27,19 @@
                 <td colspan="4">no records found</td>
             </tr>
         {% endfor %}
+
+        <tr>
+            {{ form_start(form) }}
+
+            <td>{{ form_widget(form.nom) }}</td>
+            <td>{{ form_widget(form.codePostal) }}</td>
+            <td>
+                {{ include('inc/buttons.html.twig', {'isForm': true, 'new': true}) }}
+            </td>
+            {{ form_end(form) }}
+        </tr>
+
         </tbody>
     </table>
 
-    <a href="{{ path('app_ville_new') }}">Create new</a>
 {% endblock %}

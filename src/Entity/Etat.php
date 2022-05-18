@@ -28,7 +28,7 @@ class Etat
 	private $id;
 
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="integer", unique=true)
 	 */
 	private $idLibelle;
 

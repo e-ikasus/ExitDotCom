@@ -1,0 +1,39 @@
+{% if not bigButton|default(false) %} {% set size = 'btn-sm' %} {% else %} {% set size='' %}{% endif %}
+
+{% if not isForm|default(false) %}
+
+	{% if new|default(false) %}
+		<a href="{{ path(type ~ '_new') }}">
+			<button class="btn btn-success {{ size }}">Ajouter</button>
+		</a>
+	{% endif %}
+
+	{% if update|default(false) %}
+		<a href="{{ path(type ~ '_edit', {'id': id}) }}">
+			<button class="btn btn-warning {{ size }}">Modifier</button>
+		</a>
+	{% endif %}
+
+	{% if delete|default(false) %}
+		<a href="{{ path(type ~ '_delete', {'id': id}) }}" onclick="return confirm('Etes-vous sûr de vouloir supprime un(e) {{type}} ?')">
+			<button class="btn btn-danger {{ size }}">Supprimer</button>
+		</a>
+	{% endif %}
+
+	{% if return|default(false) %}
+		<a href="{{ path(type ~ '_list') }}">
+			<button class="btn btn-success {{ size }}">Retour</button>
+		</a>
+	{% endif %}
+
+{% else %}
+
+	{% if new|default(false) %}
+		<button class="btn btn-success {{ size }}">Ajouter</button>
+	{% endif %}
+
+	{% if update|default(false) %}
+		<button class="btn btn-warning {{ size }}">Modifier</button>
+	{% endif %}
+
+{% endif %}
