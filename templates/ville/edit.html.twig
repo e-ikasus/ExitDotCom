@@ -4,24 +4,20 @@
 
 {% block body %}
 
-	<h1>Modification d'une ville</h1>
+    <div class="w-50 mx-auto d-flex flex-column align-items-center">
 
-	<div class="container">
-		<div class="d-flex align-items-center justify-content-center flex-column vh-100">
-			<div>
+        <h1>Modification d'une ville</h1>
 
-				{{ form_start(form) }}
+            {{ form_start(form) }}
 
-				{{ form_widget(form) }}
+            {{ form_widget(form) }}
 
-				{{ include('inc/buttons.html.twig', {'isForm': true, 'update': true, 'bigButton': true}) }}
+            {{ include('inc/buttons.html.twig', {'isForm': true, 'update': true, 'bigButton': true}) }}
 
-				{{ include('inc/buttons.html.twig', {'return': true, 'bigButton': true, 'type': 'ville'}) }}
+            {{ include('inc/buttons.html.twig', {'return': true, 'bigButton': true, 'type': 'ville'}) }}
 
-				{{ form_end(form) }}
+            {{ form_end(form) }}
 
-			</div>
-		</div>
-	</div>
+    </div>
 
 {% endblock %}

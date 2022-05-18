@@ -16,3 +16,7 @@ main {
      cursor: pointer ;
      background-color : rgba(255,0,0,0.5) !important;
  }
+
+.testtest {
+    width: 350px;
+}
