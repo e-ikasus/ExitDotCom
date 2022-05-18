@@ -60,7 +60,7 @@ class ParticipantController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", name="participant_edit", methods={"GET", "POST"})
+     * @Route("/edit/{pseudo}", name="participant_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Participant $participant, ParticipantRepository $participantRepository, SluggerInterface $slugger): Response
     {
@@ -101,7 +101,7 @@ class ParticipantController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="participant_delete", methods={"POST"})
+     * @Route("/{pseudo}", name="participant_delete", methods={"POST"})
      */
     public function delete(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
     {

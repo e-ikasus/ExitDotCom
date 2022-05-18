@@ -60,7 +60,7 @@
 
             <a href="{{ path('participant_list') }}">back to list</a>
 
-            <a href="{{ path('participant_edit', {'id': participant.id}) }}">edit</a>
+            <a href="{{ path('participant_edit', {'pseudo': participant.pseudo}) }}">edit</a>
 
             {{ include('participant/_delete_form.html.twig') }}
         {% endif %}
@@ -70,7 +70,7 @@
 
     {% if app.user.id == participant.id %}
 
-        <a class="btn btn-warning" href="{{ path('participant_edit', {'id': participant.id}) }}">Modifier</a>
+        <a class="btn btn-warning" href="{{ path('participant_edit', {'pseudo': participant.pseudo}) }}">Modifier</a>
 
     {% endif %}
 

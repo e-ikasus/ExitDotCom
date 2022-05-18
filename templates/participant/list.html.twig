@@ -20,7 +20,7 @@
         </thead>
         <tbody>
         {% for i in 0..participants|length-1 %}
-            <tr class="liste-participant table-{% if i is even %}info{% else %}secondary{% endif %}" onclick="document.location.href='{{ path('participant_edit', {'id': participants[i].id}) }}'">
+            <tr class="liste-participant table-{% if i is even %}info{% else %}secondary{% endif %}" onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">
                 <td>{{ participants[i].pseudo }}</td>
                 <td>{{ participants[i].nom }}</td>
                 <td>{{ participants[i].prenom }}</td>
@@ -29,8 +29,7 @@
                 <td>{{ participants[i].email }}</td>
                 <td>{{ participants[i].actif ? 'x' : ' ' }}</td>
                 <td>{{ participants[i].administrateur ? 'x' : ' ' }}</td>
-                <td class="testtest d-flex">{{ include ('participant/_delete_form.html.twig', {'participant' : participants[i]}) }}
-                    <a class="btn btn-sm btn-warning" href="{{ path('participant_edit', {'id': participants[i].id}) }}">Editer</a></td>
+                <td>{{ include ('participant/_delete_form.html.twig', {'participant' : participants[i]}) }}</td>
             </tr>
         {% else %}
             <tr>
