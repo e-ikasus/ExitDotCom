@@ -22,20 +22,7 @@ class SortieController extends AbstractController
         $this->research = new Research();
     }
 
-
-    /**
-     * @Route("/list", name="sortie_list", methods={"GET"})
-     */
-    public function list(SortieRepository $sortieRepository): Response
-    {
-        $form = $this->createForm(RechercheSortiesType::class, $this->research);
-        return $this->render('sortie/list.html.twig', [
-            'sorties' => $sortieRepository->findAll(),
-            'form' => $form->createView()
-        ]);
-    }
-
-    /**
+     /**
      * @Route("/list", name="sortie_list", methods={"POST"})
      */
     public function searchInList(SortieRepository $sortieRepository, Request $request): Response
@@ -53,6 +40,18 @@ class SortieController extends AbstractController
                 'form' => $form->createView()
             ]
         );
+    }
+
+    /**
+     * @Route("/list", name="sortie_list", methods={"GET"})
+     */
+    public function list(SortieRepository $sortieRepository): Response
+    {
+        $form = $this->createForm(RechercheSortiesType::class, $this->research);
+        return $this->render('sortie/list.html.twig', [
+            'sorties' => $sortieRepository->findAll(),
+            'form' => $form->createView()
+        ]);
     }
 
     /**
