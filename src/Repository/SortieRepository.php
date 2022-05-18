@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Sortie;
+use App\Services\Research;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -63,4 +65,21 @@ class SortieRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findByCreteria(Research $research)
+    {
+        $queryBuilder = $this->createQueryBuilder('s')
+                        ->leftJoin('s.campus', 'c')
+                        ->addSelect('c')
+                        ->andWhere('s.campus = :campus')
+ //                       ->andWhere('s.nom LIKE %:name%')
+//                        ->andWhere('s.dateOutingStart ')
+            ->setParameter('campus', $research->getCampus())
+ //           ->setParameter('name', $research->getSearchOutingName())
+                        ;
+
+        $query = $queryBuilder->getQuery();
+        $paginator = new Paginator($query);
+
+        return $paginator;
+    }
 }
