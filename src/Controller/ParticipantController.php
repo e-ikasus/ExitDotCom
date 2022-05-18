@@ -18,7 +18,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class ParticipantController extends AbstractController
 {
     /**
-     * @Route("/", name="participant_list", methods={"GET"})
+     * @Route("/admin", name="participant_list", methods={"GET"})
      */
     public function list(ParticipantRepository $participantRepository): Response
     {
@@ -28,7 +28,7 @@ class ParticipantController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="participant_new", methods={"GET", "POST"})
+     * @Route("/admin/new", name="participant_new", methods={"GET", "POST"})
      */
     public function new(Request $request, ParticipantRepository $participantRepository): Response
     {
@@ -50,7 +50,7 @@ class ParticipantController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="participant_show", methods={"GET"})
+     * @Route("/profil/{pseudo}", name="participant_profil", methods={"GET"})
      */
     public function show(Participant $participant): Response
     {
@@ -111,4 +111,5 @@ class ParticipantController extends AbstractController
 
         return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);
     }
+
 }

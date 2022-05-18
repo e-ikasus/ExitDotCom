@@ -3,15 +3,18 @@
 {% block title %} {{ parent() }} | Éditer Participant {% endblock %}
 
 {% block body %}
-    <h1>Mon Profil</h1>
 
-    <div class="">
-        <img class="" src="{{ asset('uploads/profiles_pictures/' ~ participant.photo) }}" alt="pas de photo">
-    </div>
+    {% if app.user.id == participant.id or app.user.administrateur %}
+        <h1>Mon Profil</h1>
 
-    {{ include('participant/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+        <div class="">
+            <img class="" src="{{ asset('uploads/profiles_pictures/' ~ participant.photo) }}" alt="pas de photo">
+        </div>
 
-    <a href="{{ path('participant_list') }}">
-        <button type="button" class="btn btn-lg btn-danger">Annuler</button>
-    </a>
+        {{ include('participant/_form.html.twig', {'button_label': 'Enregistrer', 'return': true}) }}
+
+    {% else %}
+        {{ include('inc/acces_refuse.html.twig') }}
+    {% endif %}
+
 {% endblock %}

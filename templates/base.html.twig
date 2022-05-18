@@ -15,24 +15,24 @@
 
 </head>
 <body class="d-flex flex-column vh-100">
-
+{% if app.user %}
     <header>
         <div class="container">
             {% include 'inc/nav.html.twig' %}
         </div>
     </header>
+{% endif %}
+<main class="d-flex flex-column justify-content-around">
+    <div class="container">
+        {% block body %}{% endblock %}
+    </div>
+</main>
 
-    <main class="d-flex flex-column justify-content-around">
-        <div class="container">
-            {% block body %}{% endblock %}
-        </div>
-    </main>
-
-    <footer>
-        <div class="container d-flex justify-content-center">
-            &copy; WAKA {{ "now" | date("Y") }}
-        </div>
-    </footer>
+<footer>
+    <div class="container d-flex justify-content-center">
+        &copy; WAKA {{ "now" | date("Y") }}
+    </div>
+</footer>
 
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
