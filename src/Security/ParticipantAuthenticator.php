@@ -51,7 +51,7 @@ class ParticipantAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('campus_list'));
+        return new RedirectResponse($this->urlGenerator->generate('sortie_list'));
     }
 
     protected function getLoginUrl(Request $request): string
