@@ -14,22 +14,25 @@
     <link rel="stylesheet" href="{{ asset('css/ourcss.css') }}">
 
 </head>
-<body>
-
-<div class="container">
+<body class="d-flex flex-column vh-100">
 
     <header>
-        {% include 'inc/nav.html.twig' %}
+        <div class="container">
+            {% include 'inc/nav.html.twig' %}
+        </div>
     </header>
 
-    <main>
-        {% block body %}{% endblock %}
+    <main class="d-flex flex-column justify-content-around">
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
     </main>
 
     <footer>
-        &copy; WAKA {{ "now" | date("Y") }}
+        <div class="container d-flex justify-content-center">
+            &copy; WAKA {{ "now" | date("Y") }}
+        </div>
     </footer>
-</div>
 
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}

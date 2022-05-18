@@ -2,3 +2,11 @@
     cursor: pointer ;
     background-color : rgba(255,0,0,0.5) !important;
 }
+
+main {
+    flex: 1;
+}
+
+.div_form_login {
+    width: 324px
+}
