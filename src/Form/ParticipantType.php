@@ -48,7 +48,7 @@ class ParticipantType extends AbstractType
                 'class' => Campus::class,
                 'choice_label' => 'nom'
             ])
-            ->add('photo', FileType::class, ['label' => 'Photo de profil (.jpg .jpeg et.png)' , 'required' => false , 'mapped' => false,
+            ->add('photo', FileType::class, ['label' => 'Ma photo' , 'required' => false , 'mapped' => false,
                 'constraints' => [new File([
                     'maxSize' => '4096k',
                     'mimeTypes' => [
