@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 /**
  * @Route("/admin/ville")
@@ -32,7 +33,7 @@ class VilleController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid()) $villeRepository->add($ville, true);
 
 		return $this->render('ville/list.html.twig', [
-				'villes' => $villeRepository->findAll(),
+				'villes' => $villeRepository->findBy(array(), array('nom' => 'ASC')),
 				'form' => $form->createView()
 		]);
 	}

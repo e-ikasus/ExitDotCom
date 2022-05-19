@@ -8,8 +8,8 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>Nom</th>
-            <th>CodePostal</th>
+            <th colspan="6">Nom</th>
+            <th colspan="6">CodePostal</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -20,10 +20,10 @@
 
                 {% if i != villes|length %}
 
-                    <td onclick="document.location.href='{{ path('ville_edit', {'id': villes[i].id}) }}'">
+                    <td colspan="6" onclick="document.location.href='{{ path('ville_edit', {'id': villes[i].id}) }}'">
                         {{ villes[i].nom }}
                     </td>
-                    <td onclick="document.location.href='{{ path('ville_edit', {'id': villes[i].id}) }}'">
+                    <td colspan="6" onclick="document.location.href='{{ path('ville_edit', {'id': villes[i].id}) }}'">
                         {{ villes[i].codePostal }}
                     </td>
                     <td class="ms-auto">
@@ -34,8 +34,8 @@
 
                     {{ form_start(form) }}
 
-                    <td>{{ form_widget(form.nom) }}</td>
-                    <td>{{ form_widget(form.codePostal) }}</td>
+                    <td colspan="6">{{ form_widget(form.nom) }}</td>
+                    <td colspan="6">{{ form_widget(form.codePostal) }}</td>
                     <td>{{ include('inc/buttons.html.twig', {'isForm': true, 'new': true}) }}</td>
 
                     {{ form_end(form) }}
