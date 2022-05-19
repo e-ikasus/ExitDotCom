@@ -6,6 +6,7 @@ use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\Form\RechercheSortiesType;
 use App\Form\SortieType;
+use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use App\Services\Research;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,10 +53,22 @@ class SortieController extends AbstractController
 	/**
 	 * @Route("/new", name="sortie_new", methods={"GET", "POST"})
 	 */
-	public function new(Request $request, SortieRepository $sortieRepository, Etat $etat): Response
+	public function new(Request $request, SortieRepository $sortieRepository, EtatRepository $etatRepository, Security $security): Response
 	{
 		$sortie = new Sortie();
-        $sortie->setEtat(); // A corriger
+
+        //Nous allons chercher les différents états via l'EtatRepository.
+        //Nous créons une méthode qui sera auto-interprétée par Symfony pour aller chercher le bon libellé selon la constante dans l'entity Etat.
+        $etatCreee = $etatRepository->findByIdLibelle(Etat::CREEE);
+        $sortie->setEtat($etatCreee[0]);
+
+        //Nous récupérons l'instance du participant connecté.
+        //Puis nous avons fixé la propriété campus de sortie selon le participant.
+        $user = $security->getUser();
+        $sortie->setCampus($user->getCampus());
+
+        $sortie->setOrganisateur($user);
+
 		$form = $this->createForm(SortieType::class, $sortie);
 		$form->handleRequest($request);
 
