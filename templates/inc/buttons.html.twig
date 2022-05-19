@@ -3,13 +3,13 @@
 {% if not isForm|default(false) %}
 
 	{% if new|default(false) %}
-		<a href="{{ path(type ~ '_new') }}">
+		<a class="text-decoration-none" href="{{ path(type ~ '_new') }}">
 			<button class="btn btn-success {{ size }}">Ajouter</button>
 		</a>
 	{% endif %}
 
 	{% if update|default(false) %}
-		<a href="{{ path(type ~ '_edit', {'id': id}) }}">
+		<a class="text-decoration-none" href="{{ path(type ~ '_edit', {'id': id}) }}">
 			<button class="btn btn-warning {{ size }}">Modifier</button>
 		</a>
 	{% endif %}
@@ -25,7 +25,7 @@
 	{% endif %}
 
 	{% if return|default(false) %}
-		<a href="{{ path(type ~ '_list') }}">
+		<a class="text-decoration-none" href="{{ path(type ~ '_list') }}">
 			<button class="btn btn-success {{ size }}">Retour</button>
 		</a>
 	{% endif %}
