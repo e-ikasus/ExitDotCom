@@ -4,6 +4,21 @@ main {
     flex: 1;
 }
 
+/* Header */
+
+/*.monLogo{*/
+/*    flex: 1;*/
+/*}*/
+
+/*.maNavBar{*/
+/*    flex: 2;*/
+/*}*/
+
+header img {
+    padding-top: 5px;
+    max-height: 120px;
+}
+
 /*Fomulaire Login*/
 
 .div_form_login {
