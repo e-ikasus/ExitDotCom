@@ -51,7 +51,7 @@ class RechercheSortiesType extends AbstractType
             ->add('OutingCheckboxOptions', ChoiceType::class, [
                 'label' => ' ',
                 'attr' => [
-                    'class' => 'd-flex flex-column ms-5',
+                    'class' => 'd-flex flex-column',
                 ],
                 'choices' => [
                     'Sorties dont je suis l\'organisateur/trice' => 'sorties-organisateur',

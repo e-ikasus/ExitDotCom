@@ -43,3 +43,9 @@ header img {
 .colDisplay{
     flex: 1 0 300px;
 }
+
+.fieldsetSortiesForm {
+    border: 3px solid black!important;
+}
+
+

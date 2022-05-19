@@ -10,14 +10,14 @@
 			<p>Participant : {{ app.user.prenom }} {{ app.user.nom }}</p>
 		</div>
 	</div>
+
+
+	{{ form_start(form) }}
 	<fieldset class="fieldsetSortiesForm">
-		<legend>Filtrer les sorties</legend>
-		{{ form_start(form) }}
-		<div class="d-flex row mb-5">
+		<legend class="m-3">Filtrer les sorties</legend>
 
-
-			<div class="col-5 d-flex justify-content-center">
-
+		<div class="d-flex row justify-content-center m-3">
+			<div class="col-5 d-flex flex-column">
 
 				{{ form_row(form.Campus) }}
 
@@ -33,15 +33,16 @@
 				{{ form_row(form.OutingCheckboxOptions) }}
 			</div>
 
-			<div class="col-3">
-				<button type="submit" class="btn btn-info btn-lg border-dark border-3 shadow p-3 mb-5">Rechercher
+			<div class="col-3 d-flex justify-content-center align-items-center">
+				<button type="submit" class="btn btn-info btn-lg border-dark border-3 shadow">Rechercher
 				</button>
 			</div>
 
 		</div>
-		{{ form_end(form) }}</fieldset>
+	</fieldset>
+	{{ form_end(form) }}
 
-	<table class="table">
+	<table class="table mb-5 mt-5">
 		<thead>
 		<tr>
 			<th>Nom de la sortie</th>
