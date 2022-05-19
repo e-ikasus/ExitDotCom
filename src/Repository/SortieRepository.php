@@ -65,6 +65,9 @@ class SortieRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+// requête pour le formulaire de recherche filtrée parmi la liste des sorties existantes
+
     public function findByCreteria(Research $research)
     {
         $queryBuilder = $this->createQueryBuilder('s')
@@ -73,8 +76,8 @@ class SortieRepository extends ServiceEntityRepository
                         ->andWhere('s.campus = :campus')
  //                       ->andWhere('s.nom LIKE %:name%')
 //                        ->andWhere('s.dateOutingStart ')
-            ->setParameter('campus', $research->getCampus())
- //           ->setParameter('name', $research->getSearchOutingName())
+           ->setParameter('campus', $research->getCampus())
+  //          ->setParameter('name', $research->getSearchOutingName())
                         ;
 
         $query = $queryBuilder->getQuery();

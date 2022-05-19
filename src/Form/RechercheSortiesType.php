@@ -22,7 +22,7 @@ class RechercheSortiesType extends AbstractType
                 'label' => 'Campus',
                 'choice_label' => 'nom'
             ])
-            ->add('SearchOutingName', SearchType::class, [
+  /*          ->add('SearchOutingName', SearchType::class, [
                 'label' => 'Le nom de la sortie contient : '
             ])
             ->add('DateOutingStart', DateType::class, [
@@ -42,7 +42,7 @@ class RechercheSortiesType extends AbstractType
                 ],
                 'expanded' => true,
                 'multiple' => true,
-            ])
+            ])*/
         ;
     }
 

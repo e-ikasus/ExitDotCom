@@ -7,6 +7,7 @@ use App\Form\RechercheSortiesType;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
 use App\Services\Research;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,8 +26,10 @@ class SortieController extends AbstractController
      /**
      * @Route("/list", name="sortie_list", methods={"POST"})
      */
-    public function searchInList(SortieRepository $sortieRepository, Request $request): Response
+    public function searchInList(LoggerInterface $logger, SortieRepository $sortieRepository, Request $request): Response
     {
+
+        $logger->info('coucou, je suis un post!');
 
         $form = $this->createForm(RechercheSortiesType::class, $this->research);
         $form->handleRequest($request);
@@ -45,9 +48,12 @@ class SortieController extends AbstractController
     /**
      * @Route("/list", name="sortie_list", methods={"GET"})
      */
-    public function list(SortieRepository $sortieRepository): Response
+    public function list(LoggerInterface $logger, SortieRepository $sortieRepository): Response
     {
-        $form = $this->createForm(RechercheSortiesType::class, $this->research);
+
+            $logger->info('coucou, je suis un get!');
+
+            $form = $this->createForm(RechercheSortiesType::class, $this->research);
         return $this->render('sortie/list.html.twig', [
             'sorties' => $sortieRepository->findAll(),
             'form' => $form->createView()
