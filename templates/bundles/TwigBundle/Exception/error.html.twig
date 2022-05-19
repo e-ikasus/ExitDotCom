@@ -2,7 +2,10 @@
 
 {% block body %}
     <h1>Bah oui! Vas-y! Casse mon site!!!!.</h1>
-    <p><a href="{{ path('/') }}" title="retour à l'acceuil">Marche arrière!!!</a> </p>
+
+    <div class="d-grid gap-2">
+        <button class="btn btn-lg btn-primary" type="button" onclick="history.go(-1);">Marche arrière!!!</button>
+    </div>
 {% endblock%}
 
 {% block title%}VANDALE!!!{% endblock %}
