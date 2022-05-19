@@ -24,6 +24,7 @@ class RechercheSortiesType extends AbstractType
             ])
             ->add('SearchOutingName', SearchType::class, [
                 'label' => 'Le nom de la sortie contient : ',
+                            'attr'=> ['placeholder' => '🔎 Recherche'],
 							'required' => false
             ])
             ->add('DateOutingStart', DateType::class, [
@@ -32,7 +33,7 @@ class RechercheSortiesType extends AbstractType
 							'required' => false
             ])
             ->add('DateOutingEnd', DateType::class, [
-                'label' => ' et ',
+                'label' => 'et',
                 'widget' => 'single_text',
 							'required' => false
             ])
