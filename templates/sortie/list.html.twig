@@ -10,33 +10,36 @@
 			<p>Participant : {{ app.user.prenom }} {{ app.user.nom }}</p>
 		</div>
 	</div>
+	<fieldset class="fieldsetSortiesForm">
+		<legend>Filtrer les sorties</legend>
+		{{ form_start(form) }}
+		<div class="d-flex row mb-5">
 
-	<div class="d-flex row">
-		<h2>Filtrer les sorties</h2>
 
-		<div class="col-5">
+			<div class="col-5 d-flex justify-content-center">
 
-			{{ form_start(form) }}
 
-			<div class="p-2">{{ form_row(form.Campus) }}</div>
+				{{ form_row(form.Campus) }}
 
-			<div class="p-2">{{ form_row(form.SearchOutingName) }}</div>
+				{{ form_row(form.SearchOutingName) }}
 
-			<div class="d-flex flex-row p-2">
-				<div>{{ form_row(form.DateOutingStart) }}</div>
-				<div>{{ form_row(form.DateOutingEnd) }}</div>
+				<div class="d-flex flex-row flex-wrap">
+					{{ form_row(form.DateOutingStart) }}
+					{{ form_row(form.DateOutingEnd) }}
+				</div>
 			</div>
-		</div>
 
-		<div class="col-5 d-block">
-			{{ form_row(form.OutingCheckboxOptions) }}
-		</div>
+			<div class="col-4">
+				{{ form_row(form.OutingCheckboxOptions) }}
+			</div>
 
-		<div class="col-2">
-			<button type="submit" class="btn btn-info btn-lg border-dark border-3 shadow p-3 mb-5">Rechercher</button>
+			<div class="col-3">
+				<button type="submit" class="btn btn-info btn-lg border-dark border-3 shadow p-3 mb-5">Rechercher
+				</button>
+			</div>
+
 		</div>
-		{{ form_end(form) }}
-	</div>
+		{{ form_end(form) }}</fieldset>
 
 	<table class="table">
 		<thead>

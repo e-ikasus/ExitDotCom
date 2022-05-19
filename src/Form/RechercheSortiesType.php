@@ -19,27 +19,40 @@ class RechercheSortiesType extends AbstractType
             ->add('Campus', EntityType::class, [
                 'class' => Campus::class,
                 'label' => 'Campus',
-                'choice_label' => 'nom'
+                'choice_label' => 'nom',
+                'attr' => [
+                    'class' => 'm-2 px-2'
+                ],
             ])
             ->add('SearchOutingName', SearchType::class, [
                 'label' => 'Le nom de la sortie contient : ',
                 'attr' => [
                     'placeholder' => '🔎 Recherche',
-                    'class' => 'px-2'
+                    'class' => 'm-2 px-2'
                 ],
                 'required' => false
             ])
             ->add('DateOutingStart', DateType::class, [
                 'label' => 'Entre ',
                 'widget' => 'single_text',
-                'required' => false
+                'required' => false,
+                                'attr' => [
+        'class' => 'm-2 px-2'
+    ],
             ])
             ->add('DateOutingEnd', DateType::class, [
                 'label' => 'et',
                 'widget' => 'single_text',
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'class' => 'm-2 px-2'
+                ],
             ])
             ->add('OutingCheckboxOptions', ChoiceType::class, [
+                'label' => ' ',
+                'attr' => [
+                    'class' => 'd-flex flex-column ms-5',
+                ],
                 'choices' => [
                     'Sorties dont je suis l\'organisateur/trice' => 'sorties-organisateur',
                     'Sorties auxquelles je suis inscrit/e' => 'sorties-non-inscrit',
