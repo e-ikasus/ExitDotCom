@@ -7,25 +7,44 @@
 
     <table class="table table-hover">
         <thead>
-            <tr>
-                <th>Campus</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th>Campus</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
-        {% for i in 0..campuses|length-1 %}
-            <tr class="table-{% if i is even %}info{% else %}secondary{% endif %}">
-                <td>{{ campuses[i].nom }}</td>
-                <td>
-                    <a href="{{ path('campus_edit', {'id': campuses[i].id}) }}">Modifier</a>
-                    <a href="{{ path('campus_delete', {'id': campuses[i].id}) }}">Supprimer</a>
-                </td>
+        {% for i in 0..campuses|length %}
+
+            <tr class="hover-pointer table-{% if i is even %}info{% else %}secondary{% endif %}">
+
+                {% if i != campuses|length %}
+
+                    <td onclick="document.location.href='{{ path('campus_edit', {'nom': campuses[i].nom}) }}'">
+                        {{ campuses[i].nom }}
+                    </td>
+                    <td>
+                        {{ include ('campus/_delete_form.html.twig', {'campus' : campuses[i]}) }}
+                    </td>
+
+                {% else %}
+
+                    {{ form_start(form) }}
+
+                    <td>{{ form_widget(form.nom) }}</td>
+                    <td>{{ include('inc/buttons.html.twig', {'isForm': true, 'new': true}) }}</td>
+
+                    {{ form_end(form) }}
+
+                {% endif %}
+
             </tr>
+
         {% else %}
             <tr>
                 <td colspan="3">Aucun campus trouvé</td>
             </tr>
         {% endfor %}
+
         </tbody>
     </table>
 

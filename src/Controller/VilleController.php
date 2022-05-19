@@ -91,12 +91,11 @@ class VilleController extends AbstractController
 	}
 
 	/**
-	 * @Route("/{id}/delete", name="ville_delete", methods={"GET", "POST"})
+	 * @Route("/{id}", name="ville_delete", methods={"GET", "POST"})
 	 */
 	public function delete(Request $request, Ville $ville, VilleRepository $villeRepository): Response
 	{
-		if ($this->isCsrfTokenValid('delete' . $ville->getId(), $request->request->get('_token')))
-		{
+		if ($this->isCsrfTokenValid('delete'.$ville->getId(), $request->request->get('_token'))) {
 			$villeRepository->remove($ville, true);
 		}
 

@@ -19,9 +19,9 @@ header img {
     width: 324px
 }
 
-/* Participant Liste */
+/* Liste Clickable */
 
-.liste-participant:hover {
+.hover-pointer:hover {
      cursor: pointer ;
  }
 

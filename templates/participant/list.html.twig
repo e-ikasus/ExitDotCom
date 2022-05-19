@@ -20,7 +20,7 @@
 		</thead>
 		<tbody>
 		{% for i in 0..participants|length-1 %}
-			<tr class="liste-participant table-{% if i is even %}info{% else %}secondary{% endif %}">
+			<tr class="hover-pointer table-{% if i is even %}info{% else %}secondary{% endif %}">
 				<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].pseudo }}</td>
 				<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].nom }}</td>
 				<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].prenom }}</td>

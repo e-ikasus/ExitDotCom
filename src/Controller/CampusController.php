@@ -18,10 +18,20 @@ class CampusController extends AbstractController
     /**
      * @Route("/list", name="campus_list", methods={"GET"})
      */
-    public function list(CampusRepository $campusRepository): Response
+    public function list(Request $request, CampusRepository $campusRepository): Response
     {
+        $campus = new Campus();
+
+        // Crée le formulaire et récupère une éventuelle ville à ajouter.
+        $form = $this->createForm(CampusType::class, $campus);
+        $form->handleRequest($request);
+
+        // Si une ville valide doit être ajoutée à la base.
+        if ($form->isSubmitted() && $form->isValid()) $campusRepository->add($campus, true);
+
         return $this->render('campus/list.html.twig', [
             'campuses' => $campusRepository->findAll(),
+            'form' => $form->createView()
         ]);
     }
 
@@ -57,7 +67,7 @@ class CampusController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", name="campus_edit", methods={"GET", "POST"})
+     * @Route("/edit/{nom}", name="campus_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Campus $campus, CampusRepository $campusRepository): Response
     {
