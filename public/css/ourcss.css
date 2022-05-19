@@ -1,9 +1,3 @@
-/*Global*/
-
-main {
-    flex: 1;
-}
-
 /* Header */
 
 .monLogo{
@@ -19,14 +13,33 @@ header img {
     max-height: 120px;
 }
 
-/*Fomulaire Login*/
+/* Fomulaire Login */
 
 .div_form_login {
     width: 324px
 }
 
-/*Participant*/
+/* Participant Liste */
 
 .liste-participant:hover {
      cursor: pointer ;
  }
+
+/* Participant SHOW/EDIT */
+
+.colPhotoProfil{
+    flex: 1 0 300px;
+    width: 100%;
+}
+
+.colPhotoProfil img{
+    width:100%;
+    object-fit: cover;
+}
+.colProfil{
+    flex: 1 0 300px;
+}
+
+.colDisplay{
+    flex: 1 0 300px;
+}
