@@ -3,44 +3,86 @@
 {% block title %} {{ parent() }} | Afficher Sortie {% endblock %}
 
 {% block body %}
-    <h1>Sortie</h1>
+	<h1>Sortie</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ sortie.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ sortie.nom }}</td>
-            </tr>
-            <tr>
-                <th>DateHeureDebut</th>
-                <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Duree</th>
-                <td>{{ sortie.duree }}</td>
-            </tr>
-            <tr>
-                <th>DateLimiteInscription</th>
-                <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d H:i') : '' }}</td>
-            </tr>
-            <tr>
-                <th>NbInscriptionsMax</th>
-                <td>{{ sortie.nbInscriptionsMax }}</td>
-            </tr>
-            <tr>
-                <th>InfosSortie</th>
-                <td>{{ sortie.infosSortie }}</td>
-            </tr>
-        </tbody>
-    </table>
+	<table class="table">
+		<tbody>
+		<td>
+			<tr>
+				<th>Nom de la sortie :</th>
+				<td>{{ sortie.nom }}</td>
+			</tr>
+			<tr>
+				<th>Date et heure de la sortie :</th>
+				<td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i') : '' }}</td>
+			</tr>
+			<tr>
+				<th>Date limite d'inscription :</th>
+				<td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d') : '' }}</td>
+			</tr>
+			<tr>
+				<th>Nombre de places :</th>
+				<td>{{ sortie.nbInscriptionsMax }}</td>
+			</tr>
+			<tr>
+				<th>Durée :</th>
+				<td>{{ sortie.duree }} minutes</td>
+			</tr>
+			<tr>
+				<th>Description et infos :</th>
+				<td>{{ sortie.infosSortie }}</td>
+			</tr>
+		</td>
+		<td>
+			<tr>
+				<th>Campus :</th>
+				<td>{{ sortie.campus }}</td>
+			</tr>
+			<tr>
+				<th>Lieu :</th>
+				<td>{{ sortie.lieu }}</td>
+			</tr>
+			<tr>
+				<th>Rue :</th>
+				<td>{{ sortie.lieu.rue }}</td>
+			</tr>
+			<tr>
+				<th>Code postal :</th>
+				<td>{{ sortie.lieu.ville.codePostal }}</td>
+			</tr>
+			<tr>
+				<th>Latitude :</th>
+				<td>{{ sortie.lieu.latitude }}</td>
+			</tr>
+			<tr>
+				<th>Longitude :</th>
+				<td>{{ sortie.lieu.longitude }}</td>
+			</tr>
+		</td>
+		</tbody>
+	</table>
 
-    <a href="{{ path('sortie_list') }}">Retour</a>
+	<div>
+		<h3>Liste des participants inscrits :</h3>
+		<table>
+			<tr>
+				<td>Pseudo</td>
+				<td>Nom</td>
+			</tr>
+			{# totalement faux mais pour avoir une idée de ce que ce devrait être :
+			{% for inscrit in inscrits %}
+			<tr>
+				<td>{{ participant.pseudo.inscrit }}</td>
+				<td>{{ participant.nom.inscrit }}</td>
+			</tr>
+			{% endfor %}#}
+		</table>
+	</div>
 
-    <a href="{{ path('sortie_edit', {'id': sortie.id}) }}">Modifier</a>
 
-    {{ include('sortie/_delete_form.html.twig') }}
+	<a href="{{ path('sortie_list') }}">Retour</a>
+
+	<a href="{{ path('sortie_edit', {'id': sortie.id}) }}">Modifier</a>
+
+	{{ include('sortie/_delete_form.html.twig') }}
 {% endblock %}
