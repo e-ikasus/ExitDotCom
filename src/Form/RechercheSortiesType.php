@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\Campus;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
@@ -24,18 +23,21 @@ class RechercheSortiesType extends AbstractType
             ])
             ->add('SearchOutingName', SearchType::class, [
                 'label' => 'Le nom de la sortie contient : ',
-                            'attr'=> ['placeholder' => '🔎 Recherche'],
-							'required' => false
+                'attr' => [
+                    'placeholder' => '🔎 Recherche',
+                    'class' => 'px-2'
+                ],
+                'required' => false
             ])
             ->add('DateOutingStart', DateType::class, [
                 'label' => 'Entre ',
                 'widget' => 'single_text',
-							'required' => false
+                'required' => false
             ])
             ->add('DateOutingEnd', DateType::class, [
                 'label' => 'et',
                 'widget' => 'single_text',
-							'required' => false
+                'required' => false
             ])
             ->add('OutingCheckboxOptions', ChoiceType::class, [
                 'choices' => [
@@ -46,8 +48,7 @@ class RechercheSortiesType extends AbstractType
                 ],
                 'expanded' => true,
                 'multiple' => true,
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
