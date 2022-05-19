@@ -6,13 +6,13 @@ main {
 
 /* Header */
 
-/*.monLogo{*/
-/*    flex: 1;*/
-/*}*/
+.monLogo{
+    flex: 1;
+}
 
-/*.maNavBar{*/
-/*    flex: 2;*/
-/*}*/
+.maNavBar{
+    flex: 2;
+}
 
 header img {
     padding-top: 5px;
