@@ -4,29 +4,32 @@
 
 {% block body %}
 
-<div class="d-flex flex-wrap gap-3">
-
-    <div class="colPhotoProfil">
-        <img src="{{ asset('uploads/profiles_pictures/' ~ participant.photo) }}" alt="pas de photo">
+    <div class="d-flex justify-content-center">
+        <h1>Mon Profil</h1>
     </div>
 
-    <div class="colProfil">
+    <div class="d-flex flex-wrap gap-3">
 
-        {% if app.user.id == participant.id or app.user.administrateur %}
-            <h1>Mon Profil</h1>
+        <div class="colTier">
+                <img class="w-50 align" src="{{ asset('uploads/profiles_pictures/' ~ participant.photo) }}" alt="pas de photo">
+        </div>
 
-            {{ include('participant/_form.html.twig', {'button_label': 'Enregistrer', 'return': true}) }}
+        <div class="colTier">
 
-        {% else %}
-            {{ include('inc/acces_refuse.html.twig') }}
-        {% endif %}
+            {% if app.user.id == participant.id or app.user.administrateur %}
+
+                {{ include('participant/_form.html.twig', {'button_label': 'Enregistrer', 'return': true}) }}
+
+            {% else %}
+                {{ include('inc/acces_refuse.html.twig') }}
+            {% endif %}
+
+        </div>
+
+        <div class="colTier">
+
+        </div>
 
     </div>
-
-    <div class="colDisplay">
-
-    </div>
-
-</div>
 
 {% endblock %}
