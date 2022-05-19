@@ -3,75 +3,88 @@
 {% block title %} {{ parent() }} | Afficher Participant{% endblock %}
 
 {% block body %}
-    <h1>{{ participant.pseudo }}</h1>
+<div class="d-flex flex-wrap gap-3">
 
-    <table class="table">
-        <tbody>
-        <tr>
-            <th>Prénom</th>
-            <td>{{ participant.prenom }}</td>
-        </tr>
-        <tr>
-            <th>Nom</th>
-            <td>{{ participant.nom }}</td>
-        </tr>
-        <tr>
-            <th>Telephone</th>
-            <td>{{ participant.telephone }}</td>
-        </tr>
-        <tr>
-            <th>Email</th>
-            <td>{{ participant.email }}</td>
-        </tr>
-        <tr>
-            <th>Campus</th>
-            <td>{{ participant.campus.nom }}</td>
-        </tr>
-        <tr>
-            <th>Photo</th>
-            <td>{{ participant.photo }}</td>
-        </tr>
+    <div class="colPhotoProfil">
+        <img src="{{ asset('uploads/profiles_pictures/' ~ participant.photo) }}" alt="pas de photo">
+    </div>
 
-        {% if is_granted ('ROLE_ADMIN') %}
+    <div class="colProfil">
+
+        <h1>{{ participant.pseudo }}</h1>
+
+        <table class="table w-100">
+            <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ participant.id }}</td>
+                <th>Prénom</th>
+                <td>{{ participant.prenom }}</td>
             </tr>
             <tr>
-                <th>Pseudo</th>
-                <td>{{ participant.pseudo }}</td>
+                <th>Nom</th>
+                <td>{{ participant.nom }}</td>
             </tr>
             <tr>
-                <th>Roles</th>
-                <td>{{ participant.roles ? participant.roles|json_encode : '' }}</td>
+                <th>Telephone</th>
+                <td>{{ participant.telephone }}</td>
             </tr>
             <tr>
-                <th>Password</th>
-                <td>{{ participant.password }}</td>
+                <th>Email</th>
+                <td>{{ participant.email }}</td>
             </tr>
             <tr>
-                <th>Administrateur</th>
-                <td>{{ participant.administrateur ? 'Yes' : 'No' }}</td>
+                <th>Campus</th>
+                <td>{{ participant.campus.nom }}</td>
             </tr>
             <tr>
-                <th>Actif</th>
-                <td>{{ participant.actif ? 'Yes' : 'No' }}</td>
+                <th>Photo</th>
+                <td>{{ participant.photo }}</td>
             </tr>
 
-            <a href="{{ path('participant_list') }}">back to list</a>
+            {% if is_granted ('ROLE_ADMIN') %}
+                <tr>
+                    <th>Id</th>
+                    <td>{{ participant.id }}</td>
+                </tr>
+                <tr>
+                    <th>Pseudo</th>
+                    <td>{{ participant.pseudo }}</td>
+                </tr>
+                <tr>
+                    <th>Roles</th>
+                    <td>{{ participant.roles ? participant.roles|json_encode : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Administrateur</th>
+                    <td>{{ participant.administrateur ? 'Yes' : 'No' }}</td>
+                </tr>
+                <tr>
+                    <th>Actif</th>
+                    <td>{{ participant.actif ? 'Yes' : 'No' }}</td>
+                </tr>
 
-            <a href="{{ path('participant_edit', {'pseudo': participant.pseudo}) }}">edit</a>
+                <a href="{{ path('participant_list') }}">back to list</a>
 
-            {{ include('participant/_delete_form.html.twig') }}
+                <a href="{{ path('participant_edit', {'pseudo': participant.pseudo}) }}">edit</a>
+
+                {{ include('participant/_delete_form.html.twig') }}
+            {% endif %}
+
+            </tbody>
+        </table>
+
+        {% if app.user.id == participant.id %}
+
+            <a class="btn btn-warning" href="{{ path('participant_edit', {'pseudo': participant.pseudo}) }}">Modifier</a>
+
         {% endif %}
 
-        </tbody>
-    </table>
+    </div>
 
-    {% if app.user.id == participant.id %}
+    <div class="colDisplay">
 
-        <a class="btn btn-warning" href="{{ path('participant_edit', {'pseudo': participant.pseudo}) }}">Modifier</a>
 
-    {% endif %}
+    </div>
+
+</div>
 
 {% endblock %}

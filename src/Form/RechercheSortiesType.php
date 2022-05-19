@@ -40,6 +40,10 @@ class RechercheSortiesType extends AbstractType
                 'required' => false
             ])
             ->add('OutingCheckboxOptions', ChoiceType::class, [
+                'label' => ' ',
+                'attr' => [
+                    'class' => 'd-flex flex-column',
+                ],
                 'choices' => [
                     'Sorties dont je suis l\'organisateur/trice' => 'sorties-organisateur',
                     'Sorties auxquelles je suis inscrit/e' => 'sorties-non-inscrit',
