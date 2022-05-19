@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\Form\RechercheSortiesType;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
 use App\Services\Research;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,9 +52,10 @@ class SortieController extends AbstractController
 	/**
 	 * @Route("/new", name="sortie_new", methods={"GET", "POST"})
 	 */
-	public function new(Request $request, SortieRepository $sortieRepository): Response
+	public function new(Request $request, SortieRepository $sortieRepository, Etat $etat): Response
 	{
 		$sortie = new Sortie();
+        $sortie->setEtat(); // A corriger
 		$form = $this->createForm(SortieType::class, $sortie);
 		$form->handleRequest($request);
 
