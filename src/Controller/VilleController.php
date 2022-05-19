@@ -16,6 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class VilleController extends AbstractController
 {
 	/**
+	 * Affiche la liste des villes. Si la fonction récupère un formulaire valide, alors une nouvelle ville est ajoutée à la base de données.
+	 *
 	 * @Route("/list", name="ville_list", methods={"GET", "POST"})
 	 */
 	public function list(Request $request, VilleRepository $villeRepository): Response

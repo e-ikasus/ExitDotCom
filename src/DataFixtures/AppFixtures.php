@@ -170,13 +170,14 @@ class AppFixtures extends Fixture
 			$sorties[$i]->setNbInscriptionsMax(rand(1, 20));
 			$sorties[$i]->setInfosSortie($faker->text());
 
-			$campus[rand(0, self::NBR_CAMPUS - 1)]->addSortieOrganisee($sorties[$i]);
-
 			$lieux[rand(0, self::NBR_LIEUX - 1)]->addSorty($sorties[$i]);
 
 			$etats[rand(0, self::NBR_ETATS - 1)]->addSorty($sorties[$i]);
 
-			$participants[rand(0, self::NBR_PARTICIPANTS - 1)]->addSortiesOrganisee($sorties[$i]);
+			// La sortie est référencée à la fois par le participant qui en est l'organisateur et par le campus du participant.
+			$part = $participants[rand(0, self::NBR_PARTICIPANTS - 1)];
+			$part->addSortiesOrganisee($sorties[$i]);
+			$part->getCampus()->addSortieOrganisee($sorties[$i]);
 
 			for ($j = 0; $j < rand(0, self::MAX_PARTICIPANTS_PAR_SORTIE); $j++)
 			{

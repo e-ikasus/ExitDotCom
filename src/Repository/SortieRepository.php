@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\Services\Research;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -18,71 +19,106 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SortieRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Sortie::class);
-    }
+	public function __construct(ManagerRegistry $registry)
+	{
+		parent::__construct($registry, Sortie::class);
+	}
 
-    public function add(Sortie $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
+	/**
+	 * Ajoute une sortie à la base de données.
+	 *
+	 * @param Sortie $entity Sortie à ajouter
+	 * @param bool   $flush  Mets à jour la base de données.
+	 *
+	 * @return void
+	 */
+	public function add(Sortie $entity, bool $flush = false): void
+	{
+		$this->getEntityManager()->persist($entity);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+		if ($flush)
+		{
+			$this->getEntityManager()->flush();
+		}
+	}
 
-    public function remove(Sortie $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
+	/**
+	 * Supprime une sortie de la base de données
+	 *
+	 * @param Sortie $entity Sortie à retirer/supprimer.
+	 * @param bool   $flush  Mets à jour la base de données.
+	 *
+	 * @return void
+	 */
+	public function remove(Sortie $entity, bool $flush = false): void
+	{
+		$this->getEntityManager()->remove($entity);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+		if ($flush)
+		{
+			$this->getEntityManager()->flush();
+		}
+	}
 
-//    /**
-//     * @return Sortie[] Returns an array of Sortie objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+	/**
+	 * Requête pour le formulaire de recherche filtrée parmi la liste des sorties existantes.
+	 *
+	 * @param          $user     Utilisateur actuellement connecté
+	 * @param Research $research critère de recherche.
+	 *
+	 * @return Paginator Liste des sorties trouvées.
+	 */
+	public function findByCreteria($user, Research $research)
+	{
+		$queryBuilder = $this->createQueryBuilder('s');
+		$queryBuilder->leftJoin('s.campus', 'c');
+		$queryBuilder->addSelect('c');
+		$queryBuilder->andWhere('s.campus = :campus');
 
-//    public function findOneBySomeField($value): ?Sortie
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+		// Si le nom d'une sortie doit contenir un terme en particulier.
+		if ($research->getSearchOutingName())
+		{
+			$queryBuilder->andWhere('s.nom LIKE :name');
+			$queryBuilder->setParameter('name', '%' . $research->getSearchOutingName() . '%');
+		}
 
-// requête pour le formulaire de recherche filtrée parmi la liste des sorties existantes
+		// Si une date de début à été renseignée dans le formulaire.
+		if ($research->getDateOutingStart())
+		{
+			$queryBuilder->andWhere('s.dateHeureDebut >= :dateOutingStart');
+			$queryBuilder->setParameter('dateOutingStart', $research->getDateOutingStart());
+		}
 
-    public function findByCreteria(Research $research)
-    {
-        $queryBuilder = $this->createQueryBuilder('s')
-                        ->leftJoin('s.campus', 'c')
-                        ->addSelect('c')
-                        ->andWhere('s.campus = :campus')
- //                       ->andWhere('s.nom LIKE %:name%')
-//                        ->andWhere('s.dateOutingStart ')
-           ->setParameter('campus', $research->getCampus())
-  //          ->setParameter('name', $research->getSearchOutingName())
-                        ;
+		// Si une date de fin à été renseignée dans le formulaire.
+		if ($research->getDateOutingEnd())
+		{
+			$queryBuilder->andWhere('s.dateHeureDebut <= :dateOutingEnd');
+			$queryBuilder->setParameter('dateOutingEnd', $research->getDateOutingEnd());
+		}
 
-        $query = $queryBuilder->getQuery();
-        $paginator = new Paginator($query);
+		// Détermine quels choix ont été fait par l'utilisateur.
+		foreach ($research->getOutingCheckboxOptions() as $index => $choice)
+		{
+			switch ($choice)
+			{
+				case 'sorties-organisateur':
+					$queryBuilder->andWhere('s.organisateur = :organisateur');
+					$queryBuilder->setParameter('organisateur', $user);
+					break;
+				case 'sorties-non-inscrit':
+					break;
+				case 'sorties-inscrit':
+					break;
+				case 'sorties-passees':
+					$queryBuilder->andWhere('s.etat.idLibelle = :etat');
+					$queryBuilder->setParameter('etat', Etat::PASSEE);
+			}
+		}
 
-        return $paginator;
-    }
+		$queryBuilder->setParameter('campus', $research->getCampus());
+
+		$query = $queryBuilder->getQuery();
+
+		return new Paginator($query);
+	}
 }

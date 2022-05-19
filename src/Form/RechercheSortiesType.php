@@ -22,16 +22,19 @@ class RechercheSortiesType extends AbstractType
                 'label' => 'Campus',
                 'choice_label' => 'nom'
             ])
-  /*          ->add('SearchOutingName', SearchType::class, [
-                'label' => 'Le nom de la sortie contient : '
+            ->add('SearchOutingName', SearchType::class, [
+                'label' => 'Le nom de la sortie contient : ',
+							'required' => false
             ])
             ->add('DateOutingStart', DateType::class, [
                 'label' => 'Entre ',
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+							'required' => false
             ])
             ->add('DateOutingEnd', DateType::class, [
                 'label' => ' et ',
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+							'required' => false
             ])
             ->add('OutingCheckboxOptions', ChoiceType::class, [
                 'choices' => [
@@ -42,7 +45,7 @@ class RechercheSortiesType extends AbstractType
                 ],
                 'expanded' => true,
                 'multiple' => true,
-            ])*/
+            ])
         ;
     }
 
