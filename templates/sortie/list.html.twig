@@ -19,21 +19,28 @@
 		<div class="d-flex row justify-content-center m-3">
 			<div class="col-5 d-flex flex-column">
 
-				{{ form_row(form.Campus) }}
+				{{ form_row(form.campus) }}
 
-				{{ form_row(form.SearchOutingName) }}
+				{{ form_row(form.searchOutingName) }}
 
 				<div class="d-flex flex-row flex-wrap">
-					{{ form_row(form.DateOutingStart) }}
-					{{ form_row(form.DateOutingEnd) }}
+					{{ form_row(form.dateOutingStart) }}
+					{{ form_row(form.dateOutingEnd) }}
 				</div>
 			</div>
 
 			<div class="col-4">
-				{{ form_row(form.OutingCheckboxOptions) }}
+				<div>{{ form_widget(form.sortiesOrganisateur) }}
+					{{ form_label(form.sortiesOrganisateur) }}</div>
+				<div>{{ form_widget(form.sortiesNonInscrit) }}
+					{{ form_label(form.sortiesNonInscrit) }}</div>
+				<div>{{ form_widget(form.sortiesInscrit) }}
+					{{ form_label(form.sortiesInscrit) }}</div>
+				<div>{{ form_widget(form.sortiesPassees) }}
+					{{ form_label(form.sortiesPassees) }}</div>
 			</div>
 
-			<div class="col-3 d-flex justify-content-center align-items-center">
+			<div class="col-3 d-flex justify-content-center align-items-start">
 				<button type="submit" class="btn btn-info btn-lg border-dark border-3 shadow">Rechercher
 				</button>
 			</div>
