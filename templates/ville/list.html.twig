@@ -7,7 +7,7 @@
 
 	<div class="my-4">
 		{{ form_start(searchForm) }}
-		<div class="d-inline-block"> {{ form_widget(searchForm) }} </div>
+		<div class="d-inline-block {% if not searchForm.vars.valid %} alert alert-danger {% endif %} "> {{ form_label(searchForm.pattern) }} {{ form_widget(searchForm.pattern) }} </div>
 		<button type="submit" class="btn btn-info btn-sm border-dark border-3 shadow">Rechercher</button>
 		{{ form_end(searchForm) }}
 	</div>
@@ -21,25 +21,26 @@
 		</tr>
 		</thead>
 		<tbody>
-		{% for i in 0..villes|length-1 %}
-			<tr class="table-{% if i is even %}info{% else %}secondary{% endif %}">
-				<td>{{ villes[i].nom }}</td>
-				<td>{{ villes[i].codePostal }}</td>
-				<td>{{ include('inc/buttons.html.twig', {'update':true, 'delete': true, 'id': villes[i].id, 'type': 'ville'}) }}</td>
-			</tr>
+
+		{% if villes|length %}
+			{% for i in 0..villes|length-1 %}
+				<tr class="table-{% if i is even %}info{% else %}secondary{% endif %}">
+					<td>{{ villes[i].nom }}</td>
+					<td>{{ villes[i].codePostal }}</td>
+					<td>{{ include('inc/buttons.html.twig', {'update':true, 'delete': true, 'id': villes[i].id, 'type': 'ville'}) }}</td>
+				</tr>
+			{% endfor %}
 		{% else %}
 			<tr>
-				<td colspan="4">Aucune ville définie</td>
+				<td colspan="3">Aucune ville définie</td>
 			</tr>
-		{% endfor %}
+		{% endif %}
 
 		<tr>
 			{{ form_start(form) }}
-
-			<td>{{ form_widget(form.nom) }}</td>
-			<td>{{ form_widget(form.codePostal) }}</td>
+			<td {% if not form.vars.valid %} class="bg-danger" {% endif %}>{{ form_widget(form.nom) }}</td>
+			<td {% if not form.vars.valid %} class="bg-danger" {% endif %}>{{ form_widget(form.codePostal) }}</td>
 			<td>{{ include('inc/buttons.html.twig', {'isForm': true, 'new': true}) }}</td>
-
 			{{ form_end(form) }}
 		</tr>
 

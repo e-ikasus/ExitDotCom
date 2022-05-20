@@ -59,7 +59,7 @@ class VilleController extends AbstractController
 
 	public function show(Ville $ville): Response
 	{
-		return $this->render('ville/show.html.twig', ['ville' => $ville,]);
+		return $this->render('ville/show.html.twig', ['ville' => $ville]);
 	}
 
 	/**
@@ -80,7 +80,7 @@ class VilleController extends AbstractController
 			return $this->redirectToRoute('ville_list', [], Response::HTTP_SEE_OTHER);
 		}
 
-		return $this->renderForm('ville/edit.html.twig', ['ville' => $ville, 'form' => $form->createView(),]);
+		return $this->renderForm('ville/edit.html.twig', ['ville' => $ville, 'form' => $form]);
 	}
 
 	/**

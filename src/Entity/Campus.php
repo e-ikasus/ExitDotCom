@@ -6,6 +6,7 @@ use App\Repository\CampusRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CampusRepository::class)
@@ -20,6 +21,7 @@ class Campus
     private $id;
 
     /**
+		 * @Assert\Regex("/^[^0-9#@\\;:!<>{}\[\]`()]*$/")
      * @ORM\Column(type="string", length=64)
      */
     private $nom;
