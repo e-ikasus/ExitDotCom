@@ -56,14 +56,14 @@ class RechercheSortiesType extends AbstractType
                     'class' => 'm-2 px-2'
                 ],
             ])
-            ->add('sortiesNonInscrit', CheckboxType::class, [
+            ->add('sortiesInscrit', CheckboxType::class, [
                 'label' => 'Sorties auxquelles je suis inscrit/e',
                 'required' => false,
                 'attr' => [
                     'class' => 'm-2 px-2'
                 ],
             ])
-            ->add('sortiesInscrit', CheckboxType::class, [
+            ->add('sortiesNonInscrit', CheckboxType::class, [
                 'label' => 'Sorties auxquelles je ne suis pas inscrit/e',
                 'required' => false,
                 'attr' => [
