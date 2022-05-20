@@ -11,12 +11,14 @@ class ImportFile
     private $storageLocation;
     private $slugger;
     private $newFileName;
+    private $type;
 
-    public function __construct($file, $storageLocation, SluggerInterface $slugger)
+    public function __construct($file, $storageLocation, SluggerInterface $slugger, $type = '')
     {
         $this->file=$file;
         $this->storageLocation=$storageLocation;
         $this->slugger = $slugger;
+        $this->type = $type;
 
     }
 
@@ -25,7 +27,7 @@ class ImportFile
         $fileName = pathinfo($this->file->getClientOriginalName(), PATHINFO_FILENAME);
         // this is needed to safely include the file name as part of the URL
         $safeFilename = $this->slugger->slug($fileName);
-        $this->newFileName = $safeFilename . '-' . uniqid() . '.' . $this->file->guessExtension();
+        $this->newFileName = $safeFilename . '-' . uniqid() . '.' . ($this->type == '' ? $this->file->guessExtension() : $this->type);
 
         // Move the file to the directory where covers are stored
         try {

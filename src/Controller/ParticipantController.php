@@ -8,9 +8,7 @@ use App\Form\ParticipantType;
 use App\Repository\CampusRepository;
 use App\Repository\ParticipantRepository;
 use App\Services\ImportFile;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -107,42 +105,47 @@ class ParticipantController extends AbstractController
      * @Route("/admin/neww", name="participant_new_csv", methods={"GET", "POST"})
      */
     public
-    function newCSV(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, CampusRepository $campusRepository): Response
+    function newCSV(Request $request, ParticipantRepository $participantRepository, SluggerInterface $slugger, CampusRepository $campusRepository): Response
     {
-        $participantCSV = new Participant();
+
         $form = $this->createForm(ParticipantCsvType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
 
-                $file = $form->get('moncsv')->getData();
+            $file = $form->get('moncsv')->getData();
 
-                $importFile = new ImportFile($file, $this->getParameter('csv_files_directory'), $slugger);
-                $importFile->storeFile();
+            $importFile = new ImportFile($file, $this->getParameter('csv_files_directory'), $slugger, "csv");
+            $importFile->storeFile();
 
-            if (($handle = fopen("upload/csv_files/" . $importFile->getNewFileName(), "r")) !== FALSE) {
+            if (($handle = fopen($this->getParameter('csv_files_directory') . '/' . $importFile->getNewFileName(), "r")) !== FALSE) {
+                $row = 1;
+                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                    if ($row == 1) {
+                        $row++;
+                    } else {
+                        $participantCSV = new Participant();
 
-                while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+                        $participantCSV->setCampus($campusRepository->findOneBy(array('nom' => $data[0])));
+                        $participantCSV->setPseudo($data[1]);
+                        $participantCSV->setRoles($data[7] == 'true' ? ["ROLE_ADMIN"] : ["ROLE_USER"]);
+                        $participantCSV->setPassword(password_hash($data[2], PASSWORD_BCRYPT));
+                        $participantCSV->setPrenom($data[3]);
+                        $participantCSV->setNom($data[4]);
+                        $participantCSV->setTelephone($data[5]);
+                        $participantCSV->setEmail($data[6]);
+                        $participantCSV->setAdministrateur($data[7] == 'true');
+                        $participantCSV->setActif(true);
+                        $participantCSV->setPhoto('default.png');
 
-                    $num = count($data);
+                        $participantRepository->add($participantCSV, true);
+                    }
 
-                    $participantCSV->setCampus($campusRepository->findOneBy(array('nom'=>$data[0])));
-                    $participantCSV->setPseudo($data[1]);
-                    $participantCSV->setRoles($data[7] == 'true' ? ["ROLE_ADMIN"] : ["ROLE_USER"]);
-                    $participantCSV->setPassword(password_hash($data[2], PASSWORD_BCRYPT));
-                    $participantCSV->setPrenom($data[3]);
-                    $participantCSV->setNom($data[4]);
-                    $participantCSV->setTelephone($data[5]);
-                    $participantCSV->setEmail($data[6]);
-                    $participantCSV->setAdministrateur($data[7] == 'true');
-                    $participantCSV->setActif(true);
-                    $participantCSV->setPhoto('default.png');
-
-                    $entityManager->persist($participantCSV);
                 }
+
                 fclose($handle);
-                $entityManager->flush();
+
             }
 
             return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);

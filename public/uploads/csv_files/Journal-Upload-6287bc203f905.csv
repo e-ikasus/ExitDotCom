@@ -1,0 +1,7 @@
+Campus,pseudo,Mot de passe,prenom,nom,telephone,email,administrateur
+Fournier SARL,pseudo1,user,prnom1,nom1,0601020304,prenom1@nom1.fr,true
+Fournier SARL,pseudo2,user,prnom2,nom2,0601020305,prenom2@nom2.fr,false
+Fournier SARL,pseudo3,user,prnom3,nom3,0601020306,prenom2@nom2.fr,false
+Fournier SARL,pseudo4,user,prnom4,nom4,0601020307,prenom3@nom3.fr,false
+Fournier SARL,pseudo5,user,prnom5,nom5,0601020308,prenom4@nom4.fr,false
+Fournier SARL,pseudo6,user,prnom6,nom6,0601020309,prenom5@nom5.fr,false

@@ -17,8 +17,19 @@ class ParticipantCsvType extends AbstractType
             ->add('moncsv', FileType::class, ['label' => 'Fichier .csv' , 'mapped' => false,
                 'constraints' => [new File([
                     'maxSize' => '4096k',   //revoir la taille du fichier
-                    'mimeTypes' => ['text/csv', 'application/csv', 'text/x-comma-separated-values', 'text/x-csv',
-                    ],
+                    'mimeTypes' => [
+                        'text/x-comma-separated-values',
+                        'text/comma-separated-values',
+                        'text/x-csv',
+                        'text/csv',
+                        'text/plain',
+                        'application/octet-stream',
+                        'application/vnd.ms-excel',
+                        'application/x-csv',
+                        'application/csv',
+                        'application/excel',
+                        'application/vnd.msexcel',
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
                     'mimeTypesMessage' => 'Merci d\'utiliser un des formats suivant : .csv',
                 ])
                 ],
