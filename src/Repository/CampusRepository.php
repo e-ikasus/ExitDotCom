@@ -12,6 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  *
  * @method Campus|null find($id, $lockMode = null, $lockVersion = null)
  * @method Campus|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Campus[]    findAll()
  * @method Campus[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 
@@ -20,22 +21,6 @@ class CampusRepository extends ServiceEntityRepository
 	public function __construct(ManagerRegistry $registry)
 	{
 		parent::__construct($registry, Campus::class);
-	}
-
-	/**
-	 * Récupère la liste des campus depuis la base de données. La liste est triée par ordre croissant.
-	 *
-	 * @return float|int|mixed|string
-	 */
-
-	public function findAll()
-	{
-		$queryBuilder = $this->createQueryBuilder('c');
-		$queryBuilder->addOrderBy('c.nom', 'ASC');
-
-		$query = $queryBuilder->getQuery();
-
-		return $query->getResult();
 	}
 
 	/**
