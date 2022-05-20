@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
+use App\Form\ParticipantCsvType;
 use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,6 +112,39 @@ class ParticipantController extends AbstractController
         }
 
         return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @Route("/admin/neww", name="participant_new_csv", methods={"GET", "POST"})
+     */
+    public function newCSV(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $participantCSV = new Participant();
+        $form = $this->createForm(ParticipantCsvType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            if (($handle = fopen("test.csv", "r")) !== FALSE) {
+
+                while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+
+                    $num = count($data);
+                    $participantCSV->setNom($data[0]);
+                    echo $data[1];
+                    echo $data[2];
+                    $entityManager->persist($participantCSV);
+                }
+                fclose($handle);
+                $entityManager->flush();
+            }
+
+            return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('participant/newCSV.html.twig', [
+            'form' => $form,
+        ]);
     }
 
 }
