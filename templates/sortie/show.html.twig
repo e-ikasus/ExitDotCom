@@ -3,86 +3,103 @@
 {% block title %} {{ parent() }} | Afficher Sortie {% endblock %}
 
 {% block body %}
-	<h1>Sortie</h1>
+	<h1>{{ sortie.nom }}</h1>
 
-	<table class="table">
-		<tbody>
-		<td>
-			<tr>
-				<th>Nom de la sortie :</th>
-				<td>{{ sortie.nom }}</td>
-			</tr>
-			<tr>
-				<th>Date et heure de la sortie :</th>
-				<td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i') : '' }}</td>
-			</tr>
-			<tr>
-				<th>Date limite d'inscription :</th>
-				<td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d') : '' }}</td>
-			</tr>
-			<tr>
-				<th>Nombre de places :</th>
-				<td>{{ sortie.nbInscriptionsMax }}</td>
-			</tr>
-			<tr>
-				<th>Durée :</th>
-				<td>{{ sortie.duree }} minutes</td>
-			</tr>
-			<tr>
-				<th>Description et infos :</th>
-				<td>{{ sortie.infosSortie }}</td>
-			</tr>
-		</td>
-		<td>
-			<tr>
-				<th>Campus :</th>
-				<td>{{ sortie.campus }}</td>
-			</tr>
-			<tr>
-				<th>Lieu :</th>
-				<td>{{ sortie.lieu }}</td>
-			</tr>
-			<tr>
-				<th>Rue :</th>
-				<td>{{ sortie.lieu.rue }}</td>
-			</tr>
-			<tr>
-				<th>Code postal :</th>
-				<td>{{ sortie.lieu.ville.codePostal }}</td>
-			</tr>
-			<tr>
-				<th>Latitude :</th>
-				<td>{{ sortie.lieu.latitude }}</td>
-			</tr>
-			<tr>
-				<th>Longitude :</th>
-				<td>{{ sortie.lieu.longitude }}</td>
-			</tr>
-		</td>
-		</tbody>
-	</table>
+	<div class="d-flex flex-row">
+		<div class="col-6 me-5">
+			<table class="table table-borderless">
+				<tbody>
+				<tr>
+					<th class="col-4">Nom de la sortie :</th>
+					<td>{{ sortie.nom }}</td>
+				</tr>
+				<tr>
+					<th class="col-4">Date et heure de la sortie :</th>
+					<td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i') : '' }}</td>
+				</tr>
+				<tr>
+					<th class="col-4">Date limite d'inscription :</th>
+					<td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d') : '' }}</td>
+				</tr>
+				<tr>
+					<th class="col-4">Nombre de places :</th>
+					<td>{{ sortie.nbInscriptionsMax }}</td>
+				</tr>
+				<tr>
+					<th class="col-4">Durée :</th>
+					<td>{{ sortie.duree }} minutes</td>
+				</tr>
+				<tr>
+					<th class="col-4">Description et infos :</th>
+					<td>{{ sortie.infosSortie }}</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
 
+		<div class="col-6">
+			<table class="table table-borderless">
+				<tbody>
+				<tr>
+					<th class="col-3">Campus :</th>
+					<td>{{ sortie.campus.nom }}</td>
+				</tr>
+				<tr>
+					<th class="col-3">Lieu :</th>
+					<td>{{ sortie.lieu.nom }}</td>
+				</tr>
+				<tr>
+					<th class="col-3">Rue :</th>
+					<td>{{ sortie.lieu.rue }}</td>
+				</tr>
+				<tr>
+					<th class="col-3">Code postal :</th>
+					<td>{{ sortie.lieu.ville.codePostal }}</td>
+				</tr>
+				<tr>
+					<th class="col-3">Latitude :</th>
+					<td>{{ sortie.lieu.latitude }}</td>
+				</tr>
+				<tr>
+					<th class="col-3">Longitude :</th>
+					<td>{{ sortie.lieu.longitude }}</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 	<div>
+
 		<h3>Liste des participants inscrits :</h3>
-		<table>
-			<tr onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'" class="hover-pointer table-{% if i is even %}info{% else %}secondary{% endif %}">
-				<td>Pseudo</td>
-				<td>Nom</td>
-			</tr>
-			{# totalement faux mais pour avoir une idée de ce que ce devrait être :
-			{% for inscrit in inscrits %}
+
+		<table class="table table-striped">
+			<thead>
 			<tr>
-				<td>{{ participant.pseudo.inscrit }}</td>
-				<td>{{ participant.nom.inscrit }}</td>
+				<th>Pseudo</th>
+				<th>Nom</th>
 			</tr>
-			{% endfor %}#}
+			</thead>
+			<tbody>
+			{# Nous pouvons récupérer les participants via la sortie. Cela est possible grâce à la relation Many To Many #}
+			{% for participant in sortie.participants %}
+				<tr onclick="document.location.href='{{ path('participant_profil', {'pseudo': participant.pseudo}) }}'"
+				    class="hover-pointer">
+					<td>{{ participant.pseudo }}</td>
+					<td>{{ participant.prenom }}{{ participant.nom }}</td>
+				</tr>
+			{% endfor %}
+			</tbody>
 		</table>
 	</div>
 
-
-	<a href="{{ path('sortie_list') }}">Retour</a>
-
-	<a href="{{ path('sortie_edit', {'id': sortie.id}) }}">Modifier</a>
-
-	{{ include('sortie/_delete_form.html.twig') }}
+	{% if app.user == sortie.organisateur %}
+		<a href="{{ path('sortie_edit', {'id': sortie.id}) }}">
+			<button class="btn btn-warning">Modifier</button>
+		</a>
+	{% elseif app.user == sortie.organisateur or is_granted('ROLE_ADMIN') %}
+		{{ include('sortie/_delete_form.html.twig') }}
+	{% endif %}
+	<a href="{{ path('sortie_list') }}">
+		<button class="btn btn-info">Retour</button>
+	</a>
 {% endblock %}
