@@ -124,7 +124,7 @@ class ParticipantController extends AbstractController
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     if ($row == 1) {
                         $row++;
-                    } else {
+                    } else if ($data[0] != '') {
                         $participantCSV = new Participant();
 
                         $participantCSV->setCampus($campusRepository->findOneBy(array('nom' => $data[0])));
