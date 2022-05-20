@@ -6,7 +6,9 @@ use App\Entity\Etat;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Services\Research;
+use Container7GJzLhE\getDoctrine_QueryDqlCommandService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,7 +20,6 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Sortie[]    findAll()
  * @method Sortie[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-
 class SortieRepository extends ServiceEntityRepository
 {
 	public function __construct(ManagerRegistry $registry)
@@ -103,29 +104,39 @@ class SortieRepository extends ServiceEntityRepository
 			$queryBuilder->setParameter('dateOutingEnd', $research->getDateOutingEnd());
 		}
 
-		// Détermine quels choix ont été fait par l'utilisateur.
-		foreach ($research->getOutingCheckboxOptions() as $index => $choice)
+		// S'il faut filtrer les sorties dont l'utilisateur en est l'organisateur.
+		if ($research->getSortiesOrganisateur())
 		{
-			switch ($choice)
-			{
-				case 'sorties-organisateur':
-					$queryBuilder->andWhere('s.organisateur = :organisateur');
-					$queryBuilder->setParameter('organisateur', $user);
-					break;
-				case 'sorties-non-inscrit':
-					break;
-				case 'sorties-inscrit':
-					$queryBuilder->Join('s.participants', 'parts');
-					$queryBuilder->addSelect('parts');
-					$queryBuilder->andWhere('parts = :part');
-					$queryBuilder->setParameter('part', $user);
-					break;
-				case 'sorties-passees':
-					$queryBuilder->Join('s.etat', 'e');
-					$queryBuilder->addSelect('e');
-					$queryBuilder->andWhere('e.idLibelle = :etat');
-					$queryBuilder->setParameter('etat', Etat::PASSEE);
-			}
+			$queryBuilder->andWhere('s.organisateur = :organisateur');
+			$queryBuilder->setParameter('organisateur', $user);
+		}
+
+		// S'il faut filtrer les sorties passées.
+		if ($research->getSortiesPassees())
+		{
+			$queryBuilder->Join('s.etat', 'e');
+			$queryBuilder->addSelect('e');
+			$queryBuilder->andWhere('e.idLibelle = :etat');
+			$queryBuilder->setParameter('etat', Etat::PASSEE);
+		}
+
+		// S'il faut filtrer les sorties auxquelles l'utilisateur est inscrit.
+		if (($research->getSortiesInscrit()) && (!$research->getSortiesNonInscrit()))
+		{
+			$queryBuilder->Join('s.participants', 'parts');
+			$queryBuilder->addSelect('parts');
+			$queryBuilder->andWhere('parts = :part');
+			$queryBuilder->setParameter('part', $user);
+		}
+
+		// S'il faut filtrer les sorties auxquelles l'utilisateur n'est pas inscrit.
+		if (($research->getSortiesNonInscrit()) && (!$research->getSortiesInscrit()))
+		{
+			$queryBuilder->Join('s.participants', 'parts');
+			$queryBuilder->addSelect('parts');
+			$queryBuilder->andWhere('parts != :part');
+			$queryBuilder->setParameter('part', $user);
+			$queryBuilder->groupBy("s.id");
 		}
 
 		$query = $queryBuilder->getQuery();
