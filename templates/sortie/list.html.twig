@@ -30,12 +30,12 @@
 			</div>
 
 			<div class="col-4">
-				<div>{{ form_widget(form.sortiesOrganisateur) }}
+				<div style="text-overflow: '-'">{{ form_widget(form.sortiesOrganisateur) }}
 					{{ form_label(form.sortiesOrganisateur) }}</div>
-				<div>{{ form_widget(form.sortiesNonInscrit) }}
-					{{ form_label(form.sortiesNonInscrit) }}</div>
 				<div>{{ form_widget(form.sortiesInscrit) }}
 					{{ form_label(form.sortiesInscrit) }}</div>
+				<div>{{ form_widget(form.sortiesNonInscrit) }}
+					{{ form_label(form.sortiesNonInscrit) }}</div>
 				<div>{{ form_widget(form.sortiesPassees) }}
 					{{ form_label(form.sortiesPassees) }}</div>
 			</div>
@@ -64,6 +64,7 @@
 		</thead>
 		<tbody>
 		{% for sortie in sorties %}
+			{% if date('now').diff(date(sortie.dateHeureDebut)) < '30' %}
 			<tr>
 				<td>{{ sortie.nom }}</td>
 				<td>{{ sortie.dateHeureDebut|date('Y-m-d H:i') }}</td>
@@ -73,18 +74,36 @@
 				<td>{{ sortie in app.user.sortiesInscrit ? "X" }}</td>
 				<td>{{ sortie.organisateur.pseudo }}</td>
 				<td>
-					<a href="{{ path('sortie_show', {'id': sortie.id}) }}">Détails</a>
-					<a href="{{ path('sortie_edit', {'id': sortie.id}) }}">Modifier</a>
-					{% if sortie in app.user.sortiesInscrit %}
-						<a href="{{ path('sortie_show', {'id': sortie.id}) }}">Se désister</a>
+					{# un admin et un organisateur peuvent annuler une sortie (tant que date sortie n'est pas dépassée)
+						annule => sortie marquée comme annulée + message du motif
+					un user peut s'inscrire à une sortie
+					un participant peut se désister tant que date sortie non dépassée
+					pas d'inscription après date clôture des inscriptions
+					si date sortie +1 mois => non consultable (classer les sorties par date de clôture DESC)
+					#}
+
+					{% if app.user == sortie.organisateur %}
+						<a href="{{ path('sortie_edit', {'id': sortie.id}) }}" class="text-decoration-none">
+							<button class="btn btn-warning">Modifier</button>
+						</a>
 					{% else %}
-						<a href="{{ path('sortie_show', {'id': sortie.id}) }}">S'inscrire</a>
+						<a href="{{ path('sortie_show', {'id': sortie.id}) }}" class="text-decoration-none">
+							<button class="btn btn-info">Détails</button>
+						</a>
 					{% endif %}
-					{% if is_granted('ROLE_ADMIN') %}
-						<a href="{{ path('sortie_delete', {'id': sortie.id}) }}">Annuler</a>
+					{% if sortie in app.user.sortiesInscrit and sortie.dateHeureDebut < 'now' %}
+						<a href="" class="text-decoration-none">Se désister</a>
+					{% elseif sortie.dateLimiteInscription <= 'now' %}
+						<a href="" class="text-decoration-none">S'inscrire</a>
+					{% endif %}
+					{# modifier la méthode pour que la sortie ne soit pas supprimée de la BDD mais soit modifiée pour donner un message de motif d'annulation #}
+					{# Actuellement, le lien permet la suppression. #}
+					{% if is_granted('ROLE_ADMIN') or app.user == sortie.organisateur %}
+						{% include('sortie/_delete_form.html.twig') %}
 					{% endif %}
 				</td>
 			</tr>
+			{% endif %}
 		{% else %}
 			<tr>
 				<td colspan="8">Aucune sortie n'est prévue. N'hésitez pas à en organiser une !</td>
@@ -93,5 +112,7 @@
 		</tbody>
 	</table>
 
-	<a href="{{ path('sortie_new') }}">Organiser une sortie</a>
+	<a href="{{ path('sortie_new') }}">
+		<button class="btn btn-success btn-lg">Organiser une sortie</button>
+	</a>
 {% endblock %}
