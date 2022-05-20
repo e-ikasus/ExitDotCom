@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Campus;
 use App\Form\CampusType;
+use App\Form\SearchByNameType;
+use App\Form\VilleType;
 use App\Repository\CampusRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,86 +17,91 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CampusController extends AbstractController
 {
-    /**
-     * @Route("/list", name="campus_list", methods={"GET"})
-     */
-    public function list(Request $request, CampusRepository $campusRepository): Response
-    {
-        $campus = new Campus();
+	/**
+	 * Affiche la liste des campus. Si la fonction récupère un formulaire valide, alors un nouveau campus est ajouté à la
+	 * base de données.
+	 *
+	 * @Route("/list", name="campus_list", methods={"GET", "POST"})
+	 */
 
-        // Crée le formulaire et récupère une éventuelle ville à ajouter.
-        $form = $this->createForm(CampusType::class, $campus);
-        $form->handleRequest($request);
+	public function list(CampusRepository $campusRepository, Request $request): Response
+	{
+		$campus = new Campus();
 
-        // Si une ville valide doit être ajoutée à la base.
-        if ($form->isSubmitted() && $form->isValid()) $campusRepository->add($campus, true);
+		// Crée le formulaire de recherche.
+		$searchForm = $this->createForm(SearchByNameType::class, null);
+		$searchForm->handleRequest($request);
 
-        return $this->render('campus/list.html.twig', [
-            'campuses' => $campusRepository->findAll(),
-            'form' => $form->createView()
-        ]);
-    }
+		// Crée le formulaire et récupère un éventuel campus à ajouter.
+		$form = $this->createForm(CampusType::class, $campus);
+		$form->handleRequest($request);
 
-    /**
-     * @Route("/new", name="campus_new", methods={"GET", "POST"})
-     */
-    public function new(Request $request, CampusRepository $campusRepository): Response
-    {
-        $campus = new Campus();
-        $form = $this->createForm(CampusType::class, $campus);
-        $form->handleRequest($request);
+		// Si une ville valide doit être ajoutée à la base.
+		if ($form->isSubmitted() && $form->isValid()) $campusRepository->add($campus, true);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $campusRepository->add($campus, true);
+		// Dresse la liste des campus en fonction de critères ou pas.
+		if ($searchForm->isSubmitted() && $searchForm->isValid() && ($pattern = $searchForm->get('pattern')->getData()) )
+			$listCampus = $campusRepository->findByCriteria($pattern);
+		else
+			$listCampus = $campusRepository->findAll();
 
-            return $this->redirectToRoute('campus_list', [], Response::HTTP_SEE_OTHER);
-        }
+		return $this->render('campus/list.html.twig', [
+				'campus' => $listCampus,
+				'form' => $form->createView(),
+				'searchForm' => $searchForm->createView()
+		]);
+	}
 
-        return $this->renderForm('campus/new.html.twig', [
-            'campus' => $campus,
-            'form' => $form,
-        ]);
-    }
+	/**
+	 * Affiche les informations d'un campus.
+	 *
+	 * @Route("/{id}", name="campus_show", methods={"GET"})
+	 */
 
-    /**
-     * @Route("/{id}", name="campus_show", methods={"GET"})
-     */
-    public function show(Campus $campus): Response
-    {
-        return $this->render('campus/show.html.twig', [
-            'campus' => $campus,
-        ]);
-    }
+	public function show(Campus $campus): Response
+	{
+		return $this->render('campus/show.html.twig', [
+				'campus' => $campus,
+		]);
+	}
 
-    /**
-     * @Route("/edit/{nom}", name="campus_edit", methods={"GET", "POST"})
-     */
-    public function edit(Request $request, Campus $campus, CampusRepository $campusRepository): Response
-    {
-        $form = $this->createForm(CampusType::class, $campus);
-        $form->handleRequest($request);
+	/**
+	 * Modifie les données d'un campus.
+	 *
+	 * @Route("/edit/{id}", name="campus_edit", methods={"GET", "POST"})
+	 */
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $campusRepository->add($campus, true);
+	public function edit(Request $request, Campus $campus, CampusRepository $campusRepository): Response
+	{
+		$form = $this->createForm(CampusType::class, $campus);
+		$form->handleRequest($request);
 
-            return $this->redirectToRoute('campus_list', [], Response::HTTP_SEE_OTHER);
-        }
+		if ($form->isSubmitted() && $form->isValid())
+		{
+			$campusRepository->add($campus, true);
 
-        return $this->renderForm('campus/edit.html.twig', [
-            'campus' => $campus,
-            'form' => $form,
-        ]);
-    }
+			return $this->redirectToRoute('campus_list', [], Response::HTTP_SEE_OTHER);
+		}
 
-    /**
-     * @Route("/{id}", name="campus_delete", methods={"POST"})
-     */
-    public function delete(Request $request, Campus $campus, CampusRepository $campusRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$campus->getId(), $request->request->get('_token'))) {
-            $campusRepository->remove($campus, true);
-        }
+		return $this->renderForm('campus/edit.html.twig', [
+				'campus' => $campus,
+				'form' => $form->createView()
+		]);
+	}
 
-        return $this->redirectToRoute('campus_list', [], Response::HTTP_SEE_OTHER);
-    }
+	/**
+	 * Supprime un campus.
+	 *
+	 * @Route("/{id}", name="campus_delete", methods={"POST"})
+	 */
+
+	public function delete(Request $request, Campus $campus, CampusRepository $campusRepository): Response
+	{
+		if ($this->isCsrfTokenValid('delete' . $campus->getId(), $request->request->get('_token')))
+		{
+			$campusRepository->remove($campus, true);
+		}
+
+		return $this->redirectToRoute('campus_list', [], Response::HTTP_SEE_OTHER);
+	}
 }

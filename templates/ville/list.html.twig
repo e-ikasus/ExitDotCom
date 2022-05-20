@@ -3,54 +3,51 @@
 {% block title %} {{ parent() }} | Liste des Villes {% endblock %}
 
 {% block body %}
-    <h1>Liste des villes</h1>
+	<h1>Liste des villes</h1>
 
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th colspan="6">Nom</th>
-            <th colspan="6">CodePostal</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for i in 0..villes|length %}
+	<table class="table">
+		<tr>
+			<td>
+				{{ form_start(searchForm) }}
+				{{ form_widget(searchForm) }}
+				<button type="submit" class="btn btn-info btn-sm border-dark border-3 shadow">Rechercher</button>
+				{{ form_end(searchForm) }}
+			</td>
+		</tr>
+	</table>
 
-            <tr class="hover-pointer table-{% if i is even %}info{% else %}secondary{% endif %}">
+	<table class="table">
+		<thead>
+		<tr>
+			<th>Nom</th>
+			<th>CodePostal</th>
+			<th>actions</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for i in 0..villes|length-1 %}
+			<tr class="table-{% if i is even %}info{% else %}secondary{% endif %}">
+				<td>{{ villes[i].nom }}</td>
+				<td>{{ villes[i].codePostal }}</td>
+				<td>{{ include('inc/buttons.html.twig', {'update':true, 'delete': true, 'id': villes[i].id, 'type': 'ville'}) }}</td>
+			</tr>
+		{% else %}
+			<tr>
+				<td colspan="4">Aucune ville définie</td>
+			</tr>
+		{% endfor %}
 
-                {% if i != villes|length %}
+		<tr>
+			{{ form_start(form) }}
 
-                    <td colspan="6" onclick="document.location.href='{{ path('ville_edit', {'id': villes[i].id}) }}'">
-                        {{ villes[i].nom }}
-                    </td>
-                    <td colspan="6" onclick="document.location.href='{{ path('ville_edit', {'id': villes[i].id}) }}'">
-                        {{ villes[i].codePostal }}
-                    </td>
-                    <td class="ms-auto">
-                        {{ include ('ville/_delete_form.html.twig', {'ville' : villes[i]}) }}
-                    </td>
+			<td>{{ form_widget(form.nom) }}</td>
+			<td>{{ form_widget(form.codePostal) }}</td>
+			<td>{{ include('inc/buttons.html.twig', {'isForm': true, 'new': true}) }}</td>
 
-                {% else %}
+			{{ form_end(form) }}
+		</tr>
 
-                    {{ form_start(form) }}
-
-                    <td colspan="6">{{ form_widget(form.nom) }}</td>
-                    <td colspan="6">{{ form_widget(form.codePostal) }}</td>
-                    <td>{{ include('inc/buttons.html.twig', {'isForm': true, 'new': true}) }}</td>
-
-                    {{ form_end(form) }}
-
-                {% endif %}
-
-            </tr>
-
-        {% else %}
-            <tr>
-                <td colspan="4">Aucune ville définie</td>
-            </tr>
-        {% endfor %}
-
-        </tbody>
-    </table>
+		</tbody>
+	</table>
 
 {% endblock %}

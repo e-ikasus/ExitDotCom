@@ -14,53 +14,62 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Ville[]    findAll()
  * @method Ville[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
+
 class VilleRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Ville::class);
-    }
+	public function __construct(ManagerRegistry $registry)
+	{
+		parent::__construct($registry, Ville::class);
+	}
 
-    public function add(Ville $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
+	/**
+	 * Récupère la liste des villes depuis la abse de données.
+	 *
+	 * @param string $pattern Ce que doit contenir le nom des villes à récupérer
+	 *
+	 * @return float|int|mixed|string
+	 */
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+	public function findByCriteria(string $pattern)
+	{
+		$queryBuilder = $this->createQueryBuilder('c');
+		$queryBuilder->andWhere('c.nom LIKE :name');
+		$queryBuilder->setParameter('name', '%' . $pattern . '%');
 
-    public function remove(Ville $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
+		$query = $queryBuilder->getQuery();
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+		return $query->getResult();
+	}
 
-//    /**
-//     * @return Ville[] Returns an array of Ville objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('v.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+	/**
+	 * Ajoute une ville à la base de données.
+	 *
+	 * @param Ville $ville Ville à ajouter à la BD.
+	 * @param bool  $flush Mettre à jour ou pas la BD.
+	 *
+	 * @return void
+	 */
 
-//    public function findOneBySomeField($value): ?Ville
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+	public function add(Ville $ville, bool $flush = false): void
+	{
+		$this->getEntityManager()->persist($ville);
+
+		if ($flush) $this->getEntityManager()->flush();
+	}
+
+	/**
+	 * Supprime une ville de la base de données.
+	 *
+	 * @param Ville $ville Ville à supprimer de la BD.
+	 * @param bool  $flush Mettre à jour ou pas la BD.
+	 *
+	 * @return void
+	 */
+
+	public function remove(Ville $ville, bool $flush = false): void
+	{
+		$this->getEntityManager()->remove($ville);
+
+		if ($flush) $this->getEntityManager()->flush();
+	}
 }

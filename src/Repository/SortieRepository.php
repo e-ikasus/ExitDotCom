@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Etat;
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Services\Research;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -17,6 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Sortie[]    findAll()
  * @method Sortie[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
+
 class SortieRepository extends ServiceEntityRepository
 {
 	public function __construct(ManagerRegistry $registry)
@@ -32,6 +34,7 @@ class SortieRepository extends ServiceEntityRepository
 	 *
 	 * @return void
 	 */
+
 	public function add(Sortie $entity, bool $flush = false): void
 	{
 		$this->getEntityManager()->persist($entity);
@@ -50,6 +53,7 @@ class SortieRepository extends ServiceEntityRepository
 	 *
 	 * @return void
 	 */
+
 	public function remove(Sortie $entity, bool $flush = false): void
 	{
 		$this->getEntityManager()->remove($entity);
@@ -63,17 +67,20 @@ class SortieRepository extends ServiceEntityRepository
 	/**
 	 * Requête pour le formulaire de recherche filtrée parmi la liste des sorties existantes.
 	 *
-	 * @param          $user     Utilisateur actuellement connecté
-	 * @param Research $research critère de recherche.
+	 * @param Participant $user     Utilisateur actuellement connecté
+	 * @param Research    $research critère de recherche.
 	 *
 	 * @return Paginator Liste des sorties trouvées.
 	 */
-	public function findByCreteria($user, Research $research)
+
+	public function findByCreteria(Participant $user, Research $research)
 	{
 		$queryBuilder = $this->createQueryBuilder('s');
-		$queryBuilder->leftJoin('s.campus', 'c');
+		$queryBuilder->Join('s.campus', 'c');
 		$queryBuilder->addSelect('c');
+
 		$queryBuilder->andWhere('s.campus = :campus');
+		$queryBuilder->setParameter('campus', $research->getCampus());
 
 		// Si le nom d'une sortie doit contenir un terme en particulier.
 		if ($research->getSearchOutingName())
@@ -108,14 +115,18 @@ class SortieRepository extends ServiceEntityRepository
 				case 'sorties-non-inscrit':
 					break;
 				case 'sorties-inscrit':
+					$queryBuilder->Join('s.participants', 'parts');
+					$queryBuilder->addSelect('parts');
+					$queryBuilder->andWhere('parts = :part');
+					$queryBuilder->setParameter('part', $user);
 					break;
 				case 'sorties-passees':
-					$queryBuilder->andWhere('s.etat.idLibelle = :etat');
+					$queryBuilder->Join('s.etat', 'e');
+					$queryBuilder->addSelect('e');
+					$queryBuilder->andWhere('e.idLibelle = :etat');
 					$queryBuilder->setParameter('etat', Etat::PASSEE);
 			}
 		}
-
-		$queryBuilder->setParameter('campus', $research->getCampus());
 
 		$query = $queryBuilder->getQuery();
 

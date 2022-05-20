@@ -3,50 +3,46 @@
 {% block title %} {{ parent() }} | Liste Campus {% endblock %}
 
 {% block body %}
-    <h1>Campus index</h1>
+	<h1>Campus index</h1>
 
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Campus</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for i in 0..campuses|length %}
+	<table class="table">
+		<tr>
+			<td>
+				{{ form_start(searchForm) }}
+				{{ form_widget(searchForm) }}
+				<button type="submit" class="btn btn-info btn-sm border-dark border-3 shadow">Rechercher</button>
+				{{ form_end(searchForm) }}
+			</td>
+		</tr>
+	</table>
 
-            <tr class="hover-pointer table-{% if i is even %}info{% else %}secondary{% endif %}">
+	<table class="table">
+		<thead>
+		<tr>
+			<th>Campus</th>
+			<th>Actions</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for i in 0..campus|length-1 %}
+			<tr class="table-{% if i is even %}info{% else %}secondary{% endif %}">
+				<td>{{ campus[i].nom }}</td>
+				<td>{{ include('inc/buttons.html.twig', {'update':true, 'delete': true, 'id': campus[i].id, 'type': 'campus'}) }}</td>
+			</tr>
+		{% else %}
+			<tr>
+				<td colspan="3">Aucun campus trouvé</td>
+			</tr>
+		{% endfor %}
 
-                {% if i != campuses|length %}
+		<tr>
+			{{ form_start(form) }}
+			<td>{{ form_widget(form.nom) }}</td>
+			<td>{{ include('inc/buttons.html.twig', {'isForm': true, 'new': true}) }}</td>
+			{{ form_end(form) }}
+		</tr>
 
-                    <td onclick="document.location.href='{{ path('campus_edit', {'nom': campuses[i].nom}) }}'">
-                        {{ campuses[i].nom }}
-                    </td>
-                    <td>
-                        {{ include ('campus/_delete_form.html.twig', {'campus' : campuses[i]}) }}
-                    </td>
+		</tbody>
+	</table>
 
-                {% else %}
-
-                    {{ form_start(form) }}
-
-                    <td>{{ form_widget(form.nom) }}</td>
-                    <td>{{ include('inc/buttons.html.twig', {'isForm': true, 'new': true}) }}</td>
-
-                    {{ form_end(form) }}
-
-                {% endif %}
-
-            </tr>
-
-        {% else %}
-            <tr>
-                <td colspan="3">Aucun campus trouvé</td>
-            </tr>
-        {% endfor %}
-
-        </tbody>
-    </table>
-
-    <a href="{{ path('campus_new') }}">Create new</a>
 {% endblock %}

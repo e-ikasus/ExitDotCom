@@ -9,17 +9,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CampusType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
-        $builder
-            ->add('nom')
-        ;
-    }
+	public function buildForm(FormBuilderInterface $builder, array $options): void
+	{
+		$builder->add('nom');
+	}
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Campus::class,
-        ]);
-    }
+	public function configureOptions(OptionsResolver $resolver): void
+	{
+		$resolver->setDefaults(['data_class' => Campus::class]);
+	}
 }

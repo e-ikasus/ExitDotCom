@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Campus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,53 +15,62 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Campus[]    findAll()
  * @method Campus[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
+
 class CampusRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Campus::class);
-    }
+	public function __construct(ManagerRegistry $registry)
+	{
+		parent::__construct($registry, Campus::class);
+	}
 
-    public function add(Campus $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
+	/**
+	 * Récupère la liste des campus depuis la abse de données.
+	 *
+	 * @param string $pattern Ce que doit contenir le nom des campus à récupérer
+	 *
+	 * @return float|int|mixed|string
+	 */
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+	public function findByCriteria(string $pattern)
+	{
+		$queryBuilder = $this->createQueryBuilder('c');
+		$queryBuilder->andWhere('c.nom LIKE :name');
+		$queryBuilder->setParameter('name', '%' . $pattern . '%');
 
-    public function remove(Campus $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
+		$query = $queryBuilder->getQuery();
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+		return $query->getResult();
+	}
 
-//    /**
-//     * @return Campus[] Returns an array of Campus objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+	/**
+	 * Ajoute un nouveau campuis à la base de données.
+	 *
+	 * @param Campus $campus Campus à ajouter à la BD.
+	 * @param bool   $flush  Mettre à jour ou pas la BD.
+	 *
+	 * @return void
+	 */
 
-//    public function findOneBySomeField($value): ?Campus
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+	public function add(Campus $campus, bool $flush = false): void
+	{
+		$this->getEntityManager()->persist($campus);
+
+		if ($flush) $this->getEntityManager()->flush();
+	}
+
+	/**
+	 * Supprime un campus de la base de données.
+	 *
+	 * @param Campus $campus Campus à ajouter à la BD.
+	 * @param bool   $flush  Mettre à jour ou pas la BD.
+	 *
+	 * @return void
+	 */
+
+	public function remove(Campus $campus, bool $flush = false): void
+	{
+		$this->getEntityManager()->remove($campus);
+
+		if ($flush) $this->getEntityManager()->flush();
+	}
 }
