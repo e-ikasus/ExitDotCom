@@ -64,7 +64,7 @@
 		</thead>
 		<tbody>
 		{% for sortie in sorties %}
-{#			{% if date('now').diff(date(sortie.dateHeureDebut)) < '30' %}#}
+			{#            {% if date('now').diff(date(sortie.dateHeureDebut)) < '30' %} #}
 			<tr>
 				<td>{{ sortie.nom }}</td>
 				<td>{{ sortie.dateHeureDebut|date('Y-m-d H:i') }}</td>
@@ -72,7 +72,9 @@
 				<td>{{ sortie.participants|length }} / {{ sortie.nbInscriptionsMax }}</td>
 				<td>{{ sortie.etat.libelle }}</td>
 				<td>{{ sortie in app.user.sortiesInscrit ? "X" }}</td>
-				<td class="detail-participant-deform"><a href="{{ path('participant_edit', {'pseudo': sortie.organisateur.pseudo}) }}">{{ sortie.organisateur.pseudo }}</a></td>
+				<td class="detail-participant-deform"><a
+							href="{{ path('participant_edit', {'pseudo': sortie.organisateur.pseudo}) }}">{{ sortie.organisateur.pseudo }}</a>
+				</td>
 				<td>
 					{# un admin et un organisateur peuvent annuler une sortie (tant que date sortie n'est pas dépassée)
 						annule => sortie marquée comme annulée + message du motif
@@ -82,15 +84,16 @@
 					si date sortie +1 mois => non consultable (classer les sorties par date de clôture DESC)
 					#}
 
+					<a href="{{ path('sortie_show', {'id': sortie.id}) }}" class="text-decoration-none">
+						<button class="btn btn-info">Détails</button>
+					</a>
+
 					{% if app.user == sortie.organisateur %}
 						<a href="{{ path('sortie_edit', {'id': sortie.id}) }}" class="text-decoration-none">
 							<button class="btn btn-warning">Modifier</button>
 						</a>
-					{% else %}
-						<a href="{{ path('sortie_show', {'id': sortie.id}) }}" class="text-decoration-none">
-							<button class="btn btn-info">Détails</button>
-						</a>
 					{% endif %}
+
 					{% if sortie in app.user.sortiesInscrit and sortie.dateHeureDebut < 'now' %}
 						<a href="" class="text-decoration-none">Se désister</a>
 					{% elseif sortie.dateLimiteInscription <= 'now' %}
@@ -103,7 +106,7 @@
 					{% endif %}
 				</td>
 			</tr>
-{#			{% endif %}#}
+			{#            {% endif %} #}
 		{% else %}
 			<tr>
 				<td colspan="8">Aucune sortie n'est prévue. N'hésitez pas à en organiser une !</td>
