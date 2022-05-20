@@ -65,7 +65,7 @@
 	<div>
 		<h3>Liste des participants inscrits :</h3>
 		<table>
-			<tr>
+			<tr onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'" class="hover-pointer table-{% if i is even %}info{% else %}secondary{% endif %}">
 				<td>Pseudo</td>
 				<td>Nom</td>
 			</tr>
