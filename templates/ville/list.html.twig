@@ -5,23 +5,19 @@
 {% block body %}
 	<h1>Liste des villes</h1>
 
-	<table class="table">
-		<tr>
-			<td>
-				{{ form_start(searchForm) }}
-				{{ form_widget(searchForm) }}
-				<button type="submit" class="btn btn-info btn-sm border-dark border-3 shadow">Rechercher</button>
-				{{ form_end(searchForm) }}
-			</td>
-		</tr>
-	</table>
+	<div class="my-4">
+		{{ form_start(searchForm) }}
+		<div class="d-inline-block"> {{ form_widget(searchForm) }} </div>
+		<button type="submit" class="btn btn-info btn-sm border-dark border-3 shadow">Rechercher</button>
+		{{ form_end(searchForm) }}
+	</div>
 
 	<table class="table">
 		<thead>
 		<tr>
 			<th>Nom</th>
-			<th>CodePostal</th>
-			<th>actions</th>
+			<th>Code postal</th>
+			<th class="w-25">Actions</th>
 		</tr>
 		</thead>
 		<tbody>

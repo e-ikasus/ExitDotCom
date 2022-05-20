@@ -18,7 +18,7 @@ class SearchByNameType extends AbstractType
 		$builder->add('pattern', SearchType::class, [
 				'required' => false,
 				'label' => 'Le nom contient : ',
-				'attr' => ['placeholder' => '🔎 Recherche', 'class' => 'px-2']
+				'attr' => ['placeholder' => '🔎 Recherche', 'class' => 'px-2 ms-2 me-3']
 		]);
 	}
 

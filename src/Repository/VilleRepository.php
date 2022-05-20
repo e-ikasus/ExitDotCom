@@ -11,10 +11,8 @@ use Doctrine\Persistence\ManagerRegistry;
  *
  * @method Ville|null find($id, $lockMode = null, $lockVersion = null)
  * @method Ville|null findOneBy(array $criteria, array $orderBy = null)
- * @method Ville[]    findAll()
  * @method Ville[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-
 class VilleRepository extends ServiceEntityRepository
 {
 	public function __construct(ManagerRegistry $registry)
@@ -23,7 +21,24 @@ class VilleRepository extends ServiceEntityRepository
 	}
 
 	/**
-	 * Récupère la liste des villes depuis la abse de données.
+	 * Récupère la liste des villes depuis la base de données. La liste est triée par ordre croissant.
+	 *
+	 * @return float|int|mixed|string
+	 */
+
+	public function findAll()
+	{
+		$queryBuilder = $this->createQueryBuilder('v');
+		$queryBuilder->addOrderBy('v.nom', 'ASC');
+
+		$query = $queryBuilder->getQuery();
+
+		return $query->getResult();
+	}
+
+	/**
+	 * Récupère la liste des villes depuis la base de données. Le nom de chaque ville doit contenir le motif fourni en
+	 * paramètre. La liste est triée par ordre croissant.
 	 *
 	 * @param string $pattern Ce que doit contenir le nom des villes à récupérer
 	 *
@@ -32,8 +47,9 @@ class VilleRepository extends ServiceEntityRepository
 
 	public function findByCriteria(string $pattern)
 	{
-		$queryBuilder = $this->createQueryBuilder('c');
-		$queryBuilder->andWhere('c.nom LIKE :name');
+		$queryBuilder = $this->createQueryBuilder('v');
+		$queryBuilder->andWhere('v.nom LIKE :name');
+		$queryBuilder->addOrderBy('v.nom', 'ASC');
 		$queryBuilder->setParameter('name', '%' . $pattern . '%');
 
 		$query = $queryBuilder->getQuery();
