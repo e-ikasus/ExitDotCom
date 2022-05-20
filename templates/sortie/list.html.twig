@@ -64,7 +64,7 @@
 		</thead>
 		<tbody>
 		{% for sortie in sorties %}
-			{% if date('now').diff(date(sortie.dateHeureDebut)) < '30' %}
+{#			{% if date('now').diff(date(sortie.dateHeureDebut)) < '30' %}#}
 			<tr>
 				<td>{{ sortie.nom }}</td>
 				<td>{{ sortie.dateHeureDebut|date('Y-m-d H:i') }}</td>
@@ -72,7 +72,7 @@
 				<td>{{ sortie.participants|length }} / {{ sortie.nbInscriptionsMax }}</td>
 				<td>{{ sortie.etat.libelle }}</td>
 				<td>{{ sortie in app.user.sortiesInscrit ? "X" }}</td>
-				<td>{{ sortie.organisateur.pseudo }}</td>
+				<td><a href="{{ path('participant_edit', {'pseudo': sortie.organisateur.pseudo}) }}">{{ sortie.organisateur.pseudo }}</a></td>
 				<td>
 					{# un admin et un organisateur peuvent annuler une sortie (tant que date sortie n'est pas dépassée)
 						annule => sortie marquée comme annulée + message du motif
@@ -103,7 +103,7 @@
 					{% endif %}
 				</td>
 			</tr>
-			{% endif %}
+{#			{% endif %}#}
 		{% else %}
 			<tr>
 				<td colspan="8">Aucune sortie n'est prévue. N'hésitez pas à en organiser une !</td>
@@ -111,6 +111,8 @@
 		{% endfor %}
 		</tbody>
 	</table>
+
+
 
 	<a href="{{ path('sortie_new') }}">
 		<button class="btn btn-success btn-lg">Organiser une sortie</button>
