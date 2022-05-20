@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Participant;
 use App\Form\ParticipantCsvType;
 use App\Form\ParticipantType;
+use App\Repository\CampusRepository;
 use App\Repository\ParticipantRepository;
+use App\Services\ImportFile;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -72,42 +74,29 @@ class ParticipantController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $photoFile = $form->get('photo')->getData();
-            if ($photoFile) {
-                $photoName = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($photoName);
-                $newPhotoName = $safeFilename.'-'.uniqid().'.'.$photoFile->guessExtension();
 
-                // Move the file to the directory where covers are stored
-                try {
-                    $photoFile->move(
-                        $this->getParameter('profiles_pictures_directory'),
-                        $newPhotoName
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
+            $importFile = new ImportFile($photoFile, $this->getParameter('profiles_pictures_directory'), $slugger);
+            $importFile->storeFile();
 
-                $participant->setPhoto($newPhotoName);
-            }
+            $participant->setPhoto($importFile->getNewFileName());
+
 
             $participantRepository->add($participant, true);
 
             return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);
-        }
 
-        return $this->renderForm('participant/edit.html.twig', [
-            'participant' => $participant,
-            'form' => $form,
-        ]);
+        }
+        return $this->renderForm('participant/edit.html.twig', ['participant' => $participant,
+            'form' => $form,]);
     }
+
 
     /**
      * @Route("/{pseudo}", name="participant_delete", methods={"POST"})
      */
     public function delete(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$participant->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $participant->getId(), $request->request->get('_token'))) {
             $participantRepository->remove($participant, true);
         }
 
@@ -117,7 +106,8 @@ class ParticipantController extends AbstractController
     /**
      * @Route("/admin/neww", name="participant_new_csv", methods={"GET", "POST"})
      */
-    public function newCSV(Request $request, EntityManagerInterface $entityManager): Response
+    public
+    function newCSV(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, CampusRepository $campusRepository): Response
     {
         $participantCSV = new Participant();
         $form = $this->createForm(ParticipantCsvType::class);
@@ -125,14 +115,30 @@ class ParticipantController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            if (($handle = fopen("test.csv", "r")) !== FALSE) {
+
+                $file = $form->get('moncsv')->getData();
+
+                $importFile = new ImportFile($file, $this->getParameter('csv_files_directory'), $slugger);
+                $importFile->storeFile();
+
+            if (($handle = fopen("upload/csv_files/" . $importFile->getNewFileName(), "r")) !== FALSE) {
 
                 while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
 
                     $num = count($data);
+
+                    $participantCSV->setCampus($campusRepository->findOneBy(array('nom'=>$data[0])));
+                    $participantCSV->setPseudo($data[0]);
+                    $participantCSV->setRoles($data[0] ? ["ROLE_ADMIN"] : ["ROLE_USER"]);
+                    $participantCSV->setPassword(password_hash($data[0], PASSWORD_BCRYPT));
+                    $participantCSV->setPrenom($data[0]);
                     $participantCSV->setNom($data[0]);
-                    echo $data[1];
-                    echo $data[2];
+                    $participantCSV->setTelephone($data[0]);
+                    $participantCSV->setEmail($data[0]);
+                    $participantCSV->setAdministrateur($data[0]);
+                    $participantCSV->setActif($data[0]);
+                    $participantCSV->setPhoto('default.png');
+
                     $entityManager->persist($participantCSV);
                 }
                 fclose($handle);
