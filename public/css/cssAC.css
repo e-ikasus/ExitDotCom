@@ -1,3 +1,11 @@
+/*********************/
+/* Liste des sorties */
+/*********************/
+
 .detail-participant-deform:hover {
     transform: scale(1.1);
+}
+
+.detail-participant-deform a {
+    width: 100%;
 }
