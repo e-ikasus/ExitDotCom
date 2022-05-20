@@ -42,7 +42,7 @@ class VilleController extends AbstractController
 		if ($searchForm->isSubmitted() && $searchForm->isValid() && ($pattern = $searchForm->get('pattern')->getData()))
 			$listVilles = $villeRepository->findByCriteria($pattern);
 		else
-			$listVilles = $villeRepository->findAll();
+			$listVilles = $villeRepository->findBy(array(), array('nom' => 'ASC'));
 
 		return $this->render('ville/list.html.twig', [
 				'villes' => $listVilles,

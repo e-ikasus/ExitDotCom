@@ -43,7 +43,7 @@ class CampusController extends AbstractController
 		if ($searchForm->isSubmitted() && $searchForm->isValid() && ($pattern = $searchForm->get('pattern')->getData()) )
 			$listCampus = $campusRepository->findByCriteria($pattern);
 		else
-			$listCampus = $campusRepository->findAll();
+			$listCampus = $campusRepository->findBy(array(), array('nom' => 'ASC'));
 
 		return $this->render('campus/list.html.twig', [
 				'campus' => $listCampus,
