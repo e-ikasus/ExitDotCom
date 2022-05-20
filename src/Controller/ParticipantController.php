@@ -128,15 +128,15 @@ class ParticipantController extends AbstractController
                     $num = count($data);
 
                     $participantCSV->setCampus($campusRepository->findOneBy(array('nom'=>$data[0])));
-                    $participantCSV->setPseudo($data[0]);
-                    $participantCSV->setRoles($data[0] ? ["ROLE_ADMIN"] : ["ROLE_USER"]);
-                    $participantCSV->setPassword(password_hash($data[0], PASSWORD_BCRYPT));
-                    $participantCSV->setPrenom($data[0]);
-                    $participantCSV->setNom($data[0]);
-                    $participantCSV->setTelephone($data[0]);
-                    $participantCSV->setEmail($data[0]);
-                    $participantCSV->setAdministrateur($data[0]);
-                    $participantCSV->setActif($data[0]);
+                    $participantCSV->setPseudo($data[1]);
+                    $participantCSV->setRoles($data[7] == 'true' ? ["ROLE_ADMIN"] : ["ROLE_USER"]);
+                    $participantCSV->setPassword(password_hash($data[2], PASSWORD_BCRYPT));
+                    $participantCSV->setPrenom($data[3]);
+                    $participantCSV->setNom($data[4]);
+                    $participantCSV->setTelephone($data[5]);
+                    $participantCSV->setEmail($data[6]);
+                    $participantCSV->setAdministrateur($data[7] == 'true');
+                    $participantCSV->setActif(true);
                     $participantCSV->setPhoto('default.png');
 
                     $entityManager->persist($participantCSV);
