@@ -3,44 +3,50 @@
 {% block title %} {{ parent() }} | Liste Campus {% endblock %}
 
 {% block body %}
-	<h1>Liste des Campus</h1>
+    <h1>Liste des Campus</h1>
 
-	<div class="my-4">
-		{{ form_start(searchForm) }}
-		<div class="d-inline-block {% if not searchForm.vars.valid %} alert alert-danger {% endif %} "> {{ form_label(searchForm.pattern) }} {{ form_widget(searchForm.pattern) }} </div>
-		<button type="submit" class="btn btn-info btn-sm border-dark border-3 shadow">Rechercher</button>
-		{{ form_end(searchForm) }}
-	</div>
+    <div class="my-4">
+        {{ form_start(searchForm) }}
+        <div class="d-inline-block {% if not searchForm.vars.valid %} alert alert-danger {% endif %} "> {{ form_label(searchForm.pattern) }} {{ form_widget(searchForm.pattern) }} </div>
+        <button type="submit" class="btn btn-info btn-sm border-dark border-3 shadow">Rechercher</button>
+        {{ form_end(searchForm) }}
+    </div>
 
-	<table class="table">
-		<thead>
-		<tr>
-			<th>Campus</th>
-			<th class="w-25">Actions</th>
-		</tr>
-		</thead>
-		<tbody>
-		{% if campus|length %}
-			{% for i in 0..campus|length-1 %}
-				<tr class="table-{% if i is even %}info{% else %}secondary{% endif %}">
-					<td>{{ campus[i].nom }}</td>
-					<td>{{ include('inc/buttons.html.twig', {'update':true, 'delete': true, 'id': campus[i].id, 'type': 'campus'}) }}</td>
-				</tr>
-			{% endfor %}
-		{% else %}
-			<tr>
-				<td colspan="3">Aucun campus trouvé</td>
-			</tr>
-		{% endif %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Campus</th>
+            <th class="w-25">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if campus|length %}
+            {% for i in 0..campus|length %}
 
-		<tr>
-			{{ form_start(form) }}
-			<td {% if not form.vars.valid %} class="bg-danger" {% endif %}>{{ form_widget(form.nom) }}</td>
-			<td>{{ include('inc/buttons.html.twig', {'isForm': true, 'new': true}) }}</td>
-			{{ form_end(form) }}
-		</tr>
+                <tr class="table-{% if i is even %}info{% else %}secondary{% endif %}">
+                    {% if i == campus|length %}
 
-		</tbody>
-	</table>
+						{{ form_start(form) }}
+						<td {% if not form.vars.valid %} class="bg-danger" {% endif %}>{{ form_widget(form.nom) }}</td>
+						<td>{{ include('inc/buttons.html.twig', {'isForm': true, 'new': true}) }}</td>
+						{{ form_end(form) }}
+
+                    {% else %}
+
+						<td>{{ campus[i].nom }}</td>
+						<td>{{ include('inc/buttons.html.twig', {'update':true, 'delete': true, 'id': campus[i].id, 'type': 'campus'}) }}</td>
+
+                    {% endif %}
+                </tr>
+            {% endfor %}
+
+        {% else %}
+            <tr>
+                <td colspan="3">Aucun campus trouvé</td>
+            </tr>
+        {% endif %}
+
+        </tbody>
+    </table>
 
 {% endblock %}
