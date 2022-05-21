@@ -19,7 +19,6 @@ class ImportFile
         $this->storageLocation=$storageLocation;
         $this->slugger = $slugger;
         $this->type = $type;
-
     }
 
     public function storeFile()

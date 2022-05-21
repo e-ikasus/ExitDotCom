@@ -7,6 +7,7 @@ use App\Form\ParticipantCsvType;
 use App\Form\ParticipantType;
 use App\Repository\CampusRepository;
 use App\Repository\ParticipantRepository;
+use App\Services\CreateParticipantFromCSV;
 use App\Services\ImportFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,12 +21,30 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class ParticipantController extends AbstractController
 {
     /**
-     * @Route("/admin", name="participant_list", methods={"GET"})
+     * @Route("/admin", name="participant_list", methods={"GET", "POST"})
      */
-    public function list(ParticipantRepository $participantRepository): Response
+    public function list(Request $request, ParticipantRepository $participantRepository, CampusRepository $campusRepository, SluggerInterface $slugger): Response
     {
-        return $this->render('participant/list.html.twig', [
+
+        $form = $this->createForm(ParticipantCsvType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $file = $form->get('moncsv')->getData();
+
+            $importFile = new ImportFile($file, $this->getParameter('csv_files_directory'), $slugger, "csv");
+            $importFile->storeFile();
+
+            $createParticipantFromCSV = new CreateParticipantFromCSV($this->getParameter('csv_files_directory'), $importFile->getNewFileName(), $participantRepository, $campusRepository);
+            $createParticipantFromCSV->importUser();
+
+            return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('participant/list.html.twig', [
             'participants' => $participantRepository->findAll(),
+            'form' => $form,
         ]);
     }
 
@@ -99,61 +118,6 @@ class ParticipantController extends AbstractController
         }
 
         return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);
-    }
-
-    /**
-     * @Route("/admin/neww", name="participant_new_csv", methods={"GET", "POST"})
-     */
-    public
-    function newCSV(Request $request, ParticipantRepository $participantRepository, SluggerInterface $slugger, CampusRepository $campusRepository): Response
-    {
-
-        $form = $this->createForm(ParticipantCsvType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-
-            $file = $form->get('moncsv')->getData();
-
-            $importFile = new ImportFile($file, $this->getParameter('csv_files_directory'), $slugger, "csv");
-            $importFile->storeFile();
-
-            if (($handle = fopen($this->getParameter('csv_files_directory') . '/' . $importFile->getNewFileName(), "r")) !== FALSE) {
-                $row = 1;
-                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                    if ($row == 1) {
-                        $row++;
-                    } else if ($data[0] != '') {
-                        $participantCSV = new Participant();
-
-                        $participantCSV->setCampus($campusRepository->findOneBy(array('nom' => $data[0])));
-                        $participantCSV->setPseudo($data[1]);
-                        $participantCSV->setRoles($data[7] == 'true' ? ["ROLE_ADMIN"] : ["ROLE_USER"]);
-                        $participantCSV->setPassword(password_hash($data[2], PASSWORD_BCRYPT));
-                        $participantCSV->setPrenom($data[3]);
-                        $participantCSV->setNom($data[4]);
-                        $participantCSV->setTelephone($data[5]);
-                        $participantCSV->setEmail($data[6]);
-                        $participantCSV->setAdministrateur($data[7] == 'true');
-                        $participantCSV->setActif(true);
-                        $participantCSV->setPhoto('default.png');
-
-                        $participantRepository->add($participantCSV, true);
-                    }
-
-                }
-
-                fclose($handle);
-
-            }
-
-            return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('participant/newCSV.html.twig', [
-            'form' => $form,
-        ]);
     }
 
 }
