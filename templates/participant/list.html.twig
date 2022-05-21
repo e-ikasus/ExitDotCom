@@ -38,16 +38,15 @@
         </thead>
         <tbody>
         {% for i in 0..participants|length-1 %}
-            <tr onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'"
-                class="hover-pointer table-{% if i is even %}info{% else %}secondary{% endif %}">
-                <td>{{ participants[i].pseudo }}</td>
-                <td>{{ participants[i].nom }}</td>
-                <td>{{ participants[i].prenom }}</td>
-                <td>{{ participants[i].campus.nom }}</td>
-                <td>{{ participants[i].telephone }}</td>
-                <td>{{ participants[i].email }}</td>
-                <td>{{ participants[i].actif ? 'x' : ' ' }}</td>
-                <td>{{ participants[i].administrateur ? 'x' : ' ' }}</td>
+            <tr class="hover-pointer table-{% if i is even %}info{% else %}secondary{% endif %}">
+                <td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].pseudo }}</td>
+                <td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].nom }}</td>
+                <td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].prenom }}</td>
+                <td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].campus.nom }}</td>
+                <td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].telephone }}</td>
+                <td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].email }}</td>
+                <td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].actif ? 'x' : ' ' }}</td>
+                <td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].administrateur ? 'x' : ' ' }}</td>
                 <td>{{ include ('participant/_delete_form.html.twig', {'participant' : participants[i]}) }}</td>
             </tr>
         {% else %}

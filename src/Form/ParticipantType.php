@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,18 +27,23 @@ class ParticipantType extends AbstractType
             ->add('nom', TextType::class, ['label' => 'Nom'])
             ->add('telephone', TextType::class, ['label' => 'Téléphone'])
             ->add('email', EmailType::class, ['label' => 'E-mail'])
-            ->add('password', PasswordType::class, [
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les mots de passe doivent correspondre.',
+                'required' => true,
+                'first_options'  => ['label' => 'Mot de passe'],
+                'second_options' => ['label' => 'Confirmation'],
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Veuillez saisir votre mot de passe',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' => 'Le mot de passe doit faire au minimum {{ limit }} caractères',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
@@ -48,7 +54,7 @@ class ParticipantType extends AbstractType
                 'class' => Campus::class,
                 'choice_label' => 'nom'
             ])
-            ->add('photo', FileType::class, ['label' => 'Ma photo' , 'required' => false , 'mapped' => false,
+            ->add('photo', FileType::class, ['label' => 'Ma photo', 'required' => false, 'mapped' => false,
                 'constraints' => [new File([
                     'maxSize' => '4096k',
                     'mimeTypes' => [
@@ -58,8 +64,7 @@ class ParticipantType extends AbstractType
                     'mimeTypesMessage' => 'Merci d\'utiliser un des formats suivant : .jpg .jpeg .png',
                 ])
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
