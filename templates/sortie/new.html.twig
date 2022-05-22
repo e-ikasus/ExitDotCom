@@ -3,9 +3,15 @@
 {% block title %} {{ parent() }} | Nouvelle Sortie {% endblock %}
 
 {% block body %}
+
     <h1>Organiser une sortie</h1>
 
     {{ include('sortie/_form.html.twig') }}
 
-    <a href="{{ path('sortie_list') }}"><button class="btn btn-warning">Retour</button></a>
+    <a href="{{ path('sortie_list') }}">
+        <button class="btn btn-warning">Retour</button>
+    </a>
+
+    <script src="{{ asset('JS/KeepSortieFieldWhileAddingPlace.js') }}"></script>
+
 {% endblock %}

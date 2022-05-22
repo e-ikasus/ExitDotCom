@@ -109,7 +109,7 @@ class ParticipantController extends AbstractController
 
 
     /**
-     * @Route("/{pseudo}", name="participant_delete", methods={"POST"})
+     * @Route("/admin/{pseudo}", name="participant_delete", methods={"POST"})
      */
     public function delete(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
     {

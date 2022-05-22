@@ -1,4 +1,24 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+<div class="d-flex flex-column-reverse">
+
+    <div>
+        <div class="d-flex align-items-center gap-2">
+
+            {{ form_row(form.lieu) }}
+
+            <div class="d-flex flex-row align-items-center gap-2">
+                <a class="btn btn-info" href="{{ path('lieu_new') }}" onclick="store()">+</a>
+            </div>
+
+        </div>
+    </div>
+
+    <div>
+        {{ form_rest(form) }}
+    </div>
+
+</div>
+
+<button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+
 {{ form_end(form) }}
