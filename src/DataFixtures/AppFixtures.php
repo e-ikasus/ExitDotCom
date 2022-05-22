@@ -154,32 +154,38 @@ class AppFixtures extends Fixture
 		/*********************/
 
 		$sorties = array();
+		$intervallesCloture = [ "P1D", "P2D", "PT3M", "PT2M", "PT10M" ];
+		$intervallesSortie = [ "PT1H", "PT3H", "P1D", "P2D", "P3M" ];
 
 		for ($i = 0; $i < self::NBR_SORTIES; $i++)
 		{
 			$sorties[$i] = new Sortie();
 			$sorties[$i]->setnom($faker->colorName());
-			$sorties[$i]->setDuree(rand(1, 23));
+			$sorties[$i]->setDuree(rand(1, 5) * 15);
 
-			$dateCloture = $faker->dateTime();
-			$dateSortie = (clone $dateCloture)->add(new DateInterval('P1M'));
+			$dateCloture = (new DateTime())->add(new DateInterval($intervallesCloture[rand(0, count($intervallesCloture)-1)]));
+			$dateSortie = (clone $dateCloture)->add(new DateInterval($intervallesSortie[rand(0, count($intervallesSortie)-1)]));
+
+			//$dateCloture = $faker->dateTime();
+			//$dateSortie = (clone $dateCloture)->add(new DateInterval('P1M'));
 
 			$sorties[$i]->setDateHeureDebut($dateSortie);
 			$sorties[$i]->setDateLimiteInscription($dateCloture);
 
-			$sorties[$i]->setNbInscriptionsMax(rand(1, 20));
+			$sorties[$i]->setNbInscriptionsMax(rand(2, 20));
 			$sorties[$i]->setInfosSortie($faker->text());
 
-			$lieux[rand(0, self::NBR_LIEUX - 1)]->addSorty($sorties[$i]);
+			$lieux[rand(0, self::NBR_LIEUX - 1)]->addSortie($sorties[$i]);
 
-			$etats[rand(0, self::NBR_ETATS - 1)]->addSorty($sorties[$i]);
+			//$etats[rand(0, self::NBR_ETATS - 1)]->addSorty($sorties[$i]);
+			$etats[Etat::OUVERTE]->addSorty($sorties[$i]);
 
 			// La sortie est référencée à la fois par le participant qui en est l'organisateur et par le campus du participant.
 			$part = $participants[rand(0, self::NBR_PARTICIPANTS - 1)];
 			$part->addSortiesOrganisee($sorties[$i]);
 			$part->getCampus()->addSortieOrganisee($sorties[$i]);
 
-			for ($j = 0; $j < rand(0, self::MAX_PARTICIPANTS_PAR_SORTIE); $j++)
+			for ($j = 0; $j < rand(0, $sorties[$i]->getNbInscriptionsMax()); $j++)
 			{
 				$part = $participants[rand(0, self::NBR_PARTICIPANTS - 1)];
 
