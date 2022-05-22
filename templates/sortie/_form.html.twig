@@ -19,6 +19,7 @@
 
 </div>
 
-<button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+<button class="btn btn-success">{{ app.request.get('_route') == "sortie_new" ? "Enregistrer" : "Mettre à jour" }}</button>
+{#<button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>#}
 
 {{ form_end(form) }}

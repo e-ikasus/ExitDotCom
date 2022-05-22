@@ -8,9 +8,7 @@
 
     {{ include('sortie/_form.html.twig') }}
 
-    <a href="{{ path('sortie_list') }}">
-        <button class="btn btn-warning">Retour</button>
-    </a>
+    <a class="btn btn-danger" onclick="history.go(-1);">Retour</a>
 
     {% if app.request.get('_route') == "sortie_new" %}
     <script src="{{ asset('JS/KeepSortieFieldWhileAddingPlace.js') }}"></script>
