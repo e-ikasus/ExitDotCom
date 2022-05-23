@@ -4,36 +4,42 @@
 
 {% block body %}
 
-	<h1>Annuler une sortie</h1>
+	{% if is_granted('ROLE_ADMIN') or app.user == sortie.organisateur %}
 
-	<form name="outingCancellationForm" method="post">
-		<table class="table table-borderless">
-			<tr>
-				<th>Nom de la sortie :</th>
-				<td>{{ sortie.nom }}</td>
-			</tr>
-			<tr>
-				<th>Date de la sortie :</th>
-				<td>{{ sortie.dateHeureDebut.format(('d-m-Y')) }}</td>
-			</tr>
-			<tr>
-				<th>Campus :</th>
-				<td>{{ sortie.campus.nom }}</td>
-			</tr>
-			<tr>
-				<th>Lieu :</th>
-				<td>{{ sortie.lieu.rue }} {{ sortie.lieu.ville.codePostal }} {{ sortie.lieu.ville.nom }}</td>
-			</tr>
-			<tr>
-				{{ form_start(cancellation) }}
-				<th>{{ form_label(cancellation.motifAnnulation) }}</th>
-				<td>{{ form_widget(cancellation.motifAnnulation)}}</td>
-				{{ form_end(cancellation) }}
-			</tr>
-		</table>
-	</form>
+		<h1>Annuler une sortie</h1>
 
-	<input type="submit" class="btn btn-danger" value="Enregistrer">
-	<a class="btn btn-warning" onclick="history.go(-1);">Annuler</a>
+		<form name="outingCancellationForm" method="post">
+			<table class="table table-borderless">
+				<tr>
+					<th>Nom de la sortie :</th>
+					<td>{{ sortie.nom }}</td>
+				</tr>
+				<tr>
+					<th>Date de la sortie :</th>
+					<td>{{ sortie.dateHeureDebut.format(('d-m-Y')) }}</td>
+				</tr>
+				<tr>
+					<th>Campus :</th>
+					<td>{{ sortie.campus.nom }}</td>
+				</tr>
+				<tr>
+					<th>Lieu :</th>
+					<td>{{ sortie.lieu.rue }} {{ sortie.lieu.ville.codePostal }} {{ sortie.lieu.ville.nom }}</td>
+				</tr>
+				<tr>
+					{{ form_start(cancellation) }}
+					<th>{{ form_label(cancellation.motifAnnulation) }}</th>
+					<td>{{ form_widget(cancellation.motifAnnulation) }}</td>
+					{{ form_end(cancellation) }}
+				</tr>
+			</table>
+		</form>
+
+		<input type="submit" class="btn btn-danger" value="Enregistrer">
+		<a class="btn btn-warning" onclick="history.go(-1);">Annuler</a>
+
+	{% else %}
+		{{ include('inc/acces_refuse.html.twig') }}
+	{% endif %}
 
 {% endblock %}

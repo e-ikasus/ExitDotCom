@@ -19,6 +19,8 @@
 
 </div>
 
-<button class="btn btn-success">{{ app.request.get('_route') == "sortie_new" ? "Enregistrer" : "Mettre à jour" }}</button>
+<input type="submit" name="enregistrer" class="btn btn-success" value="Enregistrer">
+<input type="submit" name="publier" class="btn btn-warning" value="Publier la sortie">
+<a href="_delete_form.html.twig"><button class="btn btn-danger">{{ app.request.get('_route') == "sortie_edit" ? "Supprimer la sortie" }}</button></a>
 
 {{ form_end(form) }}
