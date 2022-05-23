@@ -159,6 +159,8 @@ class AppFixtures extends Fixture
             $sorties[$i]->setnom($faker->colorName());
             $sorties[$i]->setDuree(rand(2, 10) * 15);
 
+            //Initialisation de la TimeZone à l'heure française.
+            date_default_timezone_set('Europe/Paris');
             $dateCloture = (new DateTime())->add(new DateInterval($intervallesCloture[rand(0, count($intervallesCloture)-1)]));
             $dateSortie = (clone $dateCloture)->add(new DateInterval($intervallesSortie[rand(0, count($intervallesSortie)-1)]));
 
