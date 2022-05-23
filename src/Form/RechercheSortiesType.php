@@ -3,15 +3,14 @@
 namespace App\Form;
 
 use App\Entity\Campus;
-use PhpParser\Node\Expr\BinaryOp\GreaterOrEqual;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class RechercheSortiesType extends AbstractType
 {
@@ -27,6 +26,7 @@ class RechercheSortiesType extends AbstractType
                 ],
             ])
             ->add('searchOutingName', SearchType::class, [
+								'constraints' => [new Regex("/^[^0-9#@\\;:!<>{}\[\]`()]*$/")],
                 'label' => 'Le nom de la sortie contient : ',
                 'attr' => [
                     'placeholder' => '🔎 Recherche',
@@ -43,7 +43,7 @@ class RechercheSortiesType extends AbstractType
     ],
             ])
             ->add('dateOutingEnd', DateType::class, [
-                'label' => 'et',
+								'label' => 'et',
                 'widget' => 'single_text',
                 'required' => false,
                 'attr' => [
@@ -52,7 +52,7 @@ class RechercheSortiesType extends AbstractType
 						])
 
             ->add('sortiesOrganisateur', CheckboxType::class, [
-                'label' => 'Sorties dont je suis l\'organisateur/trice',
+								'label' => 'Sorties dont je suis l\'organisateur/trice',
                 'required' => false,
                 'attr' => [
                     'class' => 'm-2 px-2'
@@ -78,22 +78,7 @@ class RechercheSortiesType extends AbstractType
                 'attr' => [
                     'class' => 'm-2 px-2'
                 ],
-            ])
-//            ->add('outingCheckboxOptions', ChoiceType::class, [
-//                'label' => ' ',
-//                'attr' => [
-//                    'class' => 'd-flex flex-column',
-//                ],
-//                'choices' => [
-//                    'Sorties dont je suis l\'organisateur/trice' => 'sorties-organisateur',
-//                    'Sorties auxquelles je suis inscrit/e' => 'sorties-non-inscrit',
-//                    'Sorties auxquelles je ne suis pas inscrit/e' => 'sorties-inscrit',
-//                    'Sorties passées' => 'sorties-passees'
-//                ],
-//                'expanded' => true,
-//                'multiple' => true,
-//            ])
-;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
