@@ -8,13 +8,12 @@
             <h1>{{ participant.pseudo }}</h1>
         </div>
 
-        <div class="d-flex flex-wrap gap-3">
+        <div class="d-flex flex-wrap gap-3 zoom">
 
             <div class="colTier">
-                {#            <a href="{{ asset('uploads/profiles_pictures/' ~ participant.photo) }}"></a> #}
-                <img id="monImg" class="w-50" onclick="enlargeImg()"
-                     src="{{ asset('uploads/profiles_pictures/' ~ participant.photo) }}"
-                     alt="pas de photo" title="Cliquez pour agrandir">
+                    <img id="monProfilImg" class="w-50" onclick="enlargeImg()"
+                         src="{{ asset('uploads/profiles_pictures/' ~ participant.photo) }}"
+                         alt="pas de photo">
             </div>
 
             <div class="colTier">
@@ -92,25 +91,5 @@
             </div>
 
         </div>
-
-    <script>
-        img = document.getElementById("monImg");
-
-        // Function to increase image size
-        function enlargeImg() {
-            // Set image size to 1.5 times original
-            img.style.transform = "scale(2)";
-            // Animation effect
-            img.style.transition = "transform 0.25s ease";
-            img.setAttribute('onclick' , "resetImg()")
-        }
-
-        function resetImg() {
-            // Set image size to original
-            img.style.transform = "scale(1)";
-            img.style.transition = "transform 0.25s ease";
-            img.setAttribute('onclick' , "enlargeImg()")
-        }
-    </script>
 
 {% endblock %}
