@@ -7,7 +7,7 @@
 	<h1>Annuler une sortie</h1>
 
 	<form>
-		<table>
+		<table class="table table-borderless">
 			<tr>
 				<th>Nom de la sortie :</th>
 				<td>{{ sortie.nom }}</td>
@@ -31,7 +31,7 @@
 		</table>
 	</form>
 
-	<a href="" class="btn btn-warning">Enregistrer</a>
+	<a href="" class="btn btn-success">Enregistrer</a>
 	<a class="btn btn-warning" onclick="history.go(-1);">Annuler</a>
 
 {% endblock %}

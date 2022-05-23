@@ -19,6 +19,7 @@ class Etat
 	const TERMINEE = 3;
 	const ANNULEE = 4;
 	const ARCHIVEE = 5;
+	const ENCREATION = 6;
 
 	/**
 	 * @ORM\Id

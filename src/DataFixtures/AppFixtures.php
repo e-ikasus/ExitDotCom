@@ -21,7 +21,7 @@ class AppFixtures extends Fixture
 	const NBR_LIEUX = 10;
 	const NBR_PARTICIPANTS = 50;
 	const NBR_SORTIES = 70;
-	const NBR_ETATS = 6;
+	const NBR_ETATS = 7;
 
 	const MAX_PARTICIPANTS_PAR_SORTIE = 10;
 
@@ -95,6 +95,7 @@ class AppFixtures extends Fixture
 		$etats[3] = (new Etat())->setLibelle("terminée")->setIdLibelle(Etat::TERMINEE);
 		$etats[4] = (new Etat())->setLibelle("annulée")->setIdLibelle(Etat::ANNULEE);
 		$etats[5] = (new Etat())->setLibelle("passée")->setIdLibelle(Etat::ARCHIVEE);
+		$etats[6] = (new Etat())->setLibelle("en création")->setIdLibelle(Etat::ENCREATION);
 
 		for ($i = 0; $i < 6; $i++) $manager->persist($etats[$i]);
 
