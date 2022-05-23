@@ -30,6 +30,7 @@ BEGIN
 	DECLARE finished INTEGER DEFAULT 3;
 	DECLARE canceled INTEGER DEFAULT 4;
 	DECLARE archived INTEGER DEFAULT 5;
+	DECLARE creating INTEGER DEFAULT 6;
 
 	-- Variables recevant les identifiants des états de la base de données.
 	DECLARE id_opened INTEGER;
@@ -38,6 +39,7 @@ BEGIN
 	DECLARE id_finished INTEGER;
 	DECLARE id_canceled INTEGER;
 	DECLARE id_archived INTEGER;
+	DECLARE id_creating INTEGER;
 
 	-- Variable pour détecter la position de fin du curseur.
 	DECLARE the_end INTEGER DEFAULT 0;
@@ -104,6 +106,7 @@ BEGIN
 	SELECT id FROM etat WHERE id_libelle = finished INTO id_finished;
 	SELECT id FROM etat WHERE id_libelle = canceled INTO id_canceled;
 	SELECT id FROM etat WHERE id_libelle = archived INTO id_archived;
+	SELECT id FROM etat WHERE id_libelle = creating INTO id_creating;
 
 	-- Ouvre le curseur.
 	IF (NOT exit_id) THEN OPEN cursor_all_exit; ELSE OPEN cursor_one_exit; END IF;
@@ -128,6 +131,9 @@ BEGIN
 
 		-- L'état actuel deviendra donc l'ancien état après le traitement.
 		SET old_state = state;
+
+		-- Si la sortie est en création, ignore-la.
+		if (state = id_creating) THEN ITERATE scan_sortie_list; END IF;
 
 		-- Si la sortie est dans l'état 'ouverte'.
 		IF (state = id_opened) THEN

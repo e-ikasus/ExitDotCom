@@ -64,7 +64,6 @@
 		</thead>
 		<tbody>
 		{% for sortie in sorties %}
-			{#            {% if date('now').diff(date(sortie.dateHeureDebut)) < '30' %} #}
 			<tr>
 				<td>{{ sortie.nom }}</td>
 				<td>{{ sortie.dateHeureDebut|date('Y-m-d H:i') }}</td>
@@ -75,7 +74,8 @@
 				<td class="detail-participant-deform"><a
 							href="{{ path('participant_profil', {'pseudo': sortie.organisateur.pseudo}) }}">{{ sortie.organisateur.pseudo }}</a>
 				</td>
-				<td>
+				<td> {# LES BOUTONS SELON L'ETAT DE LA SORTIE ET LE USER #}
+
 					{# un admin et un organisateur peuvent annuler une sortie (tant que date sortie n'est pas dépassée)
 						annule => sortie marquée comme annulée + message du motif
 					un user peut s'inscrire à une sortie
@@ -84,35 +84,52 @@
 					si date sortie +1 mois => non consultable (classer les sorties par date de clôture DESC)
 					#}
 
-					<a href="{{ path('sortie_show', {'id': sortie.id}) }}" class="text-decoration-none">
-						<button class="btn btn-info">Détails</button>
-					</a>
+					{# PUBLICATION A FAIRE #}
+					{# SORTIES EN CREATION #}
+					{% if sortie.etat is constant('App\\Entity\\Etat::ENCREATION') and app.user == sortie.organisateur %}
+						<a href="{{ path('sortie_show', {'id': sortie.id}) }}" class="text-decoration-none">
+							<button class="btn btn-info">Publier</button>
+						</a>
+					{% endif %}
 
-					{% if app.user == sortie.organisateur %}
+					{# SORTIES CONSULTABLES #}
+					{% if sortie.etat is not constant('App\\Entity\\Etat::ENCREATION') %}
+						<a href="{{ path('sortie_show', {'id': sortie.id}) }}" class="text-decoration-none">
+							<button class="btn btn-info">Détails</button>
+						</a>
+					{% endif %}
+
+					{# SORTIES EN CREATION : #}
+					{% if app.user == sortie.organisateur and sortie.etat.idLibelle is constant('App\\Entity\\Etat::ENCREATION') %}
 						<a href="{{ path('sortie_edit', {'id': sortie.id}) }}" class="text-decoration-none">
 							<button class="btn btn-warning">Modifier</button>
 						</a>
 					{% endif %}
 
-					{% if sortie in app.user.sortiesInscrit and sortie.dateHeureDebut < date() %}
-						<a href="{{ path('sortie_edit', {'id': sortie.id}) }}" class="text-decoration-none">
-							<button class="btn btn-warning">Se désister</button>
-						</a>
-					{% elseif sortie.dateLimiteInscription >= date() and app.user != sortie.organisateur %}
+					{# SORTIES OUVERTES #}
+					{% if sortie.etat.idLibelle is constant('App\\Entity\\Etat::OUVERTE') and app.user != sortie.organisateur and not sortie in app.user.sortiesInscrit %}
 						<a href="{{ path('sortie_edit', {'id': sortie.id}) }}" class="text-decoration-none">
 							<button class="btn btn-success">S'inscrire</button>
 						</a>
 					{% endif %}
-					{# modifier la méthode pour que la sortie ne soit pas supprimée de la BDD mais soit modifiée pour donner un message de motif d'annulation #}
-					{# Actuellement, le lien permet la suppression. #}
-					{% if is_granted('ROLE_ADMIN') or app.user == sortie.organisateur %}
-						<a href="{{ path('sortie_cancellation', {'id': sortie.id}) }}" class="text-decoration-none">
-							<button class="btn btn-danger">Annuler la sortie</button>
+
+					{# SORTIES OUVERTES OU CLOTUREES : #}
+					{% if sortie in app.user.sortiesInscrit and sortie.etat.idLibelle is constant('App\\Entity\\Etat::OUVERTE') or sortie.etat is constant('App\\Entity\\Etat::CLOTUREE') %}
+						<a href="{{ path('sortie_edit', {'id': sortie.id}) }}" class="text-decoration-none">
+							<button class="btn btn-warning">Se désister</button>
 						</a>
+					{% endif %}
+
+					{# SORTIES AVEC POSSIBLE ANNULATION #}
+					{% if is_granted('ROLE_ADMIN') or app.user == sortie.organisateur %}
+						{% if sortie.etat.idLibelle is constant('App\\Entity\\Etat::ENCREATION') or sortie.etat.idLibelle is constant('App\\Entity\\Etat::OUVERTE') or sortie.etat is constant('App\\Entity\\Etat::CLOTUREE') %}
+							<a href="{{ path('sortie_cancellation', {'id': sortie.id}) }}" class="text-decoration-none">
+								<button class="btn btn-danger">Annuler</button>
+							</a>
+						{% endif %}
 					{% endif %}
 				</td>
 			</tr>
-			{#            {% endif %} #}
 		{% else %}
 			<tr>
 				<td colspan="8">Aucune sortie n'est prévue. N'hésitez pas à en organiser une !</td>
@@ -120,7 +137,6 @@
 		{% endfor %}
 		</tbody>
 	</table>
-
 
 
 	<a href="{{ path('sortie_new') }}">

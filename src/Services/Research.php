@@ -10,15 +10,18 @@ class Research extends AbstractController
 {
 	private $campus;
 
+	/**
+	 * @Assert\Regex("/^[^0-9#@\\\/;:!<>{}\[\]`()]*$/", message="carctères non aurorisés")
+	 */
 	private $searchOutingName;
 
 	/**
-	 * @Assert\LessThanOrEqual(propertyPath="dateOutingEnd")
+	 * @Assert\LessThanOrEqual(propertyPath="dateOutingEnd", message="Date invalide")
 	 */
 	private $dateOutingStart;
 
 	/**
-	 * @Assert\GreaterThanOrEqual(propertyPath="dateOutingStart")
+	 * @Assert\GreaterThanOrEqual(propertyPath="dateOutingStart", message="Date invalide")
 	 */
 	private $dateOutingEnd;
 
