@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} | {{ "Annuler une sortie" }} {% endblock %}
+
+{% block body %}
+
+	<h1>Annuler une sortie</h1>
+
+	<form>
+		<table>
+			<tr>
+				<th>Nom de la sortie :</th>
+				<td>{{ sortie.nom }}</td>
+			</tr>
+			<tr>
+				<th>Date de la sortie :</th>
+				<td>{{ sortie.dateHeureDebut.format(('d-m-Y')) }}</td>
+			</tr>
+			<tr>
+				<th>Campus :</th>
+				<td>{{ sortie.campus.nom }}</td>
+			</tr>
+			<tr>
+				<th>Lieu :</th>
+				<td>{{ sortie.lieu.rue }} {{ sortie.lieu.ville.codePostal }} {{ sortie.lieu.ville.nom }}</td>
+			</tr>
+			<tr>
+				<th>Motif :</th>
+				<td><textarea name="motif"></textarea></td>
+			</tr>
+		</table>
+	</form>
+
+	<a href="" class="btn btn-warning">Enregistrer</a>
+	<a class="btn btn-warning" onclick="history.go(-1);">Annuler</a>
+
+{% endblock %}
