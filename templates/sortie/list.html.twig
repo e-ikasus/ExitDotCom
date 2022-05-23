@@ -73,7 +73,7 @@
 				<td>{{ sortie.etat.libelle }}</td>
 				<td>{{ sortie in app.user.sortiesInscrit ? "X" }}</td>
 				<td class="detail-participant-deform"><a
-							href="{{ path('participant_edit', {'pseudo': sortie.organisateur.pseudo}) }}">{{ sortie.organisateur.pseudo }}</a>
+							href="{{ path('participant_profil', {'pseudo': sortie.organisateur.pseudo}) }}">{{ sortie.organisateur.pseudo }}</a>
 				</td>
 				<td>
 					{# un admin et un organisateur peuvent annuler une sortie (tant que date sortie n'est pas dépassée)

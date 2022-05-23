@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }} | Nouveau Participant{% endblock %}
+{% block title %} {{ parent() }} | Nouveau Participant {% endblock %}
 
 {% block body %}
-    <h1>Create new Participant</h1>
+    <h1>Créer un participant</h1>
 
     {{ include('participant/_form.html.twig') }}
 
-    <a href="{{ path('participant_list') }}">back to list</a>
+    <a class="btn btn-danger" onclick="history.go(-1);">Retour</a>
 {% endblock %}

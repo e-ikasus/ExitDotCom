@@ -55,7 +55,7 @@ class SortieType extends AbstractType
                 'label' => 'Description et infos : ',
                 'attr' => ['rows' => 5, 'cols' => 50],
             ])
-            ->add('Lieu', EntityType::class, [
+            ->add('lieu', EntityType::class, [
                 'label' => 'Lieu : ',
                 'class' => Lieu::class,
                 'choice_label' => 'nom'

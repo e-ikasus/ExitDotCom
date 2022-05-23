@@ -1,4 +1,24 @@
+{% form_theme form 'bootstrap_5_horizontal_layout.html.twig' %}
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+<div class="d-flex flex-column-reverse">
+
+    {#    {{ form_row(form.lieu) }} #}
+
+    <div>
+        <div class="d-flex">
+            {{ form_label(form.lieu) }}
+            {{ form_widget(form.lieu) }}
+            <a class="btn btn-info" href="{{ path('lieu_new') }}" onclick="store()">+</a>
+        </div>
+    </div>
+
+
+    <div>
+        {{ form_rest(form) }}
+    </div>
+
+</div>
+
+<button class="btn btn-success">{{ app.request.get('_route') == "sortie_new" ? "Enregistrer" : "Mettre à jour" }}</button>
+
 {{ form_end(form) }}
