@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\RechercheSortiesType;
@@ -66,7 +67,7 @@ class SortieController extends AbstractController
             // $etatCreee = $etatRepository->findByIdLibelle(Etat::CREEE);
             // $sortie->setEtat($etatCreee[0]);
             //Methode plus adaptée pour faire la meme requête il me semble...
-            $etatCreee = $etatRepository->findOneBy(array('libelle' => 'créée'));
+            $etatCreee = $etatRepository->findOneBy(array('id_libelle' => Etat::CREEE));
             $sortie->setEtat($etatCreee);
 
             //Nous récupérons l'instance du participant connecté.
