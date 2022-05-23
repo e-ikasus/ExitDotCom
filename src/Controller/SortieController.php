@@ -143,16 +143,18 @@ class SortieController extends AbstractController
     /**
      * @Route("/{id}/test", name="sortie_cancellation", methods={"GET", "POST"})
      */
-    public function cancel(Request $request, Sortie $sortie, SortieRepository $sortieRepository, EntityManagerInterface $entityManager): Response
+    public function cancel(Request $request, Sortie $sortie, EntityManagerInterface $entityManager, EtatRepository $etatRepository): Response
     {
         $form = $this->createForm(ReasonForCancellationType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //$sortieRepository->find($sortie->setInfosSortie('motifAnnulation'));
             $sortie->setInfosSortie($form->get('motifAnnulation')->getData());
 
-            $this->addFlash('success', 'La sortie a été supprimée avec succès !');
+            $etatCreee = $etatRepository->findOneBy(array('idLibelle' => Etat::ANNULEE));
+            $sortie->setEtat($etatCreee );
+
+            //A corriger, ne fonctionne pas : $this->addFlash('success', 'La sortie a été supprimée avec succès !');
 
             $entityManager->persist($sortie);
             $entityManager->flush();
