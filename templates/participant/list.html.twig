@@ -16,7 +16,7 @@
             <div class="d-flex align-items-center gap-2">
                 {{ form_widget(form.moncsv) }}
                 <button class="btn btn-success">Valider</button>
-                <a href="{{ path('participant_download_csv') }}">Télécharger template</a>
+                <a href="{{ path('download_file', {'fileDirectory' : 'ressources_files_directory', 'fileName' : 'UserCsvTemplate.xlsm'}) }}">Télécharger template</a>
             </div>
             {{ form_end(form) }}
         </div>
