@@ -2,25 +2,30 @@
 {{ form_start(form) }}
 <div class="d-flex flex-column-reverse">
 
-    {#    {{ form_row(form.lieu) }} #}
+	{#    {{ form_row(form.lieu) }} #}
 
-    <div>
-        <div class="d-flex">
-            {{ form_label(form.lieu) }}
-            {{ form_widget(form.lieu) }}
-            <a class="btn btn-info" href="{{ path('lieu_new') }}" onclick="store()">+</a>
-        </div>
-    </div>
+	<div>
+		<div class="d-flex">
+			{{ form_label(form.lieu) }}
+			{{ form_widget(form.lieu) }}
+			<a class="btn btn-info" href="{{ path('lieu_new') }}" onclick="store()">+</a>
+		</div>
+	</div>
 
 
-    <div>
-        {{ form_rest(form) }}
-    </div>
+	<div>
+		{{ form_rest(form) }}
+	</div>
 
 </div>
 
 <input type="submit" name="enregistrer" class="btn btn-success" value="Enregistrer">
 <input type="submit" name="publier" class="btn btn-warning" value="Publier la sortie">
-<a href="_delete_form.html.twig"><button class="btn btn-danger">{{ app.request.get('_route') == "sortie_edit" ? "Supprimer la sortie" }}</button></a>
+
+{% if app.request.get('_route') == "sortie_edit" %}
+	<a href="_delete_form.html.twig">
+		<button class="btn btn-danger">Supprimer la sortie</button>
+	</a>
+{% endif %}
 
 {{ form_end(form) }}
