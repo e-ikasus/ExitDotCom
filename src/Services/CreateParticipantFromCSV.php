@@ -29,21 +29,21 @@ class CreateParticipantFromCSV
                 if ($row == 1) {
                     $row++;
                 } else if ($data[0] != '') {
-                    $participantCSV = new Participant();
+                    $participant = new Participant();
 
-                    $participantCSV->setCampus($this->campusRepository->findOneBy(array('nom' => $data[0])));
-                    $participantCSV->setPseudo($data[1]);
-                    $participantCSV->setRoles($data[7] == 'true' ? ["ROLE_ADMIN"] : ["ROLE_USER"]);
-                    $participantCSV->setPassword(password_hash($data[2], PASSWORD_BCRYPT));
-                    $participantCSV->setPrenom($data[3]);
-                    $participantCSV->setNom($data[4]);
-                    $participantCSV->setTelephone($data[5]);
-                    $participantCSV->setEmail($data[6]);
-                    $participantCSV->setAdministrateur($data[7] == 'true');
-                    $participantCSV->setActif(true);
-                    $participantCSV->setPhoto('default.png');
+                    $participant->setCampus($this->campusRepository->findOneBy(array('nom' => $data[0])));
+                    $participant->setPseudo($data[1]);
+                    $participant->setRoles($data[7] == 'true' ? ["ROLE_ADMIN"] : ["ROLE_USER"]);
+                    $participant->setPassword(password_hash($data[2], PASSWORD_BCRYPT));
+                    $participant->setPrenom($data[3]);
+                    $participant->setNom($data[4]);
+                    $participant->setTelephone($data[5]);
+                    $participant->setEmail($data[6]);
+                    $participant->setAdministrateur($data[7] == 'true');
+                    $participant->setActif(true);
+                    $participant->setPhoto('default.png');
 
-                    $this->participantRepository->add($participantCSV, true);
+                    $this->participantRepository->add($participant, true);
                 }
 
             }
