@@ -13,184 +13,199 @@ use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class AppFixtures extends Fixture
 {
-	const NBR_CAMPUS = 10;
-	const NBR_VILLES = 30;
-	const NBR_LIEUX = 10;
-	const NBR_PARTICIPANTS = 50;
-	const NBR_SORTIES = 70;
-	const NBR_ETATS = 6;
+    const NBR_CAMPUS = 10;
+    const NBR_VILLES = 30;
+    const NBR_LIEUX = 10;
+    const NBR_PARTICIPANTS = 50;
+    const NBR_SORTIES = 70;
+    const NBR_ETATS = 6;
 
-	const MAX_PARTICIPANTS_PAR_SORTIE = 10;
+    const MAX_PARTICIPANTS_PAR_SORTIE = 10;
 
-	public function load(ObjectManager $manager): void
-	{
-		$faker = Faker\Factory::create('fr_FR');
+    public function load(ObjectManager $manager): void
+    {
+        $faker = Faker\Factory::create('fr_FR');
 
-		/********************/
-		/* Liste des villes */
-		/********************/
+        /********************/
+        /* Liste des villes */
+        /********************/
 
-		$villes = array();
+        $villes = array();
 
-		for ($i = 0; $i < self::NBR_VILLES; $i++)
-		{
-			$villes[$i] = new Ville();
-			$villes[$i]->setNom($faker->city());
-			$villes[$i]->setCodePostal(substr(str_replace(" ", "", $faker->postcode()), 0, 5));
+        for ($i = 0; $i < self::NBR_VILLES; $i++) {
+            $villes[$i] = new Ville();
+            $villes[$i]->setNom($faker->city());
+            $villes[$i]->setCodePostal(substr(str_replace(" ", "", $faker->postcode()), 0, 5));
 
-			$manager->persist($villes[$i]);
-		}
+            $manager->persist($villes[$i]);
+        }
 
-		$manager->flush();
+        $manager->flush();
 
-		/*******************/
-		/* Liste des lieux */
-		/*******************/
+        /*******************/
+        /* Liste des lieux */
+        /*******************/
 
-		$lieux = array();
+        $lieux = array();
 
-		for ($i = 0; $i < self::NBR_LIEUX; $i++)
-		{
-			$lieux[$i] = new Lieu();
-			$lieux[$i]->setNom($faker->userName());
-			$lieux[$i]->setRue($faker->streetAddress());
-			$lieux[$i]->setLatitude($faker->latitude());
-			$lieux[$i]->setLongitude($faker->longitude());
+        for ($i = 0; $i < self::NBR_LIEUX; $i++) {
+            $lieux[$i] = new Lieu();
+            $lieux[$i]->setNom($faker->userName());
+            $lieux[$i]->setRue($faker->streetAddress());
+            $lieux[$i]->setLatitude($faker->latitude());
+            $lieux[$i]->setLongitude($faker->longitude());
 
-			$villes[rand(0, self::NBR_VILLES - 1)]->addLieux($lieux[$i]);
+            $villes[rand(0, self::NBR_VILLES - 1)]->addLieux($lieux[$i]);
 
-			$manager->persist($lieux[$i]);
-		}
+            $manager->persist($lieux[$i]);
+        }
 
-		$manager->flush();
+        $manager->flush();
 
-		/********************/
-		/* Liste des campus */
-		/********************/
+        /********************/
+        /* Liste des campus */
+        /********************/
 
-		$campus = array();
+        $campus = array();
 
-		for ($i = 0; $i < self::NBR_CAMPUS; $i++)
-		{
-			$campus[$i] = new Campus();
-			$campus[$i]->setNom($faker->company());
+        for ($i = 0; $i < self::NBR_CAMPUS; $i++) {
+            $campus[$i] = new Campus();
+            $campus[$i]->setNom($faker->company());
 
-			$manager->persist($campus[$i]);
-		}
+            $manager->persist($campus[$i]);
+        }
 
-		$manager->flush();
+        $manager->flush();
 
-		/*******************/
-		/* Liste des états */
-		/*******************/
+        /*******************/
+        /* Liste des états */
+        /*******************/
 
-		$etats = array();
+        $etats = array();
 
-		$etats[0] = (new Etat())->setLibelle("créée")->setIdLibelle(Etat::CREEE);
-		$etats[1] = (new Etat())->setLibelle("ouverte")->setIdLibelle(Etat::OUVERTE);
-		$etats[2] = (new Etat())->setLibelle("clôturée")->setIdLibelle(Etat::CLOTUREE);
-		$etats[3] = (new Etat())->setLibelle("activité en cours")->setIdLibelle(Etat::ENCOURS);
-		$etats[4] = (new Etat())->setLibelle("passée")->setIdLibelle(Etat::PASSEE);
-		$etats[5] = (new Etat())->setLibelle("annulée")->setIdLibelle(Etat::ANNULEE);
+        $etats[0] = (new Etat())->setLibelle("créée")->setIdLibelle(Etat::CREEE);
+        $etats[1] = (new Etat())->setLibelle("ouverte")->setIdLibelle(Etat::OUVERTE);
+        $etats[2] = (new Etat())->setLibelle("clôturée")->setIdLibelle(Etat::CLOTUREE);
+        $etats[3] = (new Etat())->setLibelle("activité en cours")->setIdLibelle(Etat::ENCOURS);
+        $etats[4] = (new Etat())->setLibelle("passée")->setIdLibelle(Etat::PASSEE);
+        $etats[5] = (new Etat())->setLibelle("annulée")->setIdLibelle(Etat::ANNULEE);
 
-		for ($i = 0; $i < 6; $i++) $manager->persist($etats[$i]);
+        for ($i = 0; $i < 6; $i++) $manager->persist($etats[$i]);
 
-		$manager->flush();
+        $manager->flush();
 
-		/********************/
-		/* Ajouter un Admin */
-		/********************/
+        /********************/
+        /* Ajouter un Admin */
+        /********************/
 
-		$adminUser = new Participant();
-		$adminUser->setRoles(["ROLE_ADMIN"]);
-		$adminUser->setNom("admin");
-		$adminUser->setPrenom("admin");
-		$adminUser->setPseudo("admin");
-		$adminUser->setPassword(password_hash('admin', PASSWORD_BCRYPT));
-		$adminUser->setEmail("admin@admin.fr");
-		$adminUser->setTelephone("0601020304");
-		$adminUser->setAdministrateur(true);
-		$adminUser->setActif(true);
-		$adminUser->setPhoto("default.png");
+        $adminUser = new Participant();
+        $adminUser->setRoles(["ROLE_ADMIN"]);
+        $adminUser->setNom("admin");
+        $adminUser->setPrenom("admin");
+        $adminUser->setPseudo("admin");
+        $adminUser->setPassword(password_hash('admin', PASSWORD_BCRYPT));
+        $adminUser->setEmail("admin@admin.fr");
+        $adminUser->setTelephone("0601020304");
+        $adminUser->setAdministrateur(true);
+        $adminUser->setActif(true);
+        $adminUser->setPhoto("default.png");
 
-		$campus[rand(0, self::NBR_CAMPUS - 1)]->addParticipant($adminUser);
+        $campus[rand(0, self::NBR_CAMPUS - 1)]->addParticipant($adminUser);
 
-		$manager->persist($adminUser);
-		$manager->flush();
+        $manager->persist($adminUser);
+        $manager->flush();
 
-		/**************************/
-		/* Liste des participants */
-		/**************************/
+        /**************************/
+        /* Liste des participants */
+        /**************************/
 
-		$participants = array();
+        $participants = array();
 
-		for ($i = 0; $i < self::NBR_PARTICIPANTS; $i++)
-		{
-			$participants[$i] = new Participant();
+        for ($i = 0; $i < self::NBR_PARTICIPANTS; $i++) {
+            $participants[$i] = new Participant();
 
-			$participants[$i]->setRoles(["ROLE_USER"]);
-			$participants[$i]->setNom($faker->lastName());
-			$participants[$i]->setPrenom($faker->firstName());
-			$participants[$i]->setPseudo($faker->userName());
-			$participants[$i]->setPassword(password_hash('user', PASSWORD_BCRYPT));
-			$participants[$i]->setEmail($faker->email());
-			$participants[$i]->setTelephone($faker->phoneNumber());
-			$participants[$i]->setAdministrateur(false);
-			$participants[$i]->setActif(true);
-			$participants[$i]->setPhoto("default.png");
+            $participants[$i]->setRoles(["ROLE_USER"]);
+            $participants[$i]->setNom($faker->lastName());
+            $participants[$i]->setPrenom($faker->firstName());
+            $participants[$i]->setPseudo($faker->userName());
+            $participants[$i]->setPassword(password_hash('user', PASSWORD_BCRYPT));
+            $participants[$i]->setEmail($faker->email());
+            $participants[$i]->setTelephone($faker->phoneNumber());
+            $participants[$i]->setAdministrateur(false);
+            $participants[$i]->setActif(true);
+            $participants[$i]->setPhoto("default.png");
 
-			$campus[rand(0, self::NBR_CAMPUS - 1)]->addParticipant($participants[$i]);
+            $campus[rand(0, self::NBR_CAMPUS - 1)]->addParticipant($participants[$i]);
 
-			$manager->persist($participants[$i]);
-		}
+            $manager->persist($participants[$i]);
+        }
 
-		$manager->flush();
+        $manager->flush();
 
-		/*********************/
-		/* Liste des sorties */
-		/*********************/
+        /*********************/
+        /* Liste des sorties */
+        /*********************/
 
-		$sorties = array();
+        $sorties = array();
 
-		for ($i = 0; $i < self::NBR_SORTIES; $i++)
-		{
-			$sorties[$i] = new Sortie();
-			$sorties[$i]->setnom($faker->colorName());
-			$sorties[$i]->setDuree(rand(1, 23));
+        for ($i = 0; $i < self::NBR_SORTIES; $i++) {
+            $sorties[$i] = new Sortie();
+            $sorties[$i]->setnom($faker->colorName());
 
-			$dateCloture = $faker->dateTime();
-			$dateSortie = (clone $dateCloture)->add(new DateInterval('P1M'));
+            $duree = rand(2, 10) * 15;
+            $sorties[$i]->setDuree($duree);
 
-			$sorties[$i]->setDateHeureDebut($dateSortie);
-			$sorties[$i]->setDateLimiteInscription($dateCloture);
+            //Initilisation de la date à l'instant T suivant l'heure française.
+            date_default_timezone_set('Europe/Paris');
+            $dateActuelle = new DateTime('now');
 
-			$sorties[$i]->setNbInscriptionsMax(rand(1, 20));
-			$sorties[$i]->setInfosSortie($faker->text());
+            $dateCloture = $faker->dateTimeBetween('-100 days', '100 days');
+            $dateSortie = (clone $dateCloture)->add(new DateInterval('P7D'));
+            //Ancienne méthode :
+            //$dateCloture = $faker->dateTime();
+            //$dateSortie = (clone $dateCloture)->add(new DateInterval('P1M'));
 
-			$lieux[rand(0, self::NBR_LIEUX - 1)]->addSorty($sorties[$i]);
+            $sorties[$i]->setDateHeureDebut($dateSortie);
+            $sorties[$i]->setDateLimiteInscription($dateCloture);
 
-			$etats[rand(0, self::NBR_ETATS - 1)]->addSorty($sorties[$i]);
+            $sorties[$i]->setNbInscriptionsMax(rand(1, 20));
+            $sorties[$i]->setInfosSortie($faker->text());
 
-			// La sortie est référencée à la fois par le participant qui en est l'organisateur et par le campus du participant.
-			$part = $participants[rand(0, self::NBR_PARTICIPANTS - 1)];
-			$part->addSortiesOrganisee($sorties[$i]);
-			$part->getCampus()->addSortieOrganisee($sorties[$i]);
+            //Initilisation de l'état des sorties suivant la date actuelle et la date de sortie.
+            //Ancienne méthode : $etats[rand(0, self::NBR_ETATS - 1)]->addSorty($sorties[$i]);
+            //Utilisation de la méthode add plutôt que set car un état peut avoir plusieurs sorties.
+            if ($dateActuelle >= $dateSortie) {
+                $etats[Etat::CLOTUREE]->addSorty($sorties[$i]);
+            } else if ($dateSortie <= $dateActuelle && $dateActuelle <= ($dateSortie + $duree * 60)) {
+                $etats[Etat::ENCOURS]->addSorty($sorties[$i]);
+            } else if ($dateSortie <= ($dateSortie->add($duree * 60))) {
+                $etats[Etat::PASSEE]->addSorty($sorties[$i]);
+            } else {
+                $etats[Etat::OUVERTE]->addSorty($sorties[$i]);
+            }
 
-			for ($j = 0; $j < rand(0, self::MAX_PARTICIPANTS_PAR_SORTIE); $j++)
-			{
-				$part = $participants[rand(0, self::NBR_PARTICIPANTS - 1)];
+            $lieux[rand(0, self::NBR_LIEUX - 1)]->addSorty($sorties[$i]);
 
-				while ($sorties[$i]->getParticipants()->contains($part)) $part = $participants[rand(0, self::NBR_PARTICIPANTS - 1)];
+            // La sortie est référencée à la fois par le participant qui en est l'organisateur et par le campus du participant.
+            $part = $participants[rand(0, self::NBR_PARTICIPANTS - 1)];
+            $part->addSortiesOrganisee($sorties[$i]);
+            $part->getCampus()->addSortieOrganisee($sorties[$i]);
 
-				$sorties[$i]->addParticipant($part);
-			}
+            for ($j = 0; $j < rand(0, self::MAX_PARTICIPANTS_PAR_SORTIE); $j++) {
+                $part = $participants[rand(0, self::NBR_PARTICIPANTS - 1)];
 
-			$manager->persist($sorties[$i]);
-		}
+                while ($sorties[$i]->getParticipants()->contains($part)) $part = $participants[rand(0, self::NBR_PARTICIPANTS - 1)];
 
-		$manager->flush();
-	}
+                $sorties[$i]->addParticipant($part);
+            }
+
+            $manager->persist($sorties[$i]);
+        }
+
+        $manager->flush();
+    }
 }
