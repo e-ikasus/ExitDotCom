@@ -59,9 +59,21 @@ class SortieController extends AbstractController
 		/**
 		 * @Route("/unsubscribe/{id}", name="sortie_unsubscribe", methods={"GET"})
 		 */
-		public function unsubscribe(Sortie $sortie, Security $security, EntityManagerInterface $entityManager, Request $request): Response
+		public function unsubscribe(Sortie $sortie, Security $security, EntityManagerInterface $entityManager): Response
 		{
 				$security->getUser()->removeSortiesInscrit($sortie);
+
+				$entityManager->flush();
+
+				return $this->redirectToRoute("sortie_list");
+		}
+
+		/**
+		 * @Route("/subscribe/{id}", name="sortie_subscribe", methods={"GET"})
+		 */
+		public function subscribe(Sortie $sortie, Security $security, EntityManagerInterface $entityManager): Response
+		{
+				$security->getUser()->addSortiesInscrit($sortie);
 
 				$entityManager->flush();
 

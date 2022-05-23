@@ -108,7 +108,7 @@
 
 					{# SORTIES OUVERTES #}
 					{% if sortie.etat.idLibelle is constant('App\\Entity\\Etat::OUVERTE') and app.user != sortie.organisateur and not (sortie in app.user.sortiesInscrit) %}
-						<a href="{{ path('sortie_edit', {'id': sortie.id}) }}" class="text-decoration-none">
+						<a href="{{ path('sortie_subscribe', {'id': sortie.id}) }}" class="text-decoration-none">
 							<button class="btn btn-success">S'inscrire</button>
 						</a>
 					{% endif %}

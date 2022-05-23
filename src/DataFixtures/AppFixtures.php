@@ -97,7 +97,7 @@ class AppFixtures extends Fixture
 		$etats[5] = (new Etat())->setLibelle("passée")->setIdLibelle(Etat::ARCHIVEE);
 		$etats[6] = (new Etat())->setLibelle("en création")->setIdLibelle(Etat::ENCREATION);
 
-		for ($i = 0; $i < 6; $i++) $manager->persist($etats[$i]);
+		for ($i = 0; $i < self::NBR_ETATS; $i++) $manager->persist($etats[$i]);
 
 		$manager->flush();
 
