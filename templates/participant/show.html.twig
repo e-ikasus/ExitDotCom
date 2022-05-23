@@ -11,7 +11,9 @@
     <div class="d-flex flex-wrap gap-3">
 
         <div class="colTier">
-            <img class="w-50"  src="{{ asset('uploads/profiles_pictures/' ~ participant.photo) }}" alt="pas de photo">
+            <a href="{{ asset('uploads/profiles_pictures/' ~ participant.photo) }}">
+            <img class="w-50"  src="{{ asset('uploads/profiles_pictures/' ~ participant.photo) }}"
+                 alt="pas de photo" title="Cliquez pour agrandir"></a>
         </div>
 
         <div class="colTier">
