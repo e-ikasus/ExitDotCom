@@ -36,7 +36,7 @@ class SortieRepository extends ServiceEntityRepository
 	{
 		$conn = $this->getEntityManager()->getConnection();
 
-		$sql = 'SET @state = 8; CALL check_sorties(0, TRUE, FALSE, FALSE, @state);';
+		$sql = 'SET @state = 8; CALL check_sorties(0, TRUE, FALSE, TRUE, @state);';
 		$stmt = $conn->prepare($sql);
 
 		$stmt->executeQuery();

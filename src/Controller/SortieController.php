@@ -64,10 +64,10 @@ class SortieController extends AbstractController
             //Nous allons chercher les différents états via l'EtatRepository.
             //Nous créons une méthode qui sera auto-interprétée par Symfony pour aller chercher le bon libellé selon la constante dans l'entity Etat.
 
-            // $etatCreee = $etatRepository->findByIdLibelle(Etat::CREEE);
+            // $etatCreee = $etatRepository->findByIdLibelle(Etat::OUVERTE);
             // $sortie->setEtat($etatCreee[0]);
             //Methode plus adaptée pour faire la meme requête il me semble...
-            $etatCreee = $etatRepository->findOneBy(array('idLibelle' => Etat::CREEE));
+            $etatCreee = $etatRepository->findOneBy(array('idLibelle' => Etat::OUVERTE));
             $sortie->setEtat($etatCreee);
 
             //Nous récupérons l'instance du participant connecté.
