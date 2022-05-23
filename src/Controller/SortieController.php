@@ -67,7 +67,7 @@ class SortieController extends AbstractController
             // $etatCreee = $etatRepository->findByIdLibelle(Etat::CREEE);
             // $sortie->setEtat($etatCreee[0]);
             //Methode plus adaptée pour faire la meme requête il me semble...
-            $etatCreee = $etatRepository->findOneBy(array('id_libelle' => Etat::CREEE));
+            $etatCreee = $etatRepository->findOneBy(array('idLibelle' => Etat::CREEE));
             $sortie->setEtat($etatCreee);
 
             //Nous récupérons l'instance du participant connecté.
