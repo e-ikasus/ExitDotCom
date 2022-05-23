@@ -6,6 +6,7 @@ use App\Entity\Campus;
 use App\Entity\Participant;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -31,11 +32,10 @@ class ParticipantType extends AbstractType
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe doivent correspondre.',
                 'required' => true,
-                'first_options'  => ['label' => 'Mot de passe'],
+                'first_options' => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmation'],
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
-                'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
@@ -64,7 +64,9 @@ class ParticipantType extends AbstractType
                     'mimeTypesMessage' => 'Merci d\'utiliser un des formats suivant : .jpg .jpeg .png',
                 ])
                 ],
-            ]);
+            ])
+            ->add('administrateur', CheckboxType::class, ['required' => false])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -24,7 +25,7 @@ class ParticipantController extends AbstractController
     /**
      * @Route("/admin", name="participant_list", methods={"GET", "POST"})
      */
-    public function list(Request $request, ParticipantRepository $participantRepository, CampusRepository $campusRepository, SluggerInterface $slugger): Response
+    public function list(Request $request, ParticipantRepository $participantRepository, CampusRepository $campusRepository, SluggerInterface $slugger, UserPasswordHasherInterface $passwordHasher): Response
     {
 
         $form = $this->createForm(ParticipantCsvType::class);
@@ -52,13 +53,21 @@ class ParticipantController extends AbstractController
     /**
      * @Route("/admin/new", name="participant_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, ParticipantRepository $participantRepository): Response
+    public function new(Request $request, ParticipantRepository $participantRepository, UserPasswordHasherInterface $passwordHasher): Response
     {
         $participant = new Participant();
+
+
+
         $form = $this->createForm(ParticipantType::class, $participant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $participant->setPassword($passwordHasher->hashPassword( $participant, $form->get('password')->getData()));
+
+            $participant->setRoles($form->get('administrateur')->getData() ? ['ROLE_ADMIN'] : ['ROLE_USER']);
+            $participant->setActif(true);
 
             $participantRepository->add($participant, true);
 
