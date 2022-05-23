@@ -5,7 +5,8 @@
 {% block body %}
     <p>
         Si votre email est associé à un compte, alors un email contenant le lien de réinitialisation de votre mot de passe vient de vous être adressé.
-        Ce lien expirera dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+        Ce lien expirera dans 1 heure.
+{#{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.#}
     </p>
-    <p>Si vous ne recevez pas l'email, merci de vérifier vos courriers indésirables ou <a href="{{ path('app_forgot_password_request') }}">réessayez</a>.</p>
+    <p>Si vous ne recevez pas l'email, merci de vérifier vos courriers indésirables ou <a href="{{ path('app_forgot_password_request') }}" style="color: deeppink;">réessayez</a>.</p>
 {% endblock %}
