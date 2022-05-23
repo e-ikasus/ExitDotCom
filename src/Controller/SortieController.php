@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Entity\Etat;
 use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Form\ReasonForCancellationType;
 use App\Form\RechercheSortiesType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use App\Services\Research;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,8 +38,8 @@ class SortieController extends AbstractController
         $form = $this->createForm(RechercheSortiesType::class, $this->research);
         $form->handleRequest($request);
 
-				// Mets à jour l'état des sorties.
-				$sortieRepository->refreshList();
+        // Mets à jour l'état des sorties.
+        $sortieRepository->refreshList();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $sorties = $sortieRepository->findByCreteria($user, $this->research);
@@ -141,11 +143,27 @@ class SortieController extends AbstractController
     /**
      * @Route("/{id}/test", name="sortie_cancellation", methods={"GET", "POST"})
      */
-    public function cancel(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
+    public function cancel(Request $request, Sortie $sortie, SortieRepository $sortieRepository, EntityManagerInterface $entityManager): Response
     {
-        return $this->render('sortie/annulation_sortie.html.twig', [
-            'sortie' => $sortie,
-        ]);
-    }
+        $form = $this->createForm(ReasonForCancellationType::class);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            //$sortieRepository->find($sortie->setInfosSortie('motifAnnulation'));
+            $sortie->setInfosSortie($form->get('motifAnnulation')->getData());
+
+            $this->addFlash('success', 'La sortie a été supprimée avec succès !');
+
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('sortie_list', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->render('sortie/annulation_sortie.html.twig', [
+                'sortie' => $sortie,
+                'cancellation' => $form->createView()
+            ]
+        );
+
+    }
 }
