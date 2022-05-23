@@ -30,7 +30,7 @@ class ParticipantType extends AbstractType
             ->add('email', EmailType::class, ['label' => 'E-mail'])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'Les mots de passe doivent correspondre.',
+                'invalid_message' => 'Les mots de passe doivent être identique.',
                 'required' => true,
                 'first_options' => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmation'],

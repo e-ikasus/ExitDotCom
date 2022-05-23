@@ -21,7 +21,9 @@
                 {{ include('participant/_form.html.twig', {'button_label': 'Enregistrer', 'return': true}) }}
 
             {% else %}
+
                 {{ include('inc/acces_refuse.html.twig') }}
+
             {% endif %}
 
         </div>
