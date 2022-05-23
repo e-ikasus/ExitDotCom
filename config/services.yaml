@@ -6,7 +6,7 @@
 parameters:
     profiles_pictures_directory: '%kernel.project_dir%/public/uploads/profiles_pictures'
     csv_files_directory: '%kernel.project_dir%/public/uploads/csv_files'
-    ressources_files_directory: '%kernel.project_dir%/public/ressources'
+    ressources_files_directory: '%kernel.project_dir%/public/ressources/'
 
 services:
     # default configuration for services in *this* file

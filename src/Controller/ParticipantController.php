@@ -121,12 +121,4 @@ class ParticipantController extends AbstractController
         return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);
     }
 
-    /**
-     * @Route(name="participant_download_csv", methods={"GET"})
-     */
-    public function downloadCsvTemplate(): BinaryFileResponse
-    {
-        return $this->file($this->getParameter('ressources_files_directory') . '/UserCsvTemplate.xlsm');
-    }
-
 }
