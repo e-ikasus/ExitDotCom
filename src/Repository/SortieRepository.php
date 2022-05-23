@@ -94,6 +94,7 @@ class SortieRepository extends ServiceEntityRepository
 		$queryBuilder = $this->createQueryBuilder('s');
 		$queryBuilder->Join('s.campus', 'c');
 		$queryBuilder->addSelect('c');
+		$queryBuilder->addOrderBy("s.dateHeureDebut", "ASC");
 
 		$queryBuilder->andWhere('s.campus = :campus');
 		$queryBuilder->setParameter('campus', $research->getCampus());
@@ -132,7 +133,7 @@ class SortieRepository extends ServiceEntityRepository
 			$queryBuilder->Join('s.etat', 'e');
 			$queryBuilder->addSelect('e');
 			$queryBuilder->andWhere('e.idLibelle = :etat');
-			$queryBuilder->setParameter('etat', Etat::PASSEE);
+			$queryBuilder->setParameter('etat', Etat::TERMINEE);
 		}
 
 		// S'il faut filtrer les sorties auxquelles l'utilisateur est inscrit.

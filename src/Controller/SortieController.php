@@ -42,7 +42,7 @@ class SortieController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $sorties = $sortieRepository->findByCreteria($user, $this->research);
         } else {
-            $sorties = $sortieRepository->findAll();
+            $sorties = $sortieRepository->findBy([], ["dateHeureDebut" => "ASC"]);
         }
         return $this->render('sortie/list.html.twig', [
                 'sorties' => $sorties,
