@@ -13,12 +13,12 @@ use phpDocumentor\Reflection\Types\Integer;
  */
 class Etat
 {
-	const CREEE = 0;
-	const OUVERTE = 1;
-	const CLOTUREE = 2;
-	const ENCOURS = 3;
-	const PASSEE = 4;
-	const ANNULEE = 5;
+	const OUVERTE = 0;
+	const CLOTUREE = 1;
+	const ENCOURS = 2;
+	const TERMINEE = 3;
+	const ANNULEE = 4;
+	const ARCHIVEE = 5;
 
 	/**
 	 * @ORM\Id

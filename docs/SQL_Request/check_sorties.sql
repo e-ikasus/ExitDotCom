@@ -24,20 +24,20 @@ BEGIN
 	-- *****************************
 
 	-- Constantes (à défaut de mieux) ! Proviennent de l'entité Etat.
-	DECLARE created INTEGER DEFAULT 0;
-	DECLARE opened INTEGER DEFAULT 1;
-	DECLARE closed INTEGER DEFAULT 2;
-	DECLARE current INTEGER DEFAULT 3;
-	DECLARE archived INTEGER DEFAULT 4;
-	DECLARE canceled INTEGER DEFAULT 5;
+	DECLARE opened INTEGER DEFAULT 0;
+	DECLARE closed INTEGER DEFAULT 1;
+	DECLARE current INTEGER DEFAULT 2;
+	DECLARE finished INTEGER DEFAULT 3;
+	DECLARE canceled INTEGER DEFAULT 4;
+	DECLARE archived INTEGER DEFAULT 5;
 
 	-- Variables recevant les identifiants des états de la base de données.
-	DECLARE id_created INTEGER;
 	DECLARE id_opened INTEGER;
 	DECLARE id_closed INTEGER;
 	DECLARE id_current INTEGER;
-	DECLARE id_archived INTEGER;
+	DECLARE id_finished INTEGER;
 	DECLARE id_canceled INTEGER;
+	DECLARE id_archived INTEGER;
 
 	-- Variable pour détecter la position de fin du curseur.
 	DECLARE the_end INTEGER DEFAULT 0;
@@ -98,12 +98,12 @@ BEGIN
 	IF ((NOT append) AND (dbg)) THEN DELETE FROM log_debug; END IF;
 
 	-- Récupère les identifiants des états attribués par la base de données.
-	SELECT id FROM etat WHERE id_libelle = created INTO id_created;
 	SELECT id FROM etat WHERE id_libelle = opened INTO id_opened;
 	SELECT id FROM etat WHERE id_libelle = closed INTO id_closed;
 	SELECT id FROM etat WHERE id_libelle = current INTO id_current;
-	SELECT id FROM etat WHERE id_libelle = archived INTO id_archived;
+	SELECT id FROM etat WHERE id_libelle = finished INTO id_finished;
 	SELECT id FROM etat WHERE id_libelle = canceled INTO id_canceled;
+	SELECT id FROM etat WHERE id_libelle = archived INTO id_archived;
 
 	-- Ouvre le curseur.
 	IF (NOT exit_id) THEN OPEN cursor_all_exit; ELSE OPEN cursor_one_exit; END IF;
@@ -117,6 +117,7 @@ BEGIN
 		ELSE
 			FETCH cursor_one_exit INTO is_not_empty, identifier, nom, date_start, date_limit, duration, nbr_max, state, nbr_cur;
 		END IF;
+
 		-- S'il n'y en a plus, alors c'est fini.
 		IF the_end = 1 THEN
 			LEAVE scan_sortie_list;
@@ -147,29 +148,29 @@ BEGIN
 		-- Si la sortie est dans l'état 'en cours'.
 		IF (state = id_current) THEN
 			IF (cur_date > ADDDATE(date_start, INTERVAL duration MINUTE)) THEN
-				SET state = id_closed;
+				SET state = id_finished;
 			END IF;
 		END IF;
 
 		-- Si la sortie doit être archivée.
-		IF (((state = id_closed) OR (state = id_canceled)) AND ((cur_date > ADDDATE(date_start, INTERVAL 1 MONTH)))) THEN
+		IF (((state = id_finished) OR (state = id_canceled)) AND ((cur_date > ADDDATE(date_start, INTERVAL 1 MONTH)))) THEN
 			SET state = id_archived;
 		END IF;
 
 		-- Convertit l'id de l'état de la BD en id de l'entité si une seule sortie est traitée.
 		IF (exit_id) THEN
-			IF (state = id_created) THEN
-				SET return_state = created;
-			ELSEIF (state = id_opened) THEN
+			IF (state = id_opened) THEN
 				SET return_state = opened;
 			ELSEIF (state = id_closed) THEN
 				SET return_state = closed;
 			ELSEIF (state = id_current) THEN
 				SET return_state = current;
-			ELSEIF (state = id_archived) THEN
-				SET return_state = archived;
+			ELSEIF (state = id_finished) THEN
+				SET return_state = finished;
 			ELSEIF (state = id_canceled) THEN
 				SET return_state = canceled;
+			ELSEIF (state = id_archived) THEN
+				SET return_state = archived;
 			END IF;
 		END IF;
 
@@ -178,17 +179,17 @@ BEGIN
 			-- Si le mode debug est actif, sauvegarde dans la BD ce qui doit être fait.
 			IF (dbg) THEN
 				SET comment = CONCAT(nom, ' : ', nbr_cur, ' / ', nbr_max, ' : ',
-														 IF(old_state = id_created, 'CREATED',
-																IF(old_state = id_opened, 'OPENED',
-																	 IF(old_state = id_closed, 'CLOSED',
-																			IF(old_state = id_current, 'CURRENT',
-																				 IF(old_state = id_archived, 'ARCHIVED', 'CANCELED'))))),
+														 IF(old_state = id_opened, 'OPENED',
+																IF(old_state = id_closed, 'CLOSED',
+																	 IF(old_state = id_current, 'CURRENT',
+																			IF(old_state = id_finished, 'FINISHED',
+																				 IF(old_state = id_canceled, 'CANCELED', 'ARCHIVED'))))),
 														 ' => ',
-														 IF(state = id_created, 'CREATED',
-																IF(state = id_opened, 'OPENED',
-																	 IF(state = id_closed, 'CLOSED',
-																			IF(state = id_current, 'CURRENT',
-																				 IF(state = id_archived, 'ARCHIVED', 'CANCELED'))))));
+														 IF(state = id_opened, 'OPENED',
+																IF(state = id_closed, 'CLOSED',
+																	 IF(state = id_current, 'CURRENT',
+																			IF(state = id_finished, 'FINISHED',
+																				 IF(state = id_canceled, 'CANCELED', 'ARCHIVED'))))));
 
 				INSERT INTO log_debug (date, sortie_id, ancien_etat_id, nouvel_etat_id, content)
 				VALUES (cur_date, identifier, old_state, state, comment);

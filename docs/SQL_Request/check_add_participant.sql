@@ -16,7 +16,7 @@ BEGIN
 	-- *****************************
 
 	-- Constante (à défaut de mieux) ! Provient de l'entité Etat.
-	DECLARE opened INTEGER DEFAULT 1;
+	DECLARE opened INTEGER DEFAULT 0;
 
 	-- Nombre max de participants.
 	DECLARE nombre_max INTEGER;
