@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Campus;
+use PhpParser\Node\Expr\BinaryOp\GreaterOrEqual;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -48,7 +49,8 @@ class RechercheSortiesType extends AbstractType
                 'attr' => [
                     'class' => 'm-2 px-2'
                 ],
-            ])
+						])
+
             ->add('sortiesOrganisateur', CheckboxType::class, [
                 'label' => 'Sorties dont je suis l\'organisateur/trice',
                 'required' => false,
