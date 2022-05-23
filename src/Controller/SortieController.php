@@ -126,15 +126,26 @@ class SortieController extends AbstractController
 //        ]);
 //    }
 
-    /**
-     * @Route("/{id}", name="sortie_delete", methods={"POST"})
-     */
-    public function delete(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $sortie->getId(), $request->request->get('_token'))) {
-            $sortieRepository->remove($sortie, true);
-        }
+//    /**
+//     * @Route("/{id}", name="sortie_delete", methods={"POST"})
+//     */
+//    public function delete(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
+//    {
+//        if ($this->isCsrfTokenValid('delete' . $sortie->getId(), $request->request->get('_token'))) {
+//            $sortieRepository->remove($sortie, true);
+//        }
+//
+//        return $this->redirectToRoute('sortie_list', [], Response::HTTP_SEE_OTHER);
+//    }
 
-        return $this->redirectToRoute('sortie_list', [], Response::HTTP_SEE_OTHER);
+    /**
+     * @Route("/{id}/test", name="sortie_cancellation", methods={"GET", "POST"})
+     */
+    public function cancel(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
+    {
+        return $this->render('sortie/annulation_sortie.html.twig', [
+            'sortie' => $sortie,
+        ]);
     }
+
 }

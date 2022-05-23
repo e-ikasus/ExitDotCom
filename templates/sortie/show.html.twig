@@ -93,11 +93,14 @@
 	</div>
 
 	{% if app.user == sortie.organisateur %}
-		<a href="{{ path('sortie_edit', {'id': sortie.id}) }}">
+		<a href="{{ path('sortie_edit', {'id': sortie.id}) }}" class="text-decoration-none">
 			<button class="btn btn-warning">Modifier</button>
 		</a>
-	{% elseif app.user == sortie.organisateur or is_granted('ROLE_ADMIN') %}
-		{{ include('sortie/_delete_form.html.twig') }}
+	{% endif %}
+	{% if app.user == sortie.organisateur or is_granted('ROLE_ADMIN') %}
+	<a href="{{ path('sortie_cancellation', {'id': sortie.id}) }}" class="text-decoration-none">
+		<button class="btn btn-danger">Annuler la sortie</button>
+	</a>
 	{% endif %}
 	<a href="{{ path('sortie_list') }}">
 		<button class="btn btn-info">Retour</button>

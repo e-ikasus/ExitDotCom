@@ -106,7 +106,9 @@
 					{# modifier la méthode pour que la sortie ne soit pas supprimée de la BDD mais soit modifiée pour donner un message de motif d'annulation #}
 					{# Actuellement, le lien permet la suppression. #}
 					{% if is_granted('ROLE_ADMIN') or app.user == sortie.organisateur %}
-						{% include('sortie/_delete_form.html.twig') %}
+						<a href="{{ path('sortie_cancellation', {'id': sortie.id}) }}" class="text-decoration-none">
+							<button class="btn btn-danger">Annuler la sortie</button>
+						</a>
 					{% endif %}
 				</td>
 			</tr>
