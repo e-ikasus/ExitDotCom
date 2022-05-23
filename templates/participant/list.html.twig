@@ -13,9 +13,10 @@
 
         <div id="form-csv" class="invisible">
             {{ form_start(form) }}
-            <div class="d-flex">
+            <div class="d-flex align-items-center gap-2">
                 {{ form_widget(form.moncsv) }}
                 <button class="btn btn-success">Valider</button>
+                <a href="{{ path('participant_download_csv') }}">Télécharger template</a>
             </div>
             {{ form_end(form) }}
         </div>

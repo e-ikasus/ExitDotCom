@@ -10,6 +10,7 @@ use App\Repository\ParticipantRepository;
 use App\Services\CreateParticipantFromCSV;
 use App\Services\ImportFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -118,6 +119,14 @@ class ParticipantController extends AbstractController
         }
 
         return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @Route(name="participant_download_csv", methods={"GET"})
+     */
+    public function snippet75(): BinaryFileResponse
+    {
+        return $this->file($this->getParameter('ressources_files_directory') . '/UserCsvTemplate.xlsm'); // That's it! 😁
     }
 
 }
