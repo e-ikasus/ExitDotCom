@@ -7,7 +7,7 @@
 	<div class="d-flex justify-content-end container">
 		<div>
 			<p>Date du jour : {{ 'now' | date('d-m-Y') }}</p>
-			<p>Participant : {{ app.user.prenom }} {{ app.user.nom }}</p>
+			<p>Participant : {{ app.user.prenom }} {{ app.user.nom[:1]|upper }}.</p>
 		</div>
 	</div>
 
@@ -94,10 +94,14 @@
 						</a>
 					{% endif %}
 
-					{% if sortie in app.user.sortiesInscrit and sortie.dateHeureDebut < 'now' %}
-						<a href="" class="text-decoration-none">Se désister</a>
-					{% elseif sortie.dateLimiteInscription <= 'now' %}
-						<a href="" class="text-decoration-none">S'inscrire</a>
+					{% if sortie in app.user.sortiesInscrit and sortie.dateHeureDebut < date() %}
+						<a href="{{ path('sortie_edit', {'id': sortie.id}) }}" class="text-decoration-none">
+							<button class="btn btn-warning">Se désister</button>
+						</a>
+					{% elseif sortie.dateLimiteInscription >= date() and app.user != sortie.organisateur %}
+						<a href="{{ path('sortie_edit', {'id': sortie.id}) }}" class="text-decoration-none">
+							<button class="btn btn-success">S'inscrire</button>
+						</a>
 					{% endif %}
 					{# modifier la méthode pour que la sortie ne soit pas supprimée de la BDD mais soit modifiée pour donner un message de motif d'annulation #}
 					{# Actuellement, le lien permet la suppression. #}
