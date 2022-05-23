@@ -124,9 +124,9 @@ class ParticipantController extends AbstractController
     /**
      * @Route(name="participant_download_csv", methods={"GET"})
      */
-    public function snippet75(): BinaryFileResponse
+    public function downloadCsvTemplate(): BinaryFileResponse
     {
-        return $this->file($this->getParameter('ressources_files_directory') . '/UserCsvTemplate.xlsm'); // That's it! 😁
+        return $this->file($this->getParameter('ressources_files_directory') . '/UserCsvTemplate.xlsm');
     }
 
 }
