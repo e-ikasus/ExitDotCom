@@ -98,7 +98,7 @@
 						<a href="{{ path('sortie_edit', {'id': sortie.id}) }}" class="text-decoration-none">
 							<button class="btn btn-warning">Se désister</button>
 						</a>
-					{% elseif sortie.dateLimiteInscription <= date() and app.user != sortie.organisateur %}
+					{% elseif sortie.dateLimiteInscription >= date() and app.user != sortie.organisateur %}
 						<a href="{{ path('sortie_edit', {'id': sortie.id}) }}" class="text-decoration-none">
 							<button class="btn btn-success">S'inscrire</button>
 						</a>
