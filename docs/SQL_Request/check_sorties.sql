@@ -8,7 +8,7 @@
    exit_id      : Identifiant de la sortie à analyser ou 0 pour toutes les analyser.
    dbg          : Indique si les modifications doivent être sauvegardées dans la table 'log_debug'.
    simulate     : Active ou pas la simulation de la modification d'un état.
-   append       : Indique si la table 'log_debug' doit être vider avant le traitement.
+   append       : Indique si la table 'log_debug' doit être vidée avant le traitement.
    return_state : Nvl état de la sortie, parmi ceux définis dans l'entité 'Etat'.
  */
 

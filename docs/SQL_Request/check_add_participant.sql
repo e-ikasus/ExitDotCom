@@ -34,7 +34,7 @@ BEGIN
 	DECLARE exit_state INTEGER DEFAULT 8;
 
 	-- ***************************
-	-- * Corps de du déclencheur *
+	-- * Corps du déclencheur *
 	-- ***************************
 
 	-- Récupère le nombre de participants déjà inscrits.
