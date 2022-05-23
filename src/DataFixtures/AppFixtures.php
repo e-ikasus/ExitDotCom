@@ -166,9 +166,6 @@ class AppFixtures extends Fixture
 			$dateCloture = (new DateTime())->add(new DateInterval($intervallesCloture[rand(0, count($intervallesCloture)-1)]));
 			$dateSortie = (clone $dateCloture)->add(new DateInterval($intervallesSortie[rand(0, count($intervallesSortie)-1)]));
 
-			//$dateCloture = $faker->dateTime();
-			//$dateSortie = (clone $dateCloture)->add(new DateInterval('P1M'));
-
 			$sorties[$i]->setDateHeureDebut($dateSortie);
 			$sorties[$i]->setDateLimiteInscription($dateCloture);
 
@@ -177,7 +174,6 @@ class AppFixtures extends Fixture
 
 			$lieux[rand(0, self::NBR_LIEUX - 1)]->addSortie($sorties[$i]);
 
-			//$etats[rand(0, self::NBR_ETATS - 1)]->addSorty($sorties[$i]);
 			$etats[Etat::OUVERTE]->addSorty($sorties[$i]);
 
 			// La sortie est référencée à la fois par le participant qui en est l'organisateur et par le campus du participant.

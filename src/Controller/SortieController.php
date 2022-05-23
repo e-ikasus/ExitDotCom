@@ -35,6 +35,9 @@ class SortieController extends AbstractController
         $form = $this->createForm(RechercheSortiesType::class, $this->research);
         $form->handleRequest($request);
 
+				// Mets à jour l'état des sorties.
+				$sortieRepository->refreshList();
+
         if ($form->isSubmitted() && $form->isValid()) {
             $sorties = $sortieRepository->findByCreteria($user, $this->research);
         } else {

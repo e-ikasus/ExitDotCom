@@ -28,6 +28,21 @@ class SortieRepository extends ServiceEntityRepository
 	}
 
 	/**
+	 * @return void
+	 * @throws \Doctrine\DBAL\Exception
+	 */
+
+	public function refreshList()
+	{
+		$conn = $this->getEntityManager()->getConnection();
+
+		$sql = 'SET @state = 8; CALL check_sorties(0, TRUE, FALSE, FALSE, @state);';
+		$stmt = $conn->prepare($sql);
+
+		$stmt->executeQuery();
+	}
+
+	/**
 	 * Ajoute une sortie à la base de données.
 	 *
 	 * @param Sortie $entity Sortie à ajouter
