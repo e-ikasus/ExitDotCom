@@ -99,6 +99,13 @@ class SortieRepository extends ServiceEntityRepository
 		$queryBuilder->andWhere('s.campus = :campus');
 		$queryBuilder->setParameter('campus', $research->getCampus());
 
+        $queryBuilder->Join('s.etat', 'e');
+        $queryBuilder->addSelect('e');
+
+        //Filtre des sorties : les archivées ne sont plus consultables.
+        $queryBuilder->andWhere('e.idLibelle != :idArchive');
+        $queryBuilder->setParameter('idArchive', Etat::ARCHIVEE);
+
 		// Si le nom d'une sortie doit contenir un terme en particulier.
 		if ($research->getSearchOutingName())
 		{
@@ -130,8 +137,6 @@ class SortieRepository extends ServiceEntityRepository
 		// S'il faut filtrer les sorties passées.
 		if ($research->getSortiesPassees())
 		{
-			$queryBuilder->Join('s.etat', 'e');
-			$queryBuilder->addSelect('e');
 			$queryBuilder->andWhere('e.idLibelle = :etat');
 			$queryBuilder->setParameter('etat', Etat::TERMINEE);
 		}
@@ -159,4 +164,24 @@ class SortieRepository extends ServiceEntityRepository
 
 		return new Paginator($query);
 	}
+
+    /**
+     * Méthode afin d'occulter les sorties archivées en arrivant sur la liste des sorties.
+     * @return float|int|mixed|string
+     */
+    public function findAllButArchived()
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+
+        $queryBuilder->addOrderBy("s.dateHeureDebut", "ASC");
+
+        $queryBuilder->Join('s.etat', 'e');
+        $queryBuilder->addSelect('e');
+
+        //Filtre des sorties : les archivées ne sont plus consultables.
+        $queryBuilder->andWhere('e.idLibelle != :idArchive');
+        $queryBuilder->setParameter('idArchive', Etat::ARCHIVEE);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }
