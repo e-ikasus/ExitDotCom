@@ -25,6 +25,16 @@ h1 {
     width: 324px
 }
 
+/* Liste des sorties */
+
+.detail-participant-deform:hover {
+    transform: scale(1.1);
+}
+
+.detail-participant-deform a {
+    width: 100%;
+}
+
 /* Liste Clickable */
 
 .hover-pointer:hover {
