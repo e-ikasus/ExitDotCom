@@ -23,6 +23,15 @@
         </div>
     </header>
 {% endif %}
+
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert--{{ label }} alert-warning">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+
 <main class="d-flex flex-column justify-content-around flex-grow-1">
     <div class="container">
         {% block body %}{% endblock %}

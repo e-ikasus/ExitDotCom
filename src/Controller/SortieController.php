@@ -62,7 +62,7 @@ class SortieController extends AbstractController
         $security->getUser()->removeSortiesInscrit($sortie);
 
         $entityManager->flush();
-
+        $this->addFlash('success', 'Vous vous êtes bien désinscrit !');
         return $this->redirectToRoute("sortie_list");
     }
 
@@ -74,7 +74,7 @@ class SortieController extends AbstractController
         $security->getUser()->addSortiesInscrit($sortie);
 
         $entityManager->flush();
-
+        $this->addFlash('success', 'Vous êtes inscrit à la sortie !');
         return $this->redirectToRoute("sortie_list");
     }
 
@@ -195,7 +195,7 @@ class SortieController extends AbstractController
             $etatCreee = $etatRepository->findOneBy(array('idLibelle' => Etat::ANNULEE));
             $sortie->setEtat($etatCreee);
 
-            //A corriger, ne fonctionne pas : $this->addFlash('success', 'La sortie a été supprimée avec succès !');
+            $this->addFlash('success', 'La sortie a été supprimée avec succès !');
 
             $entityManager->persist($sortie);
             $entityManager->flush();
