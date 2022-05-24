@@ -5,6 +5,10 @@
 {% block body %}
 
     <h1>Gestion Participants</h1>
+    <a id="test" onclick="recupValeurs();" href="{{ path('participant_list') }}"> test </a>
+{#    <a id="test" onclick="recupValeurs();" href="#"> test </a>#}
+
+
     <div class="d-flex gap-2">
         <div>
             <a class="btn btn-success" href="{{ path('participant_new') }}">Ajouter un utilisateur</a>
@@ -16,7 +20,8 @@
             <div class="d-flex align-items-center gap-2">
                 {{ form_widget(form.moncsv) }}
                 <button class="btn btn-success">Valider</button>
-                <a href="{{ path('download_file', {'fileDirectory' : 'ressources_files_directory', 'fileName' : 'UserCsvTemplate.xlsm'}) }}">Télécharger template</a>
+                <a href="{{ path('download_file', {'fileDirectory' : 'ressources_files_directory', 'fileName' : 'UserCsvTemplate.xlsm'}) }}">Télécharger
+                    template</a>
             </div>
             {{ form_end(form) }}
         </div>
@@ -46,7 +51,7 @@
                 <td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].campus.nom }}</td>
                 <td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].telephone }}</td>
                 <td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].email }}</td>
-                <td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].actif ? 'x' : ' ' }}</td>
+                <td><input type="checkbox" onclick="checkEtat({{ participants[i].id }})" name="actif" {{ participants[i].actif  ? "checked" }}></td>
                 <td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].administrateur ? 'x' : ' ' }}</td>
                 <td>{{ include ('participant/_delete_form.html.twig', {'participant' : participants[i]}) }}</td>
             </tr>
@@ -57,5 +62,34 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <script>
+
+        let results = [];
+
+        function checkEtat(id) {
+
+            if ( results.includes(id) ){
+                results.splice(results.indexOf(id), 1)
+            } else {
+                results.push(id);
+            }
+
+        }
+
+        function recupValeurs() {
+
+            let validation = document.getElementById('test')
+            let lien = validation.getAttribute("href");
+
+            lien += "?"
+
+            for (let i = 0; i < results.length; i++){
+                lien += "resultat[]=" + results[i] + "&";
+            }
+            validation.setAttribute("href", lien);
+        }
+
+    </script>
 
 {% endblock %}

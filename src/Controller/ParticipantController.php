@@ -9,8 +9,8 @@ use App\Repository\CampusRepository;
 use App\Repository\ParticipantRepository;
 use App\Services\CreateParticipantFromCSV;
 use App\Services\ImportFile;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -25,8 +25,9 @@ class ParticipantController extends AbstractController
     /**
      * @Route("/admin", name="participant_list", methods={"GET", "POST"})
      */
-    public function list(Request $request, ParticipantRepository $participantRepository, CampusRepository $campusRepository, SluggerInterface $slugger, UserPasswordHasherInterface $passwordHasher): Response
+    public function list(Request $request, ParticipantRepository $participantRepository, CampusRepository $campusRepository, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
     {
+
 
         $form = $this->createForm(ParticipantCsvType::class);
         $form->handleRequest($request);
@@ -38,10 +39,22 @@ class ParticipantController extends AbstractController
             $importFile = new ImportFile($file, $this->getParameter('csv_files_directory'), $slugger, "csv");
             $importFile->storeFile();
 
-            $createParticipantFromCSV = new CreateParticipantFromCSV($this->getParameter('csv_files_directory'), $importFile->getNewFileName(), $participantRepository, $campusRepository);
+            $createParticipantFromCSV = new CreateParticipantFromCSV($this->getParameter('csv_files_directory'), $importFile->getNewFileName(), $campusRepository, $entityManager);
             $createParticipantFromCSV->importUser();
 
             return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);
+        }
+
+        if ($request->get("resultat") != null) {
+
+            $resultat = $request->get("resultat");
+            foreach ($resultat as $id) {
+                $participant = $participantRepository->findOneBy(array("id" => $id));
+                $participant->setActif(!$participant->isActif());
+            }
+            $entityManager->flush();
+
+            return $this->redirectToRoute('participant_list');
         }
 
         return $this->renderForm('participant/list.html.twig', [
@@ -58,13 +71,12 @@ class ParticipantController extends AbstractController
         $participant = new Participant();
 
 
-
         $form = $this->createForm(ParticipantType::class, $participant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $participant->setPassword($passwordHasher->hashPassword( $participant, $form->get('password')->getData()));
+            $participant->setPassword($passwordHasher->hashPassword($participant, $form->get('password')->getData()));
 
             $participant->setRoles($form->get('administrateur')->getData() ? ['ROLE_ADMIN'] : ['ROLE_USER']);
             $participant->setActif(true);
