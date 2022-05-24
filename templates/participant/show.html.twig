@@ -4,92 +4,96 @@
 
 {% block body %}
 
-        <div class="d-flex justify-content-center">
-            <h1>{{ participant.pseudo }}</h1>
-        </div>
+	<div class="d-flex justify-content-center">
+		<h1>{{ participant.pseudo }}</h1>
+	</div>
 
-        <div class="d-flex flex-wrap gap-3 zoom">
+	<div class="d-flex flex-wrap gap-3 zoom">
 
-            <div class="colTier">
-                    <img id="monProfilImg" class="w-50" onclick="enlargeImg()"
-                         src="{{ asset('uploads/profiles_pictures/' ~ participant.photo) }}"
-                         alt="pas de photo">
-            </div>
+		<div class="colTier">
+			<img id="monProfilImg" class="w-50" onclick="enlargeImg()"
+			     src="{{ asset('uploads/profiles_pictures/' ~ participant.photo) }}"
+			     alt="pas de photo">
+		</div>
 
-            <div class="colTier">
+		<div class="colTier">
 
-                <table class="table w-100">
-                    <tbody>
-                    <tr>
-                        <th>Prénom</th>
-                        <td>{{ participant.prenom }}</td>
-                    </tr>
-                    <tr>
-                        <th>Nom</th>
-                        <td>{{ participant.nom }}</td>
-                    </tr>
-                    <tr>
-                        <th>Telephone</th>
-                        <td>{{ participant.telephone }}</td>
-                    </tr>
-                    <tr>
-                        <th>Email</th>
-                        <td>{{ participant.email }}</td>
-                    </tr>
-                    <tr>
-                        <th>Campus</th>
-                        <td>{{ participant.campus.nom }}</td>
-                    </tr>
-                    <tr>
-                        <th>Photo</th>
-                        <td>{{ participant.photo }}</td>
-                    </tr>
+			<table class="table w-100">
+				<tbody>
+				<tr>
+					<th>Prénom</th>
+					<td>{{ participant.prenom }}</td>
+				</tr>
+				<tr>
+					<th>Nom</th>
+					<td>{{ participant.nom }}</td>
+				</tr>
+				<tr>
+					<th>Telephone</th>
+					<td>{{ participant.telephone }}</td>
+				</tr>
+				<tr>
+					<th>Email</th>
+					<td>{{ participant.email }}</td>
+				</tr>
+				<tr>
+					<th>Campus</th>
+					<td>{{ participant.campus.nom }}</td>
+				</tr>
+				<tr>
+					<th>Photo</th>
+					<td>{{ participant.photo }}</td>
+				</tr>
 
-                    {% if is_granted ('ROLE_ADMIN') %}
-                        <tr>
-                            <th>Id</th>
-                            <td>{{ participant.id }}</td>
-                        </tr>
-                        <tr>
-                            <th>Pseudo</th>
-                            <td>{{ participant.pseudo }}</td>
-                        </tr>
-                        <tr>
-                            <th>Roles</th>
-                            <td>{{ participant.roles ? participant.roles|json_encode : '' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Administrateur</th>
-                            <td>{{ participant.administrateur ? 'Yes' : 'No' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Actif</th>
-                            <td>{{ participant.actif ? 'Yes' : 'No' }}</td>
-                        </tr>
+				{% if is_granted ('ROLE_ADMIN') %}
+					<tr>
+						<th>Id</th>
+						<td>{{ participant.id }}</td>
+					</tr>
+					<tr>
+						<th>Pseudo</th>
+						<td>{{ participant.pseudo }}</td>
+					</tr>
+					<tr>
+						<th>Roles</th>
+						<td>{{ participant.roles ? participant.roles|json_encode : '' }}</td>
+					</tr>
+					<tr>
+						<th>Administrateur</th>
+						<td>{{ participant.administrateur ? 'Yes' : 'No' }}</td>
+					</tr>
+					<tr>
+						<th>Actif</th>
+						<td>{{ participant.actif ? 'Yes' : 'No' }}</td>
+					</tr>
 
-                        <a href="{{ path('participant_list') }}">back to list</a>
+				{% endif %}
 
-                        <a href="{{ path('participant_edit', {'pseudo': participant.pseudo}) }}">edit</a>
+				</tbody>
+			</table>
 
-                        {{ include('participant/_delete_form.html.twig') }}
-                    {% endif %}
+			{% if is_granted ('ROLE_ADMIN') %}
+				<a class="text-decoration-none" href="{{ path('participant_list') }}">
+					<button class="btn btn-success btn-sm">Retour</button>
+				</a>
+			{% endif %}
 
-                    </tbody>
-                </table>
+			{% if is_granted ('ROLE_ADMIN') or app.user.id == participant.id %}
+				<a class="text-decoration-none" href="{{ path('participant_edit', {'pseudo': participant.pseudo}) }}">
+					<button class="btn btn-warning btn-sm">Modifier</button>
+				</a>
+			{% endif %}
 
-                {% if app.user.id == participant.id %}
+			{% if is_granted ('ROLE_ADMIN') %}
+				{{ include('participant/_delete_form.html.twig') }}
+			{% endif %}
 
-                    <a class="btn btn-warning" href="{{ path('participant_edit', {'pseudo': participant.pseudo}) }}">Modifier</a>
+		</div>
 
-                {% endif %}
+		<div class="colTier">
 
-            </div>
+		</div>
 
-            <div class="colTier">
-
-
-            </div>
-
-        </div>
+	</div>
 
 {% endblock %}
