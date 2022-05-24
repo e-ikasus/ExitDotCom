@@ -38,7 +38,7 @@ class LieuController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $lieuRepository->add($lieu, true);
-
+            $this->addFlash('success', 'Un nouveau lieu a été créé !');
             return $this->redirectToRoute('sortie_new', [
                 'lieu' => $lieu,
                 'form' => $form,
@@ -89,6 +89,7 @@ class LieuController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$lieu->getId(), $request->request->get('_token'))) {
             $lieuRepository->remove($lieu, true);
+            $this->addFlash('success', 'Vous avez supprimé un lieu !');
         }
 
         return $this->redirectToRoute('lieu_list', [], Response::HTTP_SEE_OTHER);
