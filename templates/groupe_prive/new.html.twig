@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New GroupePrive{% endblock %}
+
+{% block body %}
+    <h1>Créer un nouveau groupe privé</h1>
+
+    {{ include('groupe_prive/_form.html.twig') }}
+
+    <a href="{{ path('groupe_prive_list') }}"><button class="btn btn-warning">Annuler</button></a>
+{% endblock %}

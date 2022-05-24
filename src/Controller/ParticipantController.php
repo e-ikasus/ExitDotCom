@@ -11,6 +11,7 @@ use App\Services\CreateParticipantFromCSV;
 use App\Services\ImportFile;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -29,15 +30,16 @@ class ParticipantController extends AbstractController
     {
 
 
-        $form = $this->createForm(ParticipantCsvType::class);
-        $form->handleRequest($request);
+				$form = $this->createForm(ParticipantCsvType::class);
+				$form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+				if ($form->isSubmitted() && $form->isValid())
+				{
 
-            $file = $form->get('moncsv')->getData();
+						$file = $form->get('moncsv')->getData();
 
-            $importFile = new ImportFile($file, $this->getParameter('csv_files_directory'), $slugger, "csv");
-            $importFile->storeFile();
+						$importFile = new ImportFile($file, $this->getParameter('csv_files_directory'), $slugger, "csv");
+						$importFile->storeFile();
 
             $createParticipantFromCSV = new CreateParticipantFromCSV($this->getParameter('csv_files_directory'), $importFile->getNewFileName(), $campusRepository, $entityManager);
             $createParticipantFromCSV->importUser();
@@ -76,7 +78,7 @@ class ParticipantController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $participant->setPassword($passwordHasher->hashPassword($participant, $form->get('password')->getData()));
+            $participant->setPassword($passwordHasher->hashPassword( $participant, $form->get('password')->getData()));
 
             $participant->setRoles($form->get('administrateur')->getData() ? ['ROLE_ADMIN'] : ['ROLE_USER']);
             $participant->setActif(true);
@@ -130,16 +132,22 @@ class ParticipantController extends AbstractController
             'form' => $form,]);
     }
 
+		/**
+		 * @Route("/admin/{pseudo}", name="participant_delete", methods={"POST"})
+		 */
+		public function delete(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
+		{
+				if ($this->isCsrfTokenValid('delete' . $participant->getId(), $request->request->get('_token')))
+				{
+						// Toutes les sortie du participant doivent être "détachées" de celui-ci.
+						foreach ($participant->getSortiesOrganisees() as $sortiesOrganisee) $sortiesOrganisee->setOrganisateur(null);
 
-    /**
-     * @Route("/admin/{pseudo}", name="participant_delete", methods={"POST"})
-     */
-    public function delete(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $participant->getId(), $request->request->get('_token'))) {
-            $participantRepository->remove($participant, true);
-            $this->addFlash('success', 'Vous venez de vous débarasser de ' . $participant->getPrenom() . ' ' . $participant->getNom() . ' . Veillez à bien effacer toutes les preuves, et vérifiez qu\'il n\'y ait pas de témoin gênant...!');
-        }
+						// Supprime maintenant le participant. Sera également "flushées" les sorties précédemment modifiées.
+						$participantRepository->remove($participant, true);
+
+						// Avertis l'adfmin que tout s'est bien déroulé.
+						$this->addFlash('success', 'Vous venez de vous débarasser de ' . $participant->getPrenom() . ' ' . $participant->getNom() . ' . Veillez à bien effacer toutes les preuves, et vérifiez qu\'il n\'y ait pas de témoin gênant...!');
+				}
 
         return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);
     }

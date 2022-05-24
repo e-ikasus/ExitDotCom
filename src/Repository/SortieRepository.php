@@ -8,7 +8,6 @@ use App\Entity\Sortie;
 use App\Services\Research;
 use Container7GJzLhE\getDoctrine_QueryDqlCommandService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -36,7 +35,7 @@ class SortieRepository extends ServiceEntityRepository
 	{
 		$conn = $this->getEntityManager()->getConnection();
 
-		$sql = 'SET @state = 8; CALL check_sorties(0, FALSE, FALSE, TRUE, @state);';
+		$sql = 'SET @state = 8; CALL check_sorties(0, TRUE, FALSE, TRUE, @state);';
 		$stmt = $conn->prepare($sql);
 
 		$stmt->executeQuery();
@@ -55,10 +54,7 @@ class SortieRepository extends ServiceEntityRepository
 	{
 		$this->getEntityManager()->persist($entity);
 
-		if ($flush)
-		{
-			$this->getEntityManager()->flush();
-		}
+		if ($flush) $this->getEntityManager()->flush();
 	}
 
 	/**
@@ -74,10 +70,7 @@ class SortieRepository extends ServiceEntityRepository
 	{
 		$this->getEntityManager()->remove($entity);
 
-		if ($flush)
-		{
-			$this->getEntityManager()->flush();
-		}
+		if ($flush) $this->getEntityManager()->flush();
 	}
 
 	/**

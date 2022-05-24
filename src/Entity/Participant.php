@@ -78,7 +78,10 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $campus;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur", orphanRemoval=true)
+		 *
+		 * !! retrait de orphanRemoval=true pour éviter que la suppression d'un participant supprime aussi la sortie !!
+		 *
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur")
      */
     private $sortiesOrganisees;
 
@@ -92,10 +95,16 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $photo;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=GroupePrive::class, mappedBy="participant")
+     */
+    private $groupePrives;
+
     public function __construct()
     {
         $this->sortiesOrganisees = new ArrayCollection();
         $this->sortiesInscrit = new ArrayCollection();
+        $this->groupePrives = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -329,6 +338,33 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GroupePrive>
+     */
+    public function getGroupePrives(): Collection
+    {
+        return $this->groupePrives;
+    }
+
+    public function addGroupePrife(GroupePrive $groupePrife): self
+    {
+        if (!$this->groupePrives->contains($groupePrife)) {
+            $this->groupePrives[] = $groupePrife;
+            $groupePrife->addParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupePrife(GroupePrive $groupePrife): self
+    {
+        if ($this->groupePrives->removeElement($groupePrife)) {
+            $groupePrife->removeParticipant($this);
+        }
 
         return $this;
     }

@@ -53,7 +53,7 @@ class Sortie
      * @ORM\ManyToOne(targetEntity=Lieu::class, inversedBy="sorties")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $Lieu;
+    private $lieu;
 
     /**
      * @ORM\ManyToOne(targetEntity=Etat::class, inversedBy="sorties")
@@ -68,8 +68,11 @@ class Sortie
     private $campus;
 
     /**
+		 * !! changement de false en true pour la contrainte nullable pour permettre la suppression d'un participant
+		 * sans supprimer sa sortie organisée. !!
+		 *
      * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="sortiesOrganisees")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $organisateur;
 
@@ -162,12 +165,12 @@ class Sortie
 
     public function getLieu(): ?Lieu
     {
-        return $this->Lieu;
+        return $this->lieu;
     }
 
-    public function setLieu(?Lieu $Lieu): self
+    public function setLieu(?Lieu $lieu): self
     {
-        $this->Lieu = $Lieu;
+        $this->lieu = $lieu;
 
         return $this;
     }

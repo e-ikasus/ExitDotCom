@@ -3,143 +3,181 @@
 {% block title %}{{ parent() }} | Sortie index{% endblock %}
 
 {% block body %}
+	<div class="d-none d-md-block">
 
-	<div class="d-flex justify-content-end container">
-		<div>
-			<p>Date du jour : {{ 'now' | date('d-m-Y') }}</p>
-			<p>Participant : {{ app.user.prenom }} {{ app.user.nom[:1]|upper }}.</p>
+		<div class="d-flex justify-content-end container">
+			<div>
+				<p>Date du jour : {{ 'now' | date('d-m-Y') }}</p>
+				<p>Participant : {{ app.user.prenom }} {{ app.user.nom[:1]|upper }}.</p>
+			</div>
 		</div>
-	</div>
 
 
-	{{ form_start(form) }}
-	<fieldset class="fieldsetSortiesForm">
-		<legend class="m-3">Filtrer les sorties</legend>
+		{{ form_start(form) }}
+		<fieldset class="fieldsetSortiesForm">
+			<legend class="m-3">Filtrer les sorties</legend>
 
-		<div class="d-flex row justify-content-center m-3">
-			<div class="col-5 d-flex flex-column">
+			<div class="d-flex row justify-content-center m-3">
+				<div class="col-5 d-flex flex-column">
 
-				{{ form_row(form.campus) }}
+					{{ form_row(form.campus) }}
 
-				{{ form_row(form.searchOutingName) }}
+					{{ form_row(form.searchOutingName) }}
 
-				<div class="d-flex flex-row flex-wrap">
-					{{ form_row(form.dateOutingStart) }}
-					{{ form_row(form.dateOutingEnd) }}
+					<div class="d-flex flex-row flex-wrap">
+						{{ form_row(form.dateOutingStart) }}
+						{{ form_row(form.dateOutingEnd) }}
+					</div>
 				</div>
+
+				<div class="col-4">
+					<div style="text-overflow: '-'">{{ form_widget(form.sortiesOrganisateur) }} {# trouver comment mettre le texte à la ligne text-overflow ne fonctionne pas #}
+						{{ form_label(form.sortiesOrganisateur) }}</div>
+					<div>{{ form_widget(form.sortiesInscrit) }}
+						{{ form_label(form.sortiesInscrit) }}</div>
+					<div>{{ form_widget(form.sortiesNonInscrit) }}
+						{{ form_label(form.sortiesNonInscrit) }}</div>
+					<div>{{ form_widget(form.sortiesPassees) }}
+						{{ form_label(form.sortiesPassees) }}</div>
+				</div>
+
+				<div class="col-3 d-flex justify-content-center align-items-start">
+					<button type="submit" class="btn btn-info btn-lg border-dark border-3 shadow">Rechercher
+					</button>
+				</div>
+
 			</div>
-
-			<div class="col-4">
-				<div style="text-overflow: '-'">{{ form_widget(form.sortiesOrganisateur) }} {# trouver comment mettre le texte à la ligne text-overflow ne fonctionne pas #}
-					{{ form_label(form.sortiesOrganisateur) }}</div>
-				<div>{{ form_widget(form.sortiesInscrit) }}
-					{{ form_label(form.sortiesInscrit) }}</div>
-				<div>{{ form_widget(form.sortiesNonInscrit) }}
-					{{ form_label(form.sortiesNonInscrit) }}</div>
-				<div>{{ form_widget(form.sortiesPassees) }}
-					{{ form_label(form.sortiesPassees) }}</div>
-			</div>
-
-			<div class="col-3 d-flex justify-content-center align-items-start">
-				<button type="submit" class="btn btn-info btn-lg border-dark border-3 shadow">Rechercher
-				</button>
-			</div>
-
-		</div>
-	</fieldset>
-	{{ form_end(form) }}
-
-	<table class="table mb-5 mt-5">
-		<thead>
-		<tr>
-			<th>Nom de la sortie</th>
-			<th>Date de la sortie</th>
-			<th>Clôture</th>
-			<th>Inscrits/places</th>
-			<th>Etat</th>
-			<th>Inscrit</th>
-			<th>Organisateur</th>
-			<th>Actions</th>
-		</tr>
-		</thead>
-		<tbody>
-		{% for sortie in sorties %}
+		</fieldset>
+		{{ form_end(form) }}
+	</div>
+	<div class="d-none d-md-block">
+		<table class="table mb-5 mt-5">
+			<thead>
 			<tr>
-				<td>{{ sortie.nom }}</td>
-				<td>{{ sortie.dateHeureDebut|date('Y-m-d H:i') }}</td>
-				<td>{{ sortie.dateLimiteInscription|date('Y-m-d') }}</td>
-				<td>{{ sortie.participants|length }} / {{ sortie.nbInscriptionsMax }}</td>
-				<td>{{ sortie.etat.libelle }}</td>
-				<td>{{ sortie in app.user.sortiesInscrit ? "X" }}</td>
-				<td class="detail-participant-deform"><a
-							href="{{ path('participant_profil', {'pseudo': sortie.organisateur.pseudo}) }}">{{ sortie.organisateur.pseudo }}</a>
-				</td>
-				<td> {# LES BOUTONS SELON L'ETAT DE LA SORTIE ET LE USER #}
+				<th>Nom de la sortie</th>
+				<th>Date de la sortie</th>
+				<th>Clôture</th>
+				<th>Inscrits/places</th>
+				<th>Etat</th>
+				<th>Inscrit</th>
+				<th>Organisateur</th>
+				<th>Actions</th>
+			</tr>
+			</thead>
+			<tbody>
+			{% for sortie in sorties %}
+				<tr>
+					<td>{{ sortie.nom }}</td>
+					<td>{{ sortie.dateHeureDebut|date('Y-m-d H:i') }}</td>
+					<td>{{ sortie.dateLimiteInscription|date('Y-m-d') }}</td>
+					<td>{{ sortie.participants|length }} / {{ sortie.nbInscriptionsMax }}</td>
+					<td>{{ sortie.etat.libelle }}</td>
+					<td>{{ sortie in app.user.sortiesInscrit ? "X" }}</td>
+					<td class="detail-participant-deform">
+						{% if sortie.organisateur %}
+							<a href="{{ path('participant_profil', {'pseudo': sortie.organisateur.pseudo}) }}">{{ sortie.organisateur.pseudo }}</a>
+						{% else %}
+							Inconnu
+						{% endif %}
+					</td>
+					<td> {# LES BOUTONS SELON L'ETAT DE LA SORTIE ET LE USER #}
 
-					{# un admin et un organisateur peuvent annuler une sortie (tant que date sortie n'est pas dépassée)
+						{# un admin et un organisateur peuvent annuler une sortie (tant que date sortie n'est pas dépassée)
 						annule => sortie marquée comme annulée + message du motif
 					un user peut s'inscrire à une sortie
 					un participant peut se désister tant que date sortie non dépassée
 					pas d'inscription après date clôture des inscriptions
 					si date sortie +1 mois => non consultable (classer les sorties par date de clôture DESC)
-					#}
+						#}
 
-					{# PUBLICATION A FAIRE #}
-					{# SORTIES EN CREATION #}
-					{% if sortie.etat is constant('App\\Entity\\Etat::ENCREATION') and app.user == sortie.organisateur %}
-						<a href="{{ path('sortie_show', {'id': sortie.id}) }}" class="text-decoration-none">
-							<button class="btn btn-info">Publier</button>
-						</a>
-					{% endif %}
-
-					{# SORTIES CONSULTABLES #}
-					{% if sortie.etat is not constant('App\\Entity\\Etat::ENCREATION') %}
-						<a href="{{ path('sortie_show', {'id': sortie.id}) }}" class="text-decoration-none">
-							<button class="btn btn-info">Détails</button>
-						</a>
-					{% endif %}
-
-					{# SORTIES EN CREATION : #}
-					{% if app.user == sortie.organisateur and sortie.etat.idLibelle is constant('App\\Entity\\Etat::ENCREATION') %}
-						<a href="{{ path('sortie_edit', {'id': sortie.id}) }}" class="text-decoration-none">
-							<button class="btn btn-warning">Modifier</button>
-						</a>
-					{% endif %}
-
-					{# SORTIES OUVERTES #}
-					{% if sortie.etat.idLibelle is constant('App\\Entity\\Etat::OUVERTE') and app.user != sortie.organisateur and not (sortie in app.user.sortiesInscrit) %}
-						<a href="{{ path('sortie_subscribe', {'id': sortie.id}) }}" class="text-decoration-none">
-							<button class="btn btn-success">S'inscrire</button>
-						</a>
-					{% endif %}
-
-					{# SORTIES OUVERTES OU CLOTUREES : #}
-					{% if (sortie in app.user.sortiesInscrit) and (sortie.etat.idLibelle is constant('App\\Entity\\Etat::OUVERTE') or sortie.etat is constant('App\\Entity\\Etat::CLOTUREE')) %}
-						<a href="{{ path('sortie_unsubscribe', {'id': sortie.id}) }}" class="text-decoration-none">
-							<button class="btn btn-warning">Se désister</button>
-						</a>
-					{% endif %}
-
-					{# SORTIES AVEC POSSIBLE ANNULATION #}
-					{% if is_granted('ROLE_ADMIN') or app.user == sortie.organisateur %}
-						{% if sortie.etat.idLibelle is constant('App\\Entity\\Etat::ENCREATION') or sortie.etat.idLibelle is constant('App\\Entity\\Etat::OUVERTE') or sortie.etat is constant('App\\Entity\\Etat::CLOTUREE') %}
-							<a href="{{ path('sortie_cancellation', {'id': sortie.id}) }}" class="text-decoration-none">
-								<button class="btn btn-danger">Annuler</button>
+						{# PUBLICATION A FAIRE #}
+						{# SORTIES EN CREATION #}
+						{% if sortie.etat is constant('App\\Entity\\Etat::ENCREATION') and app.user == sortie.organisateur %}
+							<a href="{{ path('sortie_show', {'id': sortie.id}) }}" class="text-decoration-none">
+								<button class="btn btn-info">Publier</button>
 							</a>
 						{% endif %}
-					{% endif %}
-				</td>
-			</tr>
-		{% else %}
-			<tr>
-				<td colspan="8">Aucune sortie n'est prévue. N'hésitez pas à en organiser une !</td>
-			</tr>
-		{% endfor %}
-		</tbody>
-	</table>
 
+						{# SORTIES CONSULTABLES #}
+						{% if sortie.etat is not constant('App\\Entity\\Etat::ENCREATION') %}
+							<a href="{{ path('sortie_show', {'id': sortie.id}) }}" class="text-decoration-none">
+								<button class="btn btn-info">Détails</button>
+							</a>
+						{% endif %}
 
-	<a href="{{ path('sortie_new') }}">
+						{# SORTIES EN CREATION : #}
+						{% if app.user == sortie.organisateur and sortie.etat.idLibelle is constant('App\\Entity\\Etat::ENCREATION') %}
+							<a href="{{ path('sortie_edit', {'id': sortie.id}) }}" class="text-decoration-none">
+								<button class="btn btn-warning">Modifier</button>
+							</a>
+						{% endif %}
+
+						{# SORTIES OUVERTES #}
+						{% if sortie.etat.idLibelle is constant('App\\Entity\\Etat::OUVERTE') and app.user != sortie.organisateur and not (sortie in app.user.sortiesInscrit) %}
+							<a href="{{ path('sortie_subscribe', {'id': sortie.id}) }}" class="text-decoration-none">
+								<button class="btn btn-success">S'inscrire</button>
+							</a>
+						{% endif %}
+
+						{# SORTIES OUVERTES OU CLOTUREES : #}
+						{% if (sortie in app.user.sortiesInscrit) and (sortie.etat.idLibelle is constant('App\\Entity\\Etat::OUVERTE') or sortie.etat is constant('App\\Entity\\Etat::CLOTUREE')) %}
+							<a href="{{ path('sortie_unsubscribe', {'id': sortie.id}) }}" class="text-decoration-none">
+								<button class="btn btn-warning">Se désister</button>
+							</a>
+						{% endif %}
+
+						{# SORTIES AVEC POSSIBLE ANNULATION #}
+						{% if is_granted('ROLE_ADMIN') or app.user == sortie.organisateur %}
+							{% if sortie.etat.idLibelle is constant('App\\Entity\\Etat::ENCREATION') or sortie.etat.idLibelle is constant('App\\Entity\\Etat::OUVERTE') or sortie.etat is constant('App\\Entity\\Etat::CLOTUREE') %}
+								<a href="{{ path('sortie_cancellation', {'id': sortie.id}) }}"
+								   class="text-decoration-none">
+									<button class="btn btn-danger">Annuler</button>
+								</a>
+							{% endif %}
+						{% endif %}
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="8">Aucune sortie n'est prévue. N'hésitez pas à en organiser une !</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+	<a href="{{ path('sortie_new') }}" class="d-none d-md-block">
 		<button class="btn btn-success btn-lg">Organiser une sortie</button>
 	</a>
+	{# la div suivante apparaît sur petit écran à la place de la div ci-dessus #}
+	<div class="d-md-none">
+		<h1>Mes sorties : </h1>
+		<table class="table mb-5 mt-5">
+			<thead>
+			<tr>
+				<th>Nom de la sortie</th>
+				<th>Date de la sortie</th>
+				<th>Lieu</th>
+			</tr>
+			</thead>
+			<tbody>
+			{% if sorties | length and (app.user.sortiesInscrit)%}
+				{% for sortie in sorties %}
+					{% if sortie in app.user.sortiesInscrit %}
+						<tr>
+							<td><a href="{{ path('sortie_show', {'id': sortie.id})}}">{{ sortie.nom }}</a></td>
+							<td>{{ sortie.dateHeureDebut|date('Y-m-d H:i') }}</td>
+							<td>{{ sortie.lieu.nom }}</td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			{% else %}
+				<tr>
+					<td colspan="8">Pas de sortie? Tu es bien casanier...</td>
+				</tr>
+			{% endif %}
+			</tbody>
+		</table>
+	</div>
+
 {% endblock %}
