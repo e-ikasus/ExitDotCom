@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\GroupePrive;
 use App\Form\GroupePriveType;
 use App\Repository\GroupePriveRepository;
+use App\Repository\ParticipantRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,9 +29,10 @@ class GroupePriveController extends AbstractController
     /**
      * @Route("/new", name="groupe_prive_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, GroupePriveRepository $groupePriveRepository): Response
+    public function new(Request $request, GroupePriveRepository $groupePriveRepository, ParticipantRepository $participantRepository): Response
     {
         $groupePrive = new GroupePrive();
+        $participants = $participantRepository->findAll();
         $form = $this->createForm(GroupePriveType::class, $groupePrive);
         $form->handleRequest($request);
 
@@ -42,6 +44,7 @@ class GroupePriveController extends AbstractController
 
         return $this->renderForm('groupe_prive/new.html.twig', [
             'groupe_prive' => $groupePrive,
+            'participants' => $participants,
             'form' => $form,
         ]);
     }
