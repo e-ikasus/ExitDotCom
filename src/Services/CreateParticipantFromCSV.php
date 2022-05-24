@@ -5,20 +5,22 @@ namespace App\Services;
 use App\Entity\Participant;
 use App\Repository\CampusRepository;
 use App\Repository\ParticipantRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class CreateParticipantFromCSV
 {
     private string $fileLocation;
     private string $fileName;
-    private ParticipantRepository $participantRepository;
     private CampusRepository $campusRepository;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct($fileLocation, $fileName, ParticipantRepository $participantRepository, CampusRepository $campusRepository)
+
+    public function __construct($fileLocation, $fileName, CampusRepository $campusRepository, EntityManagerInterface $entityManager)
     {
         $this->fileLocation = $fileLocation;
         $this->fileName = $fileName;
-        $this->participantRepository = $participantRepository;
         $this->campusRepository = $campusRepository;
+        $this->entityManager = $entityManager;
     }
 
     public function importUser(){
@@ -43,11 +45,11 @@ class CreateParticipantFromCSV
                     $participant->setActif(true);
                     $participant->setPhoto('default.png');
 
-                    $this->participantRepository->add($participant, true);
+                    $this->entityManager->persist($participant);
                 }
 
             }
-
+            $this->entityManager->flush();
             fclose($handle);
 
         }
