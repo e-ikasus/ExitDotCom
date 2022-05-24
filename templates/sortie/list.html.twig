@@ -149,8 +149,9 @@
 	<a href="{{ path('sortie_new') }}" class="d-none d-md-block">
 		<button class="btn btn-success btn-lg">Organiser une sortie</button>
 	</a>
-{# la div suivante apparaît sur petit écran à la place de la div ci-dessus #}
+	{# la div suivante apparaît sur petit écran à la place de la div ci-dessus #}
 	<div class="d-md-none">
+		<h1>Mes sorties : </h1>
 		<table class="table mb-5 mt-5">
 			<thead>
 			<tr>
@@ -160,13 +161,21 @@
 			</tr>
 			</thead>
 			<tbody>
-			{% for sortie in sorties %}
+			{% if sorties | length and (app.user.sortiesInscrit)%}
+				{% for sortie in sorties %}
+					{% if sortie in app.user.sortiesInscrit %}
+						<tr>
+							<td><a href="{{ path('sortie_show', {'id': sortie.id})}}">{{ sortie.nom }}</a></td>
+							<td>{{ sortie.dateHeureDebut|date('Y-m-d H:i') }}</td>
+							<td>{{ sortie.lieu.nom }}</td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			{% else %}
 				<tr>
-					<td>{{ sortie.nom }}</td>
-					<td>{{ sortie.dateHeureDebut|date('Y-m-d H:i') }}</td>
-					<td>{{ sortie.lieu.nom }}</td>
+					<td colspan="8">Pas de sortie? Tu es bien casanier...</td>
 				</tr>
-			{% endfor %}
+			{% endif %}
 			</tbody>
 		</table>
 	</div>
