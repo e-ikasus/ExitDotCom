@@ -4,68 +4,69 @@
 
 {% block body %}
 	<h1>{{ sortie.nom }}</h1>
+	<div class="d-none d-md-block">
+		<div class="d-flex flex-row">
+			<div class="col-6 me-5">
+				<table class="table table-borderless">
+					<tbody>
+					<tr>
+						<th class="col-4">Nom de la sortie :</th>
+						<td>{{ sortie.nom }}</td>
+					</tr>
+					<tr>
+						<th class="col-4">Date et heure de la sortie :</th>
+						<td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i') : '' }}</td>
+					</tr>
+					<tr>
+						<th class="col-4">Date limite d'inscription :</th>
+						<td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d') : '' }}</td>
+					</tr>
+					<tr>
+						<th class="col-4">Nombre de places :</th>
+						<td>{{ sortie.nbInscriptionsMax }}</td>
+					</tr>
+					<tr>
+						<th class="col-4">Durée :</th>
+						<td>{{ sortie.duree }} minutes</td>
+					</tr>
+					<tr>
+						<th class="col-4">Description et infos :</th>
+						<td>{{ sortie.infosSortie }}</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
 
-	<div class="d-flex flex-row">
-		<div class="col-6 me-5">
-			<table class="table table-borderless">
-				<tbody>
-				<tr>
-					<th class="col-4">Nom de la sortie :</th>
-					<td>{{ sortie.nom }}</td>
-				</tr>
-				<tr>
-					<th class="col-4">Date et heure de la sortie :</th>
-					<td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i') : '' }}</td>
-				</tr>
-				<tr>
-					<th class="col-4">Date limite d'inscription :</th>
-					<td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d') : '' }}</td>
-				</tr>
-				<tr>
-					<th class="col-4">Nombre de places :</th>
-					<td>{{ sortie.nbInscriptionsMax }}</td>
-				</tr>
-				<tr>
-					<th class="col-4">Durée :</th>
-					<td>{{ sortie.duree }} minutes</td>
-				</tr>
-				<tr>
-					<th class="col-4">Description et infos :</th>
-					<td>{{ sortie.infosSortie }}</td>
-				</tr>
-				</tbody>
-			</table>
-		</div>
-
-		<div class="col-6">
-			<table class="table table-borderless">
-				<tbody>
-				<tr>
-					<th class="col-3">Campus :</th>
-					<td>{{ sortie.campus.nom }}</td>
-				</tr>
-				<tr>
-					<th class="col-3">Lieu :</th>
-					<td>{{ sortie.lieu.nom }}</td>
-				</tr>
-				<tr>
-					<th class="col-3">Rue :</th>
-					<td>{{ sortie.lieu.rue }}</td>
-				</tr>
-				<tr>
-					<th class="col-3">Code postal :</th>
-					<td>{{ sortie.lieu.ville.codePostal }}</td>
-				</tr>
-				<tr>
-					<th class="col-3">Latitude :</th>
-					<td>{{ sortie.lieu.latitude }}</td>
-				</tr>
-				<tr>
-					<th class="col-3">Longitude :</th>
-					<td>{{ sortie.lieu.longitude }}</td>
-				</tr>
-				</tbody>
-			</table>
+			<div class="col-6">
+				<table class="table table-borderless">
+					<tbody>
+					<tr>
+						<th class="col-3">Campus :</th>
+						<td>{{ sortie.campus.nom }}</td>
+					</tr>
+					<tr>
+						<th class="col-3">Lieu :</th>
+						<td>{{ sortie.lieu.nom }}</td>
+					</tr>
+					<tr>
+						<th class="col-3">Rue :</th>
+						<td>{{ sortie.lieu.rue }}</td>
+					</tr>
+					<tr>
+						<th class="col-3">Code postal :</th>
+						<td>{{ sortie.lieu.ville.codePostal }}</td>
+					</tr>
+					<tr>
+						<th class="col-3">Latitude :</th>
+						<td>{{ sortie.lieu.latitude }}</td>
+					</tr>
+					<tr>
+						<th class="col-3">Longitude :</th>
+						<td>{{ sortie.lieu.longitude }}</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 	<div>
@@ -93,6 +94,6 @@
 	</div>
 
 	<a href="{{ path('sortie_list') }}">
-		<button class="btn btn-info">Retour</button>
+		<button class="btn btn-info d-none d-md-block">Retour</button>
 	</a>
 {% endblock %}
