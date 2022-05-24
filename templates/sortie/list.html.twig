@@ -3,7 +3,7 @@
 {% block title %}{{ parent() }} | Sortie index{% endblock %}
 
 {% block body %}
-	<div class="d-none d-md-block">
+	<div class="d-none d-sm-block">
 
 		<div class="d-flex justify-content-end container">
 			<div>
@@ -50,7 +50,7 @@
 		</fieldset>
 		{{ form_end(form) }}
 	</div>
-	<div class="d-none d-md-block">
+	<div class="d-none d-sm-block">
 		<table class="table mb-5 mt-5">
 			<thead>
 			<tr>
@@ -146,7 +146,7 @@
 		</table>
 	</div>
 
-	<a href="{{ path('sortie_new') }}" class="d-none d-md-block">
+	<a href="{{ path('sortie_new') }}" class="d-none d-sm-block">
 		<button class="btn btn-success btn-lg">Organiser une sortie</button>
 	</a>
 	{# la div suivante apparaît sur petit écran à la place de la div ci-dessus #}
