@@ -22,7 +22,7 @@ class GroupePriveController extends AbstractController
     public function index(GroupePriveRepository $groupePriveRepository): Response
     {
         return $this->render('groupe_prive/list.html.twig', [
-            'groupe_prives' => $groupePriveRepository->findAll(),
+//            'groupe_prives' => $groupePriveRepository->findAll(),
         ]);
     }
 
@@ -33,10 +33,19 @@ class GroupePriveController extends AbstractController
     {
         $groupePrive = new GroupePrive();
         $participants = $participantRepository->findAll();
+
         $form = $this->createForm(GroupePriveType::class, $groupePrive);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            //Le nom de la checkbox correspond à l'id du participant.
+            //Pour chaque checkbox cochée, si son nom = id d'un participant, alors mettre le participant dans la liste
+            foreach ($request->get('participants') as $idParticipant => $value) {
+                //                                        = association clé->valeur
+                $groupePrive->addParticipant($participantRepository->find($idParticipant));
+            }
+
             $groupePriveRepository->add($groupePrive, true);
 
             return $this->redirectToRoute('groupe_prive_list', [], Response::HTTP_SEE_OTHER);
@@ -84,7 +93,7 @@ class GroupePriveController extends AbstractController
      */
     public function delete(Request $request, GroupePrive $groupePrive, GroupePriveRepository $groupePriveRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$groupePrive->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $groupePrive->getId(), $request->request->get('_token'))) {
             $groupePriveRepository->remove($groupePrive, true);
         }
 

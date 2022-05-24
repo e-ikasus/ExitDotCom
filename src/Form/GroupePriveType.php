@@ -15,7 +15,7 @@ class GroupePriveType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class, [
-                'label' => 'Nom : ',
+                'label' => 'Nom du groupe privé : ',
                 'attr' => [
                     'class' => 'm-2 px-2'
                 ],
