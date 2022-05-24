@@ -1,7 +1,7 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
 
-
+    {{ include('inc/liste_users.html.twig') }}
 
     <button type="submit" class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}
