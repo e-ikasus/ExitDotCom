@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GroupePrive index{% endblock %}
+
+{% block body %}
+    <h1>Liste de mes groupes privés</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for groupe_prive in groupe_prives %}
+            <tr>
+                <td>{{ groupe_prive.nom }}</td>
+                <td>
+                    <a href="{{ path('groupe_prive_show', {'id': groupe_prive.id}) }}"><button class="btn btn-info">Détails</button></a>
+                    <a href="{{ path('groupe_prive_edit', {'id': groupe_prive.id}) }}"><button class="btn btn-warning">Modifier</button></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Vous n'avez créé aucun groupe privé.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('groupe_prive_new') }}"><button class="btn btn-success">Créer un groupe privé</button></a>
+{% endblock %}

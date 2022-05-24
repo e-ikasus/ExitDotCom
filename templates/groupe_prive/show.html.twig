@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GroupePrive{% endblock %}
+
+{% block body %}
+    <h1>Liste des membres du groupe privé {{ groupe_prive.nom }}</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Pseudo</th>
+                <th>Nom</th>
+            </tr>
+        </thead>
+        <tbody>
+{#            {% for participant in groupe_prive.participants %}#}
+            <tr> {# onclick="document.location.href='{{ path('participant_profil', {'pseudo': participant.pseudo}) }}'"
+				    class="hover-pointer" #}
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('groupe_prive_list') }}"><button class="btn btn-info">Retour</button></a>
+
+    <a href="{{ path('groupe_prive_edit', {'id': groupe_prive.id}) }}"><button class="btn btn-warning">Modifier</button></a>
+
+    {{ include('groupe_prive/_delete_form.html.twig') }}
+{% endblock %}
