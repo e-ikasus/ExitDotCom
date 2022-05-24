@@ -62,7 +62,7 @@ class SortieController extends AbstractController
         $security->getUser()->removeSortiesInscrit($sortie);
 
         $entityManager->flush();
-        $this->addFlash('success', 'Vous vous êtes bien désinscrit !');
+        $this->addFlash('success', 'Vous vous êtes bien désinscrit de la sortie ' . $sortie->getNom() . ' !');
         return $this->redirectToRoute("sortie_list");
     }
 
@@ -74,7 +74,7 @@ class SortieController extends AbstractController
         $security->getUser()->addSortiesInscrit($sortie);
 
         $entityManager->flush();
-        $this->addFlash('success', 'Vous êtes inscrit à la sortie !');
+        $this->addFlash('success', 'Vous êtes inscrit à la sortie ' . $sortie->getNom() . ' !');
         return $this->redirectToRoute("sortie_list");
     }
 
@@ -129,6 +129,7 @@ class SortieController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $sortieRepository->add($sortie, true);
+            $this->addFlash('success', 'La sortie ' . $sortie->getNom() . ' a bien été mise à jour .');
 
             return $this->redirectToRoute('sortie_list', [], Response::HTTP_SEE_OTHER);
         }

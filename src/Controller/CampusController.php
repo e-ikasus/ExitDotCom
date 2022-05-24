@@ -79,7 +79,7 @@ class CampusController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid())
 		{
 			$campusRepository->add($campus, true);
-            $this->addFlash('success', 'Les données du campus ont été modifiées avec succès.');
+            $this->addFlash('success', 'Les données du campus ' . $campus->getNom() . ' ont été modifiées avec succès.');
 			return $this->redirectToRoute('campus_list', [], Response::HTTP_SEE_OTHER);
 		}
 
@@ -97,7 +97,7 @@ class CampusController extends AbstractController
 		if ($this->isCsrfTokenValid('delete' . $campus->getId(), $request->request->get('_token')))
 		{
 			$campusRepository->remove($campus, true);
-            $this->addFlash('success', 'La supression du campus a été effectuée avec succès.');
+            $this->addFlash('success', 'La supression du campus ' . $campus->getNom() . ' a été effectuée avec succès.');
 		}
 
 		return $this->redirectToRoute('campus_list', [], Response::HTTP_SEE_OTHER);

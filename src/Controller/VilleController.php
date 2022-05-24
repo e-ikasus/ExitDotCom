@@ -93,6 +93,7 @@ class VilleController extends AbstractController
 	{
 		if ($this->isCsrfTokenValid('delete' . $ville->getId(), $request->request->get('_token')))
 			$villeRepository->remove($ville, true);
+        $this->addFlash('success', 'Vous venez de rayer la ville de ' . $ville->getNom() . ' de la carte!!!');
 
 		return $this->redirectToRoute('ville_list', [], Response::HTTP_SEE_OTHER);
 	}
