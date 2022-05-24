@@ -19,29 +19,32 @@
             <h1 class="h3 mb-3 font-weight-normal"></h1>
             <label for="inputPseudo">Identifiant :</label>
             <input type="text" value="{{ last_username }}" name="pseudo" id="inputPseudo"
-                   class="form-control input_pseudo_login" autocomplete="username" required autofocus placeholder="pseudo ou email...">
+                   class="form-control input_pseudo_login mb-2" autocomplete="username" required autofocus
+                   placeholder="pseudo ou email...">
             <label for="inputPassword">Mot de Passe :</label>
             <input type="password" name="password" id="inputPassword" class="form-control"
                    autocomplete="current-password" required>
 
-            <input type="hidden" name="_csrf_token"
-                   value="{{ csrf_token('authenticate') }}"
-            >
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
+            <div class="d-flex justify-content-between mt-3">
 
-            <div class="checkbox mb-3">
+                <button class="btn btn-lg btn-primary" type="submit"> Connexion </button>
 
-                    <input type="checkbox" name="_remember_me"><label class="m-2 px-2"> Se souvenir de moi
-                </label>
+                <div class="d-flex flex-column align-items-end">
+
+                    <div class="d-flex align-items-center gap-2 align-items-end">
+                        <input id="rememberMe" type="checkbox" class="mb-3 me-3" name="_remember_me">
+                        <label for="rememberMe" class="" id="test">Se souvenir de moi</label>
+                    </div>
+
+                    <a href="{{ path('app_forgot_password_request') }}" title="reset password">Mot de passe oublié</a>
+
+                </div>
+
             </div>
 
-
-            <button class="btn btn-lg btn-primary" type="submit">
-                Se Connecter
-            </button>
         </form>
-        <div>
-            <a href="{{ path('app_forgot_password_request') }}" title="reset password">Mot de passe oublié</a>
-        </div>
+
     </div>
 {% endblock %}
