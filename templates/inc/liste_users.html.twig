@@ -1,0 +1,41 @@
+<table class="table table-hover">
+	<thead>
+	<tr>
+		<th>Pseudo</th>
+		<th>Nom</th>
+		<th>Prénom</th>
+		<th>Campus</th>
+		<th>Téléphone</th>
+		<th>Email</th>
+		<th>Actif</th>
+		<th>Admin</th>
+		<th>{{ app.request.get('_route') == 'participant_list' ? 'Action' : 'A ajouter' }}</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for i in 0..participants|length-1 %}
+		<tr class="hover-pointer table-{% if i is even %}info{% else %}secondary{% endif %}">
+			<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].pseudo }}</td>
+			<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].nom }}</td>
+			<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].prenom }}</td>
+			<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].campus.nom }}</td>
+			<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].telephone }}</td>
+			<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].email }}</td>
+			<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].actif ? 'x' : ' ' }}</td>
+			<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].administrateur ? 'x' : ' ' }}</td>
+			<td> {% if app.request.get('_route') == 'participant_list' %}
+				{{ include ('participant/_delete_form.html.twig', {'participant' : participants[i]}) }}
+				{% else %}
+				<div class="d-flex justify-content-center">
+					<input type="checkbox" class="me-5 mt-1">
+				</div>
+			</td>
+			{% endif %}
+		</tr>
+	{% else %}
+		<tr>
+			<td colspan="12">Aucun participant.</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
