@@ -70,7 +70,7 @@ class ParticipantController extends AbstractController
             $participant->setActif(true);
 
             $participantRepository->add($participant, true);
-            $this->addFlash('success', 'Vous venez de rajouter ' . $participant->getNom() . ' comme participant !');
+            $this->addFlash('success', 'Vous venez de rajouter ' . $participant->getPrenom() . ' ' . $participant->getNom() . ' comme participant !');
 
             return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);
         }
@@ -126,7 +126,7 @@ class ParticipantController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete' . $participant->getId(), $request->request->get('_token'))) {
             $participantRepository->remove($participant, true);
-            $this->addFlash('success', 'Vous venez de vous débarasser de ' . $participant->getNom() . ' . Veillez à bien effacer toutes les preuves, et vérifiez qu\il n\'y ait pas de témoin gênant...!');
+            $this->addFlash('success', 'Vous venez de vous débarasser de ' . $participant->getPrenom() . ' ' . $participant->getNom() . ' . Veillez à bien effacer toutes les preuves, et vérifiez qu\'il n\'y ait pas de témoin gênant...!');
         }
 
         return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);

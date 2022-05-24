@@ -21,7 +21,7 @@ class Campus
     private $id;
 
     /**
-		 * @Assert\Regex("/^[^0-9#@\\;:!<>{}\[\]`()]*$/")
+     * @Assert\Regex("/^[^0-9#@\\;:!<>{}\[\]`()]*$/")
      * @ORM\Column(type="string", length=64)
      */
     private $nom;
