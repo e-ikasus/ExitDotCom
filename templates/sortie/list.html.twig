@@ -72,8 +72,12 @@
 				<td>{{ sortie.participants|length }} / {{ sortie.nbInscriptionsMax }}</td>
 				<td>{{ sortie.etat.libelle }}</td>
 				<td>{{ sortie in app.user.sortiesInscrit ? "X" }}</td>
-				<td class="detail-participant-deform"><a
-							href="{{ path('participant_profil', {'pseudo': sortie.organisateur.pseudo}) }}">{{ sortie.organisateur.pseudo }}</a>
+				<td class="detail-participant-deform">
+					{% if sortie.organisateur %}
+						<a href="{{ path('participant_profil', {'pseudo': sortie.organisateur.pseudo}) }}">{{ sortie.organisateur.pseudo }}</a>
+					{% else %}
+						Inconnu
+					{% endif %}
 				</td>
 				<td> {# LES BOUTONS SELON L'ETAT DE LA SORTIE ET LE USER #}
 

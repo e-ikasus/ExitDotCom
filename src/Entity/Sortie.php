@@ -68,8 +68,11 @@ class Sortie
     private $campus;
 
     /**
+		 * !! changement de false en true pour la contrainte nullable pour permettre la suppression d'un participant
+		 * sans supprimer sa sortie organisée. !!
+		 *
      * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="sortiesOrganisees")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $organisateur;
 

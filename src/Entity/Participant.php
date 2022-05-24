@@ -78,7 +78,10 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $campus;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur", orphanRemoval=true)
+		 *
+		 * !! retrait de orphanRemoval=true pour éviter que la suppression d'un participant supprime aussi la sortie !!
+		 *
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur")
      */
     private $sortiesOrganisees;
 
