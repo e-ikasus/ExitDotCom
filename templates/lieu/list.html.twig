@@ -17,23 +17,24 @@
             </tr>
         </thead>
         <tbody>
-        {% for lieu in lieux %}
-            <tr>
-                <td>{{ lieu.id }}</td>
-                <td>{{ lieu.nom }}</td>
-                <td>{{ lieu.rue }}</td>
-                <td>{{ lieu.latitude }}</td>
-                <td>{{ lieu.longitude }}</td>
+        {% if lieux|length %}
+            {% for i in 0..lieux|length -1 %}
+            <tr class="table-{% if i%2==0 %}info{% else %}secondary{% endif %}">
+                <td>{{ lieux[i].id }}</td>
+                <td>{{ lieux[i].nom }}</td>
+                <td>{{ lieux[i].rue }}</td>
+                <td>{{ lieux[i].latitude }}</td>
+                <td>{{ lieux[i].longitude }}</td>
                 <td>
-                    <a href="{{ path('lieu_show', {'id': lieu.id}) }}" class="text-info">Voir</a>
-                    <a href="{{ path('lieu_edit', {'id': lieu.id}) }}" class="text-danger">Éditer</a>
+                    <a href="{{ path('lieu_show', {'id': lieux[i].id}) }}"><button class="btn btn-success">Voir</button></a>
+                    <a href="{{ path('lieu_edit', {'id': lieux[i].id}) }}"><button class="btn btn-info">Éditer</button></a>
                 </td>
-            </tr>
+            </tr>{% endfor %}
         {% else %}
             <tr>
                 <td colspan="6">no records found</td>
             </tr>
-        {% endfor %}
+        {% endif %}
         </tbody>
     </table>
 
