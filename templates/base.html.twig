@@ -24,16 +24,16 @@
     </header>
 {% endif %}
 
-{% for label, messages in app.flashes %}
-    {% for message in messages %}
-        <div class="alert alert--{{ label }} alert-warning">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endfor %}
-
 <main class="d-flex flex-column justify-content-around flex-grow-1">
     <div class="container">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
         {% block body %}{% endblock %}
     </div>
 </main>
