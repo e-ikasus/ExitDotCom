@@ -6,6 +6,7 @@ use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -20,26 +21,37 @@ class Sortie
     private $id;
 
     /**
+     * @Assert\Regex(
+     *     pattern="/^[[:alpha:]]([-' ]*[[:alpha:]])*$/",
+     *     message="Seuls les lettres et les symboles - et ' sont autorisés"
+     * )
+     * @Assert\NotBlank(message="Veuillez saisir un nom")
      * @ORM\Column(type="string", length=64)
      */
     private $nom;
 
     /**
+     * @Assert\NotBlank(message="Veuillez saisir un horaire de début de la sortie")
+     * @Assert\GreaterThan($dateLimiteInscription)
      * @ORM\Column(type="datetime")
      */
     private $dateHeureDebut;
 
     /**
+     * @Assert\NotBlank(message="Veuillez saisir la durée de la sortie")
      * @ORM\Column(type="integer")
      */
     private $duree;
 
     /**
+     * @Assert\NotBlank(message="Veuillez saisir la date limite d'inscription")
+     * @Assert\LessThan($dateHeureDebut)
      * @ORM\Column(type="datetime")
      */
     private $dateLimiteInscription;
 
     /**
+     * @Assert\NotBlank(message="Veuillez saisir le nombre de participants maximum")
      * @ORM\Column(type="integer")
      */
     private $nbInscriptionsMax;
