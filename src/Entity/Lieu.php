@@ -6,6 +6,7 @@ use App\Repository\LieuRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=LieuRepository::class)
@@ -20,21 +21,48 @@ class Lieu
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Veuillez saisir un nom")
+     * @Assert\Regex(
+     *     pattern="/^[[:alpha:]]([-' ]?[[:alpha:]])*$/",
+     *     message="Seuls les lettres et les symboles - et ' sont autorisés"
+     * )
+     * @Assert\Length(
+     *     max=48,
+     *     maxMessage="Le nom doit faire au maximum {{ limit }} caractères"
+     * )
      * @ORM\Column(type="string", length=64)
      */
     private $nom;
 
     /**
+     * @Assert\NotBlank(message="Veuillez saisir une rue")
+     * @Assert\Regex(
+     *     pattern="/^[[:alpha:]]([-' ]*[[:alpha:]])*$/",
+     *     message="Seuls les lettres et les symboles - et ' sont autorisés"
+     * )
+     *
      * @ORM\Column(type="string", length=128)
      */
     private $rue;
 
     /**
+     * @Assert\NotBlank(message="Veuillez saisir une coordonée")
+     * @Assert\Regex(
+     *     pattern="/^-?\d+[.,]?\d*$/",
+     *     message="Seuls les formats en degrés decimaux sont autorisés"
+     * )
+     *
      * @ORM\Column(type="float")
      */
     private $latitude;
 
     /**
+     * @Assert\NotBlank(message="Veuillez saisir une coordonée")
+     * @Assert\Regex(
+     *     pattern="/^-?\d+[.,]?\d*$/",
+     *     message="Seuls les formats en degrés decimaux sont autorisés"
+     * )
+     *
      * @ORM\Column(type="float")
      */
     private $longitude;
