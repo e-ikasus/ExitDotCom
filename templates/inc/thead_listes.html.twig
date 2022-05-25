@@ -1,9 +1,15 @@
 {# Dans URL : ?paramètre => chaque paramètre est récupéré par le controller. #}
-{{ nomColonne }}&nbsp;<a href="{{ path(app.request.get('_route')) }}?col={{ colonneTable }}&order=ASC" class="text-decoration-none">&#9660;</a>
+{% if app.request.get('_route') != 'groupe_prive_edit' %}
+	{{ nomColonne }}&nbsp;<a href="{{ path(app.request.get('_route')) }}?col={{ colonneTable }}&order=ASC"
+	                         class="text-decoration-none">&#9660;</a>
 	<a href="{{ path(app.request.get('_route')) }}?col={{ colonneTable }}&order=DESC" class="text-decoration-none">&#9650;</a>
 
+{% else %}
+	{{ nomColonne }}&nbsp;<a href="{{ path(app.request.get('_route'), {'id' : groupe_prive.id }) }}?col={{ colonneTable }}&order=ASC"
+	                         class="text-decoration-none">&#9660;</a>
+	<a href="{{ path(app.request.get('_route'), {'id' : groupe_prive.id }) }}?col={{ colonneTable }}&order=DESC"
+	   class="text-decoration-none">&#9650;</a>
 
-
-
+{% endif %}
 
 
