@@ -36,7 +36,7 @@ class Sortie
 
     /**
      * @Assert\NotBlank(message="Veuillez saisir un horaire de début de la sortie")
-     * @Assert\GreaterThan($dateLimiteInscription)
+     * @Assert\GreaterThan(propertyPath="dateLimiteInscription", message="La date de début de sortie doit être postérieure à la date d'inscription.")
      * @ORM\Column(type="datetime")
      */
     private $dateHeureDebut;
@@ -49,7 +49,8 @@ class Sortie
 
     /**
      * @Assert\NotBlank(message="Veuillez saisir la date limite d'inscription")
-     * @Assert\LessThan($dateHeureDebut)
+     * @Assert\LessThan(propertyPath="dateHeureDebut", message="La date de début de sortie doit être antérieure à la date d'inscription.")
+     * @Assert\GreaterThanOrEqual("today", message="La date limite d'inscription doit être supérieure ou égale à la date du jour.")
      * @ORM\Column(type="datetime")
      */
     private $dateLimiteInscription;
