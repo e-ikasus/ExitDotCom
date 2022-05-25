@@ -14,7 +14,7 @@
 
 		{{ include('inc/buttons.html.twig', {'isForm': true, 'update': true, 'bigButton': true}) }}
 
-		{{ include('inc/buttons.html.twig', {'return': true, 'bigButton': true, 'type': 'ville'}) }}
+		<a class="btn btn-success" onclick="history.go(-1);">Retour</a>
 
 		{{ form_end(form) }}
 

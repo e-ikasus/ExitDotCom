@@ -27,7 +27,7 @@
                     {% if i == campus|length %}
 
 						{{ form_start(form) }}
-						<td {% if not form.vars.valid %} class="bg-danger" {% endif %}>{{ form_widget(form.nom) }}</td>
+						<td {% if not form.vars.valid %} class="bg-danger" {% endif %}> <div class="d-flex flex-wrap"> {{ form_widget(form.nom) }} {{form_errors(form.nom)}} </div></td>
 						<td>{{ include('inc/buttons.html.twig', {'isForm': true, 'new': true}) }}</td>
 						{{ form_end(form) }}
 
