@@ -55,7 +55,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\NotBlank(message="Veuillez saisir un prénom")
      * @Assert\Type(type="alpha",
      *     message="Le prénom ne peut contenir que des lettres"
-     * ))
+     * )
      * @Assert\Length(
      *     max = 24,
      *     maxMessage = "Le prénom doit faire au maximum {{ limit }} caractères"
