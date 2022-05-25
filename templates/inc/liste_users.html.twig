@@ -1,14 +1,14 @@
 <table class="table table-hover">
 	<thead>
 	<tr>
-		<th>Pseudo</th>
-		<th>Nom</th>
-		<th>Prénom</th>
-		<th>Campus</th>
+		<th>{{ include('inc/thead_listes.html.twig', {'nomColonne' : 'Pseudo', 'colonneTable' : 'pseudo'}) }}</th>
+		<th>{{ include('inc/thead_listes.html.twig', {'nomColonne' : 'Nom', 'colonneTable' : 'nom'}) }}</th>
+		<th>{{ include('inc/thead_listes.html.twig', {'nomColonne' : 'Prénom', 'colonneTable' : 'prenom'}) }}</th>
+		<th>{{ include('inc/thead_listes.html.twig', {'nomColonne' : 'Campus', 'colonneTable' : 'campus'}) }}</th>
 		<th>Téléphone</th>
-		<th>Email</th>
-		<th>Actif</th>
-		<th>Admin</th>
+		<th>{{ include('inc/thead_listes.html.twig', {'nomColonne' : 'Email', 'colonneTable' : 'email'}) }}</th>
+		<th>{{ include('inc/thead_listes.html.twig', {'nomColonne' : 'Actif', 'colonneTable' : 'actif'}) }}</th>
+		<th>{{ include('inc/thead_listes.html.twig', {'nomColonne' : 'Admin', 'colonneTable' : 'administrateur'}) }}</th>
 		<th>{{ app.request.get('_route') == 'participant_list' ? 'Action' : 'Ajouter' }}</th>
 	</tr>
 	</thead>
@@ -28,7 +28,7 @@
 				{% else %}
 				<div class="d-flex justify-content-center">
 					<input type="checkbox" class="me-5 mt-1" name="participants[{{ participants[i].id }}]">
-															{# le name de la checkbox ressemble à un tableau
+					{# le name de la checkbox ressemble à un tableau
 															=> Symfony met les valeurs sous forme de tableau
 															renvoyé au controller sous le nom du tableau, ici "participants" #}
 				</div>
