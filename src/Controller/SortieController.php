@@ -12,6 +12,7 @@ use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use App\Services\Research;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,8 +62,16 @@ class SortieController extends AbstractController
     {
         $security->getUser()->removeSortiesInscrit($sortie);
 
-        $entityManager->flush();
-        $this->addFlash('success', 'Vous vous êtes bien désinscrit de la sortie ' . $sortie->getNom() . ' !');
+				try
+				{
+						$entityManager->flush();
+						$this->addFlash('success', 'Vous vous êtes bien désinscrit de la sortie ' . $sortie->getNom() . ' !');
+				}
+				catch (Exception $exc)
+				{
+						$this->addFlash('danger', 'Opération impossible !');
+				}
+
         return $this->redirectToRoute("sortie_list");
     }
 
@@ -73,8 +82,16 @@ class SortieController extends AbstractController
     {
         $security->getUser()->addSortiesInscrit($sortie);
 
-        $entityManager->flush();
-        $this->addFlash('success', 'Vous êtes inscrit à la sortie ' . $sortie->getNom() . ' !');
+				try
+				{
+						$entityManager->flush();
+						$this->addFlash('success', 'Vous êtes inscrit à la sortie ' . $sortie->getNom() . ' !');
+				}
+				catch (\Exception $exc)
+				{
+						$this->addFlash('danger', 'Opération impossible !');
+				}
+
         return $this->redirectToRoute("sortie_list");
     }
 
