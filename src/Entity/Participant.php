@@ -28,10 +28,10 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @Assert\NotBlank(message="Veuillez saisir un pseudo")
      * @Assert\Length(
-     *      min = 3,
-     *      max = 12,
-     *      minMessage = "Le pseudo doit faire au minimum {{ limit }} caractères",
-     *      maxMessage = "Le pseudo doit faire au maximum {{ limit }} caractères"
+     *      min=3,
+     *      max=12,
+     *      minMessage="Le pseudo doit faire au minimum {{ limit }} caractères",
+     *      maxMessage="Le pseudo doit faire au maximum {{ limit }} caractères"
      * )
      *
      * @ORM\Column(type="string", length=180, unique=true)
@@ -53,12 +53,13 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @Assert\NotBlank(message="Veuillez saisir un prénom")
-     * @Assert\Type(type="alpha",
-     *     message="Le prénom ne peut contenir que des lettres"
+     * @Assert\Regex(
+     *     pattern="/^[[:alpha:]]([-' ]*[[:alpha:]])*$/",
+     *     message="Seuls les lettres et les symboles - et ' sont autorisés"
      * )
      * @Assert\Length(
      *     max = 24,
-     *     maxMessage = "Le prénom doit faire au maximum {{ limit }} caractères"
+     *     maxMessage="Le prénom doit faire au maximum {{ limit }} caractères"
      * )
      *
      * @ORM\Column(type="string", length=64)
@@ -67,13 +68,13 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @Assert\NotBlank(message="Veuillez saisir un nom")
-     * @Assert\Type(
-     *     type="alpha",
-     *     message="Le nom ne peut contenir que des lettres"
+     * @Assert\Regex(
+     *     pattern="/^[[:alpha:]]([-' ]*[[:alpha:]])*$/",
+     *     message="Seuls les lettres et les symboles - et ' sont autorisés"
      * )
      * @Assert\Length(
-     *     max = 48,
-     *     maxMessage = "Le nom doit faire au maximum {{ limit }} caractères"
+     *     max=48,
+     *     maxMessage="Le nom doit faire au maximum {{ limit }} caractères"
      * )
      *
      * @ORM\Column(type="string", length=64)
@@ -94,7 +95,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @Assert\NotBlank(message="Veuillez saisir un email")
      * @Assert\Email(
-     *     message = "'{{ value }}' n'est pas un email valide."
+     *     message="'{{ value }}' n'est pas un email valide."
      * )
      *
      * @ORM\Column(type="string", length=64)
@@ -134,7 +135,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @Assert\File(
-     *     maxSize = "10M",
+     *     maxSize="10M",
      *     mimeTypes={"image/jpeg","image/png"},
      *     mimeTypesMessage="Merci d'utiliser un des formats suivant : .jpg .jpeg .png",
      *     maxSizeMessage="L'image fait ({{ size }} {{ suffix }}). La taille maximale autorisée est de {{ limit }} {{ suffix }}."
