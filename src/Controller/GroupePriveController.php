@@ -37,7 +37,6 @@ class GroupePriveController extends AbstractController
     public function new(Request $request, GroupePriveRepository $groupePriveRepository, ParticipantRepository $participantRepository, Security $security): Response
     {
         $groupePrive = new GroupePrive();
-        //$participants = $participantRepository->findAll();
 
         //Récupération des paramètres passés dans l'URL.
         $col = $request->get('col');
@@ -98,6 +97,14 @@ class GroupePriveController extends AbstractController
         $form = $this->createForm(GroupePriveType::class, $groupePrive);
         $form->handleRequest($request);
 
+        //Récupération des paramètres passés dans l'URL.
+        $col = $request->get('col');
+        $order = $request->get('order');
+
+        //Si le tableau est null, càd aucun filtre n'a été appliqué, alors on le trie sur les pseudos, par ordre alphabétique ascendant.
+        if($col == null) $col = 'pseudo';
+        if($order == null) $order = 'ASC';
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $participants = $groupePrive->getParticipant();
@@ -119,7 +126,7 @@ class GroupePriveController extends AbstractController
 
         return $this->renderForm('groupe_prive/edit.html.twig', [
             'groupe_prive' => $groupePrive,
-            'participants' => $participantRepository->findAll(),
+            'participants' => $participantRepository->findBy([], [$col => $order]),
             'form' => $form,
         ]);
     }

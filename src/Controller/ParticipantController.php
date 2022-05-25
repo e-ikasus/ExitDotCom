@@ -28,7 +28,13 @@ class ParticipantController extends AbstractController
      */
     public function list(Request $request, ParticipantRepository $participantRepository, CampusRepository $campusRepository, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
     {
+        //Récupération des paramètres passés dans l'URL.
+        $col = $request->get('col');
+        $order = $request->get('order');
 
+        //Si le tableau est null, càd aucun filtre n'a été appliqué, alors on le trie sur les pseudos, par ordre alphabétique ascendant.
+        if($col == null) $col = 'pseudo';
+        if($order == null) $order = 'ASC';
 
         $form = $this->createForm(ParticipantCsvType::class);
         $form->handleRequest($request);
@@ -59,7 +65,7 @@ class ParticipantController extends AbstractController
         }
 
         return $this->renderForm('participant/list.html.twig', [
-            'participants' => $participantRepository->findAll(),
+            'participants' => $participantRepository->findBy([], [$col => $order]),
             'form' => $form,
         ]);
     }
