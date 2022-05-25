@@ -21,12 +21,23 @@ class Ville
     private $id;
 
     /**
-		 * @Assert\Regex("/^[^0-9#@\\;:!<>{}\[\]`()]*$/")
+     * @Assert\NotBlank(message="Veuillez saisir un nom")
+     * @Assert\Regex(
+     *     pattern="/^[[:alpha:]]([-' ]*[[:alpha:]])*$/",
+     *     message="Seuls les lettres et les symboles - et ' sont autorisés"
+     * )
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $nom;
 
     /**
+     * @Assert\NotBlank(message="Veuillez saisir un code postal")
+     * @Assert\Regex(
+     *     pattern="/^\d{5}$/",
+     *     message="Le code postal doit etre composé de 5 chiffres"
+     * )
+     *
      * @ORM\Column(type="string", length=5)
      */
     private $codePostal;
