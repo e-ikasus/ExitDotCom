@@ -1,9 +1,12 @@
 {% form_theme form 'bootstrap_5_horizontal_layout.html.twig' %}
 {{ form_start(form) }}
+
     {{ form_widget(form) }}
-    <button class="btn btn-lg btn-success">{{ button_label|default('Sauvegarder') }}</button>
-    {% if return|default(false) %}
-        <button class="btn btn-lg btn-danger" onclick="history.go(-1);">Annuler</button>
-    {% endif %}
+
+
+<button class="btn btn-lg btn-success">{{ button_label|default('Sauvegarder') }}</button>
+{% if return|default(false) %}
+    <button class="btn btn-lg btn-danger" onclick="history.go(-1);">Annuler</button>
+{% endif %}
 
 {{ form_end(form) }}
