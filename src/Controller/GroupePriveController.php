@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/groupe/prive")
@@ -38,7 +37,18 @@ class GroupePriveController extends AbstractController
     public function new(Request $request, GroupePriveRepository $groupePriveRepository, ParticipantRepository $participantRepository, Security $security): Response
     {
         $groupePrive = new GroupePrive();
-        $participants = $participantRepository->findAll();
+        //$participants = $participantRepository->findAll();
+
+        //Récupération des paramètres passés dans l'URL.
+        $col = $request->get('col');
+        $order = $request->get('order');
+
+        //Si le tableau est null, càd aucun filtre n'a été appliqué, alors on le trie sur les pseudos, par ordre alphabétique ascendant.
+        if($col == null) $col = 'pseudo';
+        if($order == null) $order = 'ASC';
+
+        $participants = $participantRepository->findBy([], [$col => $order]);
+
         $user = $security->getUser();
 
         $form = $this->createForm(GroupePriveType::class, $groupePrive);

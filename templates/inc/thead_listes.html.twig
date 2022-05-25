@@ -1,0 +1,9 @@
+{# Dans URL : ?paramètre => chaque paramètre est récupéré par le controller. #}
+{{ nomColonne }}&nbsp;<a href="{{ path(app.request.get('_route')) }}?col={{ colonneTable }}&order=ASC" class="text-decoration-none">&#9660;</a>
+	<a href="{{ path(app.request.get('_route')) }}?col={{ colonneTable }}&order=DESC" class="text-decoration-none">&#9650;</a>
+
+
+
+
+
+
