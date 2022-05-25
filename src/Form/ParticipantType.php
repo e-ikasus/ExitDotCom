@@ -30,7 +30,7 @@ class ParticipantType extends AbstractType
             ->add('email', EmailType::class, ['label' => 'E-mail'])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'Les mots de passe doivent être identique.',
+                'invalid_message' => 'Les mots de passe doivent être identiques.',
                 'required' => true,
                 'first_options' => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmation'],
@@ -39,7 +39,7 @@ class ParticipantType extends AbstractType
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez saisir votre mot de passe',
+                        'message' => 'Veuillez saisir un mot de passe',
                     ]),
                     new Length([
                         'min' => 6,
@@ -54,17 +54,11 @@ class ParticipantType extends AbstractType
                 'class' => Campus::class,
                 'choice_label' => 'nom'
             ])
-            ->add('photo', FileType::class, ['label' => 'Ma photo', 'required' => false, 'mapped' => false,
-                'constraints' => [new File([
-                    'maxSize' => '10M',
-                    'mimeTypes' => [
-                        'image/jpeg',
-                        'image/png',
-                    ],
-                    'mimeTypesMessage' => 'Merci d\'utiliser un des formats suivant : .jpg .jpeg .png',
+            ->add('photo', FileType::class, [
+                'label' => 'Ma photo',
+                'required' => false,
+                'mapped' => false
                 ])
-                ],
-            ])
             ->add('administrateur', CheckboxType::class, ['required' => false])
         ;
     }

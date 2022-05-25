@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
@@ -66,7 +67,7 @@ class ParticipantController extends AbstractController
     /**
      * @Route("/admin/new", name="participant_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, ParticipantRepository $participantRepository, UserPasswordHasherInterface $passwordHasher): Response
+    public function new(Request $request, ParticipantRepository $participantRepository, UserPasswordHasherInterface $passwordHasher, SluggerInterface $slugger): Response
     {
         $participant = new Participant();
 
@@ -75,6 +76,13 @@ class ParticipantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($form->get('photo')->getData() != null) {
+                $photoFile = $form->get('photo')->getData();
+                $importFile = new ImportFile($photoFile, $this->getParameter('profiles_pictures_directory'), $slugger);
+                $importFile->storeFile();
+                $participant->setPhoto($importFile->getNewFileName());
+            }
 
             $participant->setPassword($passwordHasher->hashPassword($participant, $form->get('password')->getData()));
 
@@ -106,9 +114,15 @@ class ParticipantController extends AbstractController
     /**
      * @Route("/edit/{pseudo}", name="participant_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Participant $participant, ParticipantRepository $participantRepository, SluggerInterface $slugger, UserPasswordHasherInterface $passwordHasher): Response
+    public function edit(Request $request, Participant $participant, ParticipantRepository $participantRepository, SluggerInterface $slugger, UserPasswordHasherInterface $passwordHasher, Security $security): Response
     {
         $form = $this->createForm(ParticipantType::class, $participant);
+
+        if (!$security->getUser()->isAdministrateur()){
+            $form->remove('administrateur');
+        }
+
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

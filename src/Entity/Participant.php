@@ -27,6 +27,12 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @Assert\NotBlank(message="Veuillez saisir un pseudo")
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 12,
+     *      minMessage = "Le pseudo doit faire au minimum {{ limit }} caractères",
+     *      maxMessage = "Le pseudo doit faire au maximum {{ limit }} caractères"
+     * )
      *
      * @ORM\Column(type="string", length=180, unique=true)
      */
@@ -47,6 +53,13 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @Assert\NotBlank(message="Veuillez saisir un prénom")
+     * @Assert\Type(type="alpha",
+     *     message="Le prénom ne peut contenir que des lettres"
+     * )
+     * @Assert\Length(
+     *     max = 24,
+     *     maxMessage = "Le prénom doit faire au maximum {{ limit }} caractères"
+     * )
      *
      * @ORM\Column(type="string", length=64)
      */
@@ -54,20 +67,35 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @Assert\NotBlank(message="Veuillez saisir un nom")
+     * @Assert\Type(
+     *     type="alpha",
+     *     message="Le nom ne peut contenir que des lettres"
+     * )
+     * @Assert\Length(
+     *     max = 48,
+     *     maxMessage = "Le nom doit faire au maximum {{ limit }} caractères"
+     * )
      *
      * @ORM\Column(type="string", length=64)
      */
     private $nom;
 
     /**
-     * @Assert\Regex(pattern="/^(\+33|0)[1-79]\d{8}$/")
+     * @Assert\Regex(
+     *     pattern="/^(\+33|0)[1-79]\d{8}$/",
+     *     message="Le numéro doit être au format +33 ou 0 suivi du reste du numéro, les 08 ne sont pas acceptés"
+     * )
      * @Assert\NotBlank(message="Veuillez saisir un numéro de téléphone")
+     *
      * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $telephone;
 
     /**
      * @Assert\NotBlank(message="Veuillez saisir un email")
+     * @Assert\Email(
+     *     message = "'{{ value }}' n'est pas un email valide."
+     * )
      *
      * @ORM\Column(type="string", length=64)
      */
@@ -92,9 +120,9 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $campus;
 
     /**
-		 *
-		 * !! retrait de orphanRemoval=true pour éviter que la suppression d'un participant supprime aussi la sortie !!
-		 *
+     *
+     * !! retrait de orphanRemoval=true pour éviter que la suppression d'un participant supprime aussi la sortie !!
+     *
      * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur")
      */
     private $sortiesOrganisees;
@@ -105,6 +133,13 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $sortiesInscrit;
 
     /**
+     * @Assert\File(
+     *     maxSize = "10M",
+     *     mimeTypes={"image/jpeg","image/png"},
+     *     mimeTypesMessage="Merci d'utiliser un des formats suivant : .jpg .jpeg .png",
+     *     maxSizeMessage="L'image fait ({{ size }} {{ suffix }}). La taille maximale autorisée est de {{ limit }} {{ suffix }}."
+     * )
+     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $photo;
@@ -151,7 +186,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->pseudo;
+        return (string)$this->pseudo;
     }
 
     /**
@@ -159,7 +194,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->pseudo;
+        return (string)$this->pseudo;
     }
 
     /**
