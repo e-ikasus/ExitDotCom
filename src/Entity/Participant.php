@@ -100,11 +100,17 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $groupePrives;
 
+    /**
+     * @ORM\OneToMany(targetEntity=GroupePrive::class, mappedBy="createur")
+     */
+    private $groupesOrganises;
+
     public function __construct()
     {
         $this->sortiesOrganisees = new ArrayCollection();
         $this->sortiesInscrit = new ArrayCollection();
         $this->groupePrives = new ArrayCollection();
+        $this->groupesOrganises = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -364,6 +370,36 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->groupePrives->removeElement($groupePrife)) {
             $groupePrife->removeParticipant($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GroupePrive>
+     */
+    public function getGroupesOrganises(): Collection
+    {
+        return $this->groupesOrganises;
+    }
+
+    public function addGroupesOrganise(GroupePrive $groupesOrganise): self
+    {
+        if (!$this->groupesOrganises->contains($groupesOrganise)) {
+            $this->groupesOrganises[] = $groupesOrganise;
+            $groupesOrganise->setCreateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupesOrganise(GroupePrive $groupesOrganise): self
+    {
+        if ($this->groupesOrganises->removeElement($groupesOrganise)) {
+            // set the owning side to null (unless already changed)
+            if ($groupesOrganise->getCreateur() === $this) {
+                $groupesOrganise->setCreateur(null);
+            }
         }
 
         return $this;

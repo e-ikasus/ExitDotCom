@@ -29,6 +29,12 @@ class GroupePrive
      */
     private $participant;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="groupesOrganises")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $createur;
+
     public function __construct()
     {
         $this->participant = new ArrayCollection();
@@ -71,6 +77,18 @@ class GroupePrive
     public function removeParticipant(Participant $participant): self
     {
         $this->participant->removeElement($participant);
+
+        return $this;
+    }
+
+    public function getCreateur(): ?Participant
+    {
+        return $this->createur;
+    }
+
+    public function setCreateur(?Participant $createur): self
+    {
+        $this->createur = $createur;
 
         return $this;
     }

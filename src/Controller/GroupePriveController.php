@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/groupe/prive")
@@ -19,10 +20,19 @@ class GroupePriveController extends AbstractController
     /**
      * @Route("/list", name="groupe_prive_list", methods={"GET"})
      */
-    public function index(GroupePriveRepository $groupePriveRepository): Response
+    public function list(GroupePriveRepository $groupePriveRepository): Response
     {
+        //A la place d'envoyer tous les groupes privés contenus dans le repository, il ne faut qu'envoyer ceux appartenant au app.user.
+        $user = $this->getUser(); //ou $user = $security->getUser();
+
+        //getGroupePrives() retourne une Collection :
+        $listeGroupesPrives = $user->getGroupePrives();
+
+
+        //$groupesPrives = $groupePriveRepository->findBy();
+
         return $this->render('groupe_prive/list.html.twig', [
-//            'groupe_prives' => $groupePriveRepository->findAll(),
+            'groupe_prives' => $listeGroupesPrives,
         ]);
     }
 
