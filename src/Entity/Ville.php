@@ -26,6 +26,10 @@ class Ville
      *     pattern="/^[[:alpha:]]([-' ]*[[:alpha:]])*$/",
      *     message="Seuls les lettres et les symboles - et ' sont autorisés"
      * )
+     * @Assert\Length(
+     *     max=65,
+     *     maxMessage="Le nom doit faire au maximum {{ limit }} caractères"
+     * )
      *
      * @ORM\Column(type="string", length=255)
      */

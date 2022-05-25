@@ -21,11 +21,15 @@ class Sortie
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Veuillez saisir un nom")
      * @Assert\Regex(
      *     pattern="/^[[:alpha:]]([-' ]*[[:alpha:]])*$/",
      *     message="Seuls les lettres et les symboles - et ' sont autorisés"
      * )
-     * @Assert\NotBlank(message="Veuillez saisir un nom")
+     * @Assert\Length(
+     *     max=48,
+     *     maxMessage="Le nom doit faire au maximum {{ limit }} caractères"
+     * )
      * @ORM\Column(type="string", length=64)
      */
     private $nom;

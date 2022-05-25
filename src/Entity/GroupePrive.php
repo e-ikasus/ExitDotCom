@@ -6,6 +6,7 @@ use App\Repository\GroupePriveRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=GroupePriveRepository::class)
@@ -20,6 +21,15 @@ class GroupePrive
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Veuillez saisir un nom")
+     * @Assert\Regex(
+     *     pattern="/^[[:alpha:]]([-' ]*[[:alpha:]])*$/",
+     *     message="Seuls les lettres et les symboles - et ' sont autorisés"
+     * )
+     * @Assert\Length(
+     *     max=30,
+     *     maxMessage="Le nom doit faire au maximum {{ limit }} caractères"
+     * )
      * @ORM\Column(type="string", length=50)
      */
     private $nom;
