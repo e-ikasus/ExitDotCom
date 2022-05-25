@@ -12,7 +12,7 @@
 
 {#{% endif %}#}
 
-<form method="post" action="{{ path('groupe_prive_delete', {'id' : app.request.get('_route') == 'groupe_prive_list' ? 'app.user.groupesOrganises[i].id}' : 'groupe_prive.id'}) }}" onsubmit="return confirm('Confirmez-vous la suppression de ce groupe privé ?');">
+<form method="post" action="{{ path('groupe_prive_delete', {'id' : app.request.get('_route') == 'groupe_prive_list' ? 'app.user.groupesOrganises[i].id}' : 'groupe_prive.id'}) }}" onsubmit="return confirm('Confirmez-vous la suppression de ce groupe privé ?');" class="d-inline-block">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.request.get('_route') == 'groupe_prive_list' ? 'app.user.groupesOrganises[i].id}' : 'groupe_prive.id') }}">
     <button class="btn btn-danger">Supprimer</button>
 </form>

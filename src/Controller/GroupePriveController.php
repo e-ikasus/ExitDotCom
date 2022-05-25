@@ -89,6 +89,19 @@ class GroupePriveController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $participants = $groupePrive->getParticipant();
+
+            //L'ancien groupe est vidé de ses participants.
+            foreach ($participants as $participant) {
+                $groupePrive->removeParticipant($participant);
+            }
+
+            //Afin de le remplir des nouveaux.
+            foreach ($request->get('participants') as $idParticipant => $value) {
+                $groupePrive->addParticipant($participantRepository->find($idParticipant));
+            }
+
             $groupePriveRepository->add($groupePrive, true);
 
             return $this->redirectToRoute('groupe_prive_list', [], Response::HTTP_SEE_OTHER);
