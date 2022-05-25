@@ -8,7 +8,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nom</th>
                 <th>Rue</th>
                 <th>Latitude</th>
@@ -20,13 +19,11 @@
         {% if lieux|length %}
             {% for i in 0..lieux|length -1 %}
             <tr class="table-{% if i%2==0 %}info{% else %}secondary{% endif %}">
-                <td>{{ lieux[i].id }}</td>
                 <td>{{ lieux[i].nom }}</td>
                 <td>{{ lieux[i].rue }}</td>
                 <td>{{ lieux[i].latitude }}</td>
                 <td>{{ lieux[i].longitude }}</td>
                 <td>
-                    <a href="{{ path('lieu_show', {'id': lieux[i].id}) }}"><button class="btn btn-success">Voir</button></a>
                     <a href="{{ path('lieu_edit', {'id': lieux[i].id}) }}"><button class="btn btn-info">Éditer</button></a>
                 </td>
             </tr>{% endfor %}
