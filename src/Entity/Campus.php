@@ -22,9 +22,9 @@ class Campus
 
     /**
      * @Assert\NotBlank(message="Veuillez saisir un nom")
-     * @Assert\Type(
-     *     type="alpha",
-     *     message="Le nom ne peut contenir que des lettres"
+     * @Assert\Regex(
+     *     pattern="/^[[:alpha:]]([-' ]*[[:alpha:]])*$/",
+     *     message="Seuls les lettres et les symboles - et ' sont autorisés"
      * )
      * @Assert\Length(
      *     max = 48,
