@@ -13,7 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
- * @UniqueEntity(fields={"pseudo"}, message="There is already an account with this pseudo")
+ * @UniqueEntity(fields={"pseudo"}, message="Il existe déja un compte avec ce pseudo")
+ * @UniqueEntity(fields={"email"}, message="Il existe déja un compte avec cet email")
  */
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -25,6 +26,8 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Veuillez saisir un pseudo")
+     *
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $pseudo;
@@ -35,28 +38,37 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $roles = [];
 
     /**
+     * @Assert\NotBlank(message="Veuillez saisir un mot de passe")
+     *
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
     private $password;
 
     /**
+     * @Assert\NotBlank(message="Veuillez saisir un prénom")
+     *
      * @ORM\Column(type="string", length=64)
      */
     private $prenom;
 
     /**
+     * @Assert\NotBlank(message="Veuillez saisir un nom")
+     *
      * @ORM\Column(type="string", length=64)
      */
     private $nom;
 
     /**
      * @Assert\Regex(pattern="/^(\+33|0)[1-79]\d{8}$/")
+     * @Assert\NotBlank(message="Veuillez saisir un numéro de téléphone")
      * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $telephone;
 
     /**
+     * @Assert\NotBlank(message="Veuillez saisir un email")
+     *
      * @ORM\Column(type="string", length=64)
      */
     private $email;
@@ -72,6 +84,8 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $actif;
 
     /**
+     * @Assert\NotBlank(message="Veuillez selectionner un campus")
+     *
      * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="participants")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -100,11 +114,17 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $groupePrives;
 
+    /**
+     * @ORM\OneToMany(targetEntity=GroupePrive::class, mappedBy="createur")
+     */
+    private $groupesOrganises;
+
     public function __construct()
     {
         $this->sortiesOrganisees = new ArrayCollection();
         $this->sortiesInscrit = new ArrayCollection();
         $this->groupePrives = new ArrayCollection();
+        $this->groupesOrganises = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -364,6 +384,36 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->groupePrives->removeElement($groupePrife)) {
             $groupePrife->removeParticipant($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GroupePrive>
+     */
+    public function getGroupesOrganises(): Collection
+    {
+        return $this->groupesOrganises;
+    }
+
+    public function addGroupesOrganise(GroupePrive $groupesOrganise): self
+    {
+        if (!$this->groupesOrganises->contains($groupesOrganise)) {
+            $this->groupesOrganises[] = $groupesOrganise;
+            $groupesOrganise->setCreateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupesOrganise(GroupePrive $groupesOrganise): self
+    {
+        if ($this->groupesOrganises->removeElement($groupesOrganise)) {
+            // set the owning side to null (unless already changed)
+            if ($groupesOrganise->getCreateur() === $this) {
+                $groupesOrganise->setCreateur(null);
+            }
         }
 
         return $this;

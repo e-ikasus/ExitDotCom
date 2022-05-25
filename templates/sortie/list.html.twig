@@ -167,7 +167,7 @@
 				{% for sortie in sorties %}
 					{% if sortie in app.user.sortiesInscrit %}
 						<tr>
-							<td><a href="{{ path('sortie_show', {'id': sortie.id})}}">{{ sortie.nom }}</a></td>
+							<td><a href="{{ path('sortie_show', {'id': sortie.id})}}" class="text-info">{{ sortie.nom }}</a></td>
 							<td>{{ sortie.dateHeureDebut|date('Y-m-d H:i') }}</td>
 							<td>{{ sortie.lieu.nom }}</td>
 						</tr>

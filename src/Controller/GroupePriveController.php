@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/groupe/prive")
@@ -19,20 +21,25 @@ class GroupePriveController extends AbstractController
     /**
      * @Route("/list", name="groupe_prive_list", methods={"GET"})
      */
-    public function index(GroupePriveRepository $groupePriveRepository): Response
+    public function list(Security $security): Response
     {
+        $user = $security->getUser();
+
+        $listeGroupesOrganises = $user->getGroupesOrganises();
+
         return $this->render('groupe_prive/list.html.twig', [
-//            'groupe_prives' => $groupePriveRepository->findAll(),
+            'groupe_prives' => $listeGroupesOrganises,
         ]);
     }
 
     /**
      * @Route("/new", name="groupe_prive_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, GroupePriveRepository $groupePriveRepository, ParticipantRepository $participantRepository): Response
+    public function new(Request $request, GroupePriveRepository $groupePriveRepository, ParticipantRepository $participantRepository, Security $security): Response
     {
         $groupePrive = new GroupePrive();
         $participants = $participantRepository->findAll();
+        $user = $security->getUser();
 
         $form = $this->createForm(GroupePriveType::class, $groupePrive);
         $form->handleRequest($request);
@@ -45,6 +52,9 @@ class GroupePriveController extends AbstractController
                 //                                        = association clé->valeur
                 $groupePrive->addParticipant($participantRepository->find($idParticipant));
             }
+
+            //set le createur du groupePrive par le user
+            $groupePrive->setCreateur($user);
 
             $groupePriveRepository->add($groupePrive, true);
 
@@ -71,8 +81,10 @@ class GroupePriveController extends AbstractController
     /**
      * @Route("/{id}/edit", name="groupe_prive_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, GroupePrive $groupePrive, GroupePriveRepository $groupePriveRepository): Response
+    public function edit(Request $request, GroupePrive $groupePrive, GroupePriveRepository $groupePriveRepository, ParticipantRepository $participantRepository): Response
     {
+        //montrer ceux déjà présents & retirer le user dans la liste
+        //set les participants
         $form = $this->createForm(GroupePriveType::class, $groupePrive);
         $form->handleRequest($request);
 
@@ -84,6 +96,7 @@ class GroupePriveController extends AbstractController
 
         return $this->renderForm('groupe_prive/edit.html.twig', [
             'groupe_prive' => $groupePrive,
+            'participants' => $participantRepository->findAll(),
             'form' => $form,
         ]);
     }

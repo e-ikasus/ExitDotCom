@@ -13,13 +13,14 @@
 		</tr>
 		</thead>
 		<tbody>
-		{% if app.user.groupePrives|length %}
-			{% for i in 0..app.user.groupePrives|length -1 %}
+		{% if app.user.groupesOrganises|length %}
+			{% for i in 0..app.user.groupesOrganises|length -1 %}
 
 				<tr class="table-{% if i is even %}info{% else %}secondary{% endif %}">
 
-					<td>{{ app.user.groupePrives[i].nom }}</td>
-					<td>{{ include('inc/buttons.html.twig', {'update':true, 'delete': true, 'id': app.user.groupePrives[i].id, 'type': 'groupe_prive'}) }}</td>
+					<td>{{ app.user.groupesOrganises[i].nom }}</td>
+					<td><a href="{{ path('groupe_prive_edit', {'id': app.user.groupesOrganises[i].id}) }}" class="btn btn-warning text-decoration-none">Modifier</a>
+						{{ include('groupe_prive/_delete_form.html.twig') }}</td>
 
 				</tr>
 			{% endfor %}

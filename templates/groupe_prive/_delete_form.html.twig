@@ -1,4 +1,18 @@
-<form method="post" action="{{ path('groupe_prive_delete', {'id': groupe_prive.id}) }}" onsubmit="return confirm('Confirmez-vous la suppression de ce groupe privé ?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ groupe_prive.id) }}">
-    <button class="btn">Supprimer</button>
+{#{% if app.request.get('_route') == 'groupe_prive_list' %}#}
+{#<form method="post" action="{{ path('groupe_prive_delete', {'id' : app.user.groupesOrganises[i].id}) }}" onsubmit="return confirm('Confirmez-vous la suppression de ce groupe privé ?');">#}
+{#    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.user.groupesOrganises[i].id) }}">#}
+{#    <button class="btn btn-danger">Supprimer</button>#}
+{#</form>#}
+
+{#{% else %}#}
+{#<form method="post" action="{{ path('groupe_prive_delete', {'id' : groupe_prive.id }) }}" onsubmit="return confirm('Confirmez-vous la suppression de ce groupe privé ?');">#}
+{#    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ groupe_prive.id) }}">#}
+{#    <button class="btn btn-danger">Supprimer</button>#}
+{#</form>#}
+
+{#{% endif %}#}
+
+<form method="post" action="{{ path('groupe_prive_delete', {'id' : app.request.get('_route') == 'groupe_prive_list' ? 'app.user.groupesOrganises[i].id}' : 'groupe_prive.id'}) }}" onsubmit="return confirm('Confirmez-vous la suppression de ce groupe privé ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.request.get('_route') == 'groupe_prive_list' ? 'app.user.groupesOrganises[i].id}' : 'groupe_prive.id') }}">
+    <button class="btn btn-danger">Supprimer</button>
 </form>
