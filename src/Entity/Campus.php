@@ -22,6 +22,16 @@ class Campus
 
     /**
      * @Assert\Regex("/^[^0-9#@\\;:!<>{}\[\]`()]*$/")
+     * @Assert\Type(
+     *     type="alpha",
+     *     message="Le nom ne peut contenir que des lettres"
+     * )
+     * @Assert\NotBlank(message="Veuillez saisir un nom")
+     * @Assert\Length(
+     *     max = 48,
+     *     maxMessage = "Le nom doit faire au maximum {{ limit }} caractères"
+     * )
+     *
      * @ORM\Column(type="string", length=64)
      */
     private $nom;
