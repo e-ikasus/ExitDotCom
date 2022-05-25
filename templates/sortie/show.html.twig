@@ -3,9 +3,11 @@
 {% block title %} {{ parent() }} | Afficher Sortie {% endblock %}
 
 {% block body %}
-	<h1>{{ sortie.nom }}</h1>
+	<div class="d-none d-sm-block">
+
+		<h1>{{ sortie.nom }}</h1>
 		<div class="d-flex flex-column flex-lg-row">
-			<div class="col-lg-6 col-sm-12 me-5">
+			<div class="col6 me-5">
 				<table class="table table-borderless">
 					<tbody>
 					<tr>
@@ -36,7 +38,7 @@
 				</table>
 			</div>
 
-			<div class="col-lg-6 col-sm-12">
+			<div class="col6">
 				<table class="table table-borderless">
 					<tbody>
 					<tr>
@@ -67,31 +69,108 @@
 				</table>
 			</div>
 		</div>
-	<div>
+		<div>
 
-		<h3>Liste des participants inscrits :</h3>
+			<h3>Liste des participants inscrits :</h3>
 
-		<table class="table table-striped">
-			<thead>
-			<tr>
-				<th>Pseudo</th>
-				<th>Nom</th>
-			</tr>
-			</thead>
-			<tbody>
-			{# Nous pouvons récupérer les participants via la sortie. Cela est possible grâce à la relation Many To Many #}
-			{% for participant in sortie.participants %}
-				<tr onclick="document.location.href='{{ path('participant_profil', {'pseudo': participant.pseudo}) }}'"
-				    class="hover-pointer">
-					<td>{{ participant.pseudo }}</td>
-					<td>{{ participant.prenom }}{{ participant.nom }}</td>
+			<table class="table table-striped">
+				<thead>
+				<tr>
+					<th>Pseudo</th>
+					<th>Nom</th>
 				</tr>
-			{% endfor %}
+				</thead>
+				<tbody>
+				{# Nous pouvons récupérer les participants via la sortie. Cela est possible grâce à la relation Many To Many #}
+				{% for participant in sortie.participants %}
+					<tr onclick="document.location.href='{{ path('participant_profil', {'pseudo': participant.pseudo}) }}'"
+					    class="hover-pointer">
+						<td>{{ participant.pseudo }}</td>
+						<td>{{ participant.prenom }}{{ participant.nom }}</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
+		<a href="{{ path('sortie_list') }}">
+			<button class="btn btn-info">Retour</button>
+		</a>
+	</div>
+	{# la div suivante apparaît sur petit écran à la place de la div ci-dessus #}
+	<div class="d-lg-none">
+		<div>
+		<table class="table table-borderless">
+			<tbody>
+			<tr>
+				<th class="col-4">Nom :</th>
+				<td>{{ sortie.nom }}</td>
+			</tr>
+			<tr>
+				<th class="col-4">Date et heure :</th>
+				<td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i') : '' }}</td>
+			</tr>
+			<tr>
+				<th class="col-3">Ville :</th>
+				<td>{{ sortie.lieu.ville.nom }}</td>
+			</tr>
+			<tr>
+				<th class="col-4">Rue :</th>
+				<td>{{ sortie.lieu.rue }}</td>
+			</tr>
+			<tr>
+				<th class="col-4">Code postal :</th>
+				<td>{{ sortie.lieu.ville.codePostal }}</td>
+			</tr>
+			<tr>
+				<th class="col-4">Latitude :</th>
+				<td>{{ sortie.lieu.latitude }}</td>
+			</tr>
+			<tr>
+				<th class="col-4">Longitude :</th>
+				<td>{{ sortie.lieu.longitude }}</td>
+			</tr>
+			<tr>
+				<th class="col-4">Clôture :</th>
+				<td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d') : '' }}</td>
+			</tr>
+			<tr>
+				<th class="col-4">Nombre de places :</th>
+				<td>{{ sortie.nbInscriptionsMax }}</td>
+			</tr>
+			<tr>
+				<th class="col-4">Durée :</th>
+				<td>{{ sortie.duree }} minutes</td>
+			</tr>
+			<tr>
+				<th class="col-4">Description et infos :</th>
+				<td>{{ sortie.infosSortie }}</td>
+			</tr>
 			</tbody>
 		</table>
+		</div>
+		<div>
+			<h3>Liste des inscrits :</h3>
+
+			<table class="table table-striped">
+				<thead>
+				<tr>
+					<th>Nom</th>
+					<th>Ville</th>
+				</tr>
+				</thead>
+				<tbody>
+				{# Nous pouvons récupérer les participants via la sortie. Cela est possible grâce à la relation Many To Many #}
+				{% for participant in sortie.participants %}
+					<tr onclick="document.location.href='{{ path('participant_profil', {'pseudo': participant.pseudo}) }}'"
+					    class="hover-pointer">
+						<td>{{ participant.prenom }}{{ participant.nom }}</td>
+						<td>{{ sortie.lieu.ville.nom | upper}}</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
 	</div>
 
-	<a href="{{ path('sortie_list') }}" class=" d-none d-sm-block">
-		<button class="btn btn-info">Retour</button>
-	</a>
 {% endblock %}
