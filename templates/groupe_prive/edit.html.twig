@@ -3,11 +3,11 @@
 {% block title %}Edit GroupePrive{% endblock %}
 
 {% block body %}
-    <h1>Modifier le groupe privé</h1> {# ajouter le nom du groupe privé dans le titre #}
+    <h1>Modifier le groupe privé </h1> {# ajouter le nom du groupe privé dans le titre #}
 
-    {{ include('groupe_prive/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+    {{ include('groupe_prive/_form.html.twig') }}
 
-    <a href="{{ path('groupe_prive_list') }}">Retour</a>
+    <a href="{{ path('groupe_prive_list') }}"><button class="btn btn-info">Retour</button></a>
 
     {{ include('groupe_prive/_delete_form.html.twig') }}
 {% endblock %}
