@@ -10,6 +10,8 @@
             <tr>
                 <th>Nom</th>
                 <th>Rue</th>
+                <th>Ville</th>
+                <th>Code postal</th>
                 <th>Latitude</th>
                 <th>Longitude</th>
                 <th>Actions</th>
@@ -21,6 +23,8 @@
             <tr class="table-{% if i%2==0 %}info{% else %}secondary{% endif %}">
                 <td>{{ lieux[i].nom }}</td>
                 <td>{{ lieux[i].rue }}</td>
+                <td>{{ lieux[i].ville.nom }}</td>
+                <td>{{ lieux[i].ville.codePostal }}</td>
                 <td>{{ lieux[i].latitude }}</td>
                 <td>{{ lieux[i].longitude }}</td>
                 <td>
