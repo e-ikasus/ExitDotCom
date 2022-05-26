@@ -11,14 +11,15 @@
     <div class="d-flex flex-wrap gap-3 zoom">
 
         <div class="colTier">
-                <img class="w-50 align" src="{{ asset('uploads/profiles_pictures/' ~ participant.photo) }}" alt="pas de photo">
+            <img class="w-50 align" src="{{ asset('uploads/profiles_pictures/' ~ participant.photo) }}"
+                 alt="pas de photo">
         </div>
 
         <div class="colTier">
 
             {% if app.user.id == participant.id or app.user.administrateur %}
 
-                {{ include('participant/_form.html.twig', {'button_label': 'Enregistrer', 'return': true}) }}
+                {{ include('participant/_form.html.twig', {'button_label': 'Enregistrer', 'button_return': 'annuler' }) }}
 
             {% else %}
 
