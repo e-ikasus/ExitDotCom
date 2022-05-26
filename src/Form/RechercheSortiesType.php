@@ -55,28 +55,28 @@ class RechercheSortiesType extends AbstractType
 								'label' => 'Sorties dont je suis l\'organisateur/trice',
                 'required' => false,
                 'attr' => [
-                    'class' => 'm-2 px-2'
+                    'class' => 'm-2 px-2 pb-1'
                 ],
             ])
             ->add('sortiesInscrit', CheckboxType::class, [
                 'label' => 'Sorties auxquelles je suis inscrit/e',
                 'required' => false,
                 'attr' => [
-                    'class' => 'm-2 px-2'
+                    'class' => 'm-2 px-2 pb-1'
                 ],
             ])
             ->add('sortiesNonInscrit', CheckboxType::class, [
                 'label' => 'Sorties auxquelles je ne suis pas inscrit/e',
                 'required' => false,
                 'attr' => [
-                    'class' => 'm-2 px-2'
+                    'class' => 'm-2 px-2 pb-1'
                 ],
             ])
             ->add('sortiesPassees', CheckboxType::class, [
                 'label' => 'Sorties passées',
                 'required' => false,
                 'attr' => [
-                    'class' => 'm-2 px-2'
+                    'class' => 'm-2 px-2 pb-1'
                 ],
             ]);
     }
