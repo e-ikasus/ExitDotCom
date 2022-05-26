@@ -97,10 +97,9 @@ class GroupePriveController extends AbstractController
 		 */
 		public function edit(Request $request, GroupePrive $groupePrive, GroupePriveRepository $groupePriveRepository, ParticipantRepository $participantRepository): Response
 		{
-				$groupePrive = new GroupePrive();
+				//TODO retirer le user dans la liste des participants
 
-				// montrer ceux déjà présents & retirer le user dans la liste
-				// set les participants
+                // set les participants
 				$form = $this->createForm(GroupePriveType::class, $groupePrive);
 				$form->handleRequest($request);
 
