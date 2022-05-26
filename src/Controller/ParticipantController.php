@@ -48,9 +48,20 @@ class ParticipantController extends AbstractController
             $importFile->storeFile();
 
             $createParticipantFromCSV = new CreateParticipantFromCSV($this->getParameter('csv_files_directory'), $importFile->getNewFileName(), $campusRepository, $entityManager);
-            $createParticipantFromCSV->importUser();
+
+            try {
+
+                $createParticipantFromCSV->importUser();
+                $this->addFlash('success', "L'import des utilisateurs du fichier CSV est un succès.");
+
+            } catch (\Exception $exception) {
+                $this->addFlash('danger', "L'import des utilisateurs du fichier CSV a échoué, veillez a ce qu'aucun des nouveaux utilisateurs ne soit déjà présent dans la base et que les données des utilisateurs soient conformes au exigences du site.");
+            }
 
             return $this->redirectToRoute('participant_list', [], Response::HTTP_SEE_OTHER);
+        } else if ($form->isSubmitted() && !$form->isValid()){
+
+            $this->addFlash('danger', 'Merci d\'importer un fichier au format csv, un template est disponible au téléchargement via un clic sur le lien "Télécharger Template".');
         }
 
         if ($request->get("resultat") != null) {
