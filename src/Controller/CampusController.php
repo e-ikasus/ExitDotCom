@@ -37,7 +37,19 @@ class CampusController extends AbstractController
 				$form->handleRequest($request);
 
 				// Si une ville valide doit être ajoutée à la base.
-				if ($form->isSubmitted() && $form->isValid()) $campusRepository->add($campus, true);
+				if ($form->isSubmitted() && $form->isValid())
+				{
+						try
+						{
+								$campusRepository->add($campus, true);
+
+								$this->addFlash('success', 'Le campus ' . $campus->getNom() . ' a été ajouté avec succès.');
+						}
+						catch (\Exception $exception)
+						{
+								$this->addFlash('warning', 'Le campus ' . $campus->getNom() . ' n\'a pu être ajouté!');
+						}
+				}
 
 				// Dresse la liste des campus en fonction de critères ou pas.
 				if ($searchForm->isSubmitted() && $searchForm->isValid() && ($pattern = $searchForm->get('pattern')->getData()))
@@ -60,9 +72,7 @@ class CampusController extends AbstractController
 
 		public function show(Campus $campus): Response
 		{
-				return $this->render('campus/show.html.twig', [
-						'campus' => $campus,
-				]);
+				return $this->render('campus/show.html.twig', ['campus' => $campus]);
 		}
 
 		/**
@@ -78,8 +88,17 @@ class CampusController extends AbstractController
 
 				if ($form->isSubmitted() && $form->isValid())
 				{
-						$campusRepository->add($campus, true);
-						$this->addFlash('success', 'Les données du campus ' . $campus->getNom() . ' ont été modifiées avec succès.');
+						try
+						{
+								$campusRepository->add($campus, true);
+
+								$this->addFlash('success', 'Les données du campus ' . $campus->getNom() . ' ont été modifiées avec succès.');
+						}
+						catch (\Exception $exception)
+						{
+								$this->addFlash('warning', 'Le campus ' . $campus->getNom() . ' n\'a pu être modifié!');
+						}
+
 						return $this->redirectToRoute('campus_list', [], Response::HTTP_SEE_OTHER);
 				}
 
@@ -99,6 +118,7 @@ class CampusController extends AbstractController
 						try
 						{
 								$campusRepository->remove($campus, true);
+
 								$this->addFlash('success', 'La supression du campus ' . $campus->getNom() . ' a été effectuée avec succès.');
 						}
 						catch (\Exception $exception)

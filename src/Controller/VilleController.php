@@ -36,7 +36,19 @@ class VilleController extends AbstractController
 				$form->handleRequest($request);
 
 				// Si une ville valide doit être ajoutée à la base.
-				if ($form->isSubmitted() && $form->isValid()) $villeRepository->add($ville, true);
+				if ($form->isSubmitted() && $form->isValid())
+				{
+						try
+						{
+								$villeRepository->add($ville, true);
+
+								$this->addFlash('success', 'La ville ' . $ville->getNom() . ' a été ajoutée avec succès.');
+						}
+						catch (\Exception $exception)
+						{
+								$this->addFlash('warning', 'La ville ' . $ville->getNom() . ' n\'a pu être ajoutée!');
+						}
+				}
 
 				// Dresse la liste des villes en fonction de critères ou pas.
 				if ($searchForm->isSubmitted() && $searchForm->isValid() && ($pattern = $searchForm->get('pattern')->getData()))
@@ -75,7 +87,16 @@ class VilleController extends AbstractController
 
 				if ($form->isSubmitted() && $form->isValid())
 				{
-						$villeRepository->add($ville, true);
+						try
+						{
+								$villeRepository->add($ville, true);
+
+								$this->addFlash('success', 'La ville ' . $ville->getNom() . ' a été modifiée avec succès.');
+						}
+						catch (\Exception $exception)
+						{
+								$this->addFlash('warning', 'La ville ' . $ville->getNom() . ' n\'a pu être modifiée!');
+						}
 
 						return $this->redirectToRoute('ville_list', [], Response::HTTP_SEE_OTHER);
 				}
