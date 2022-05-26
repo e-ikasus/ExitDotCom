@@ -53,18 +53,27 @@ class GroupePriveController extends AbstractController
 
 				if ($form->isSubmitted() && $form->isValid())
 				{
-						//Le nom de la checkbox correspond à l'id du participant.
-						//Pour chaque checkbox cochée, si son nom = id d'un participant, alors mettre le participant dans la liste
-						foreach ($request->get('participants') as $idParticipant => $value)
+						try
 						{
-								//                                        = association clé->valeur
-								$groupePrive->addParticipant($participantRepository->find($idParticipant));
+								//Le nom de la checkbox correspond à l'id du participant.
+								//Pour chaque checkbox cochée, si son nom = id d'un participant, alors mettre le participant dans la liste
+								foreach ($request->get('participants') as $idParticipant => $value)
+								{
+										//                                        = association clé->valeur
+										$groupePrive->addParticipant($participantRepository->find($idParticipant));
+								}
+
+								//set le createur du groupePrive par le user
+								$groupePrive->setCreateur($user);
+
+								$groupePriveRepository->add($groupePrive, true);
+
+								$this->addFlash('success', 'Le groupe ' . $groupePrive->getNom() . ' a été ajouté avec succès.');
 						}
-
-						//set le createur du groupePrive par le user
-						$groupePrive->setCreateur($user);
-
-						$groupePriveRepository->add($groupePrive, true);
+						catch (\Exception $exception)
+						{
+								$this->addFlash('warning', 'Le groupe ' . $groupePrive->getNom() . ' n\'a pu être ajouté!');
+						}
 
 						return $this->redirectToRoute('groupe_prive_list', [], Response::HTTP_SEE_OTHER);
 				}
@@ -80,9 +89,7 @@ class GroupePriveController extends AbstractController
 		 */
 		public function show(GroupePrive $groupePrive): Response
 		{
-				return $this->render('groupe_prive/show.html.twig', [
-						'groupe_prive' => $groupePrive,
-				]);
+				return $this->render('groupe_prive/show.html.twig', ['groupe_prive' => $groupePrive,]);
 		}
 
 		/**
@@ -92,36 +99,40 @@ class GroupePriveController extends AbstractController
 		{
 				$groupePrive = new GroupePrive();
 
-				//montrer ceux déjà présents & retirer le user dans la liste
-				//set les participants
+				// montrer ceux déjà présents & retirer le user dans la liste
+				// set les participants
 				$form = $this->createForm(GroupePriveType::class, $groupePrive);
 				$form->handleRequest($request);
 
-				//Récupération des paramètres passés dans l'URL.
+				// Récupération des paramètres passés dans l'URL.
 				$col = $request->get('col');
 				$order = $request->get('order');
 
-				//Si le tableau est null, càd aucun filtre n'a été appliqué, alors on le trie sur les pseudos, par ordre alphabétique ascendant.
+				// Si le tableau est null, càd aucun filtre n'a été appliqué, alors on le trie sur les pseudos, par ordre alphabétique ascendant.
 				if ($col == null) $col = 'pseudo';
 				if ($order == null) $order = 'ASC';
 
 				if ($form->isSubmitted() && $form->isValid())
 				{
-						$participants = $groupePrive->getParticipant();
-
-						//L'ancien groupe est vidé de ses participants.
-						foreach ($participants as $participant)
+						try
 						{
-								$groupePrive->removeParticipant($participant);
-						}
+								$participants = $groupePrive->getParticipant();
 
-						//Afin de le remplir des nouveaux.
-						foreach ($request->get('participants') as $idParticipant => $value)
+								//L'ancien groupe est vidé de ses participants.
+								foreach ($participants as $participant) $groupePrive->removeParticipant($participant);
+
+								//Afin de le remplir des nouveaux.
+								foreach ($request->get('participants') as $idParticipant => $value)
+										$groupePrive->addParticipant($participantRepository->find($idParticipant));
+
+								$groupePriveRepository->add($groupePrive, true);
+
+								$this->addFlash('success', 'Le groupe ' . $groupePrive->getNom() . ' a été mis à jour avec succès.');
+						}
+						catch (\Exception $exception)
 						{
-								$groupePrive->addParticipant($participantRepository->find($idParticipant));
+								$this->addFlash('warning', 'Le groupe ' . $groupePrive->getNom() . ' n\'a pu être mis à jour!');
 						}
-
-						$groupePriveRepository->add($groupePrive, true);
 
 						return $this->redirectToRoute('groupe_prive_list', [], Response::HTTP_SEE_OTHER);
 				}
@@ -139,7 +150,16 @@ class GroupePriveController extends AbstractController
 		{
 				if ($this->isCsrfTokenValid('delete' . $groupePrive->getId(), $request->request->get('_token')))
 				{
-						$groupePriveRepository->remove($groupePrive, true);
+						try
+						{
+								$groupePriveRepository->remove($groupePrive, true);
+
+								$this->addFlash('success', 'Le groupe ' . $groupePrive->getNom() . ' a été supprimé avec succès.');
+						}
+						catch (\Exception $exception)
+						{
+								$this->addFlash('warning', 'Le groupe ' . $groupePrive->getNom() . ' n\'a pu être supprimé!');
+						}
 				}
 
 				return $this->redirectToRoute('groupe_prive_list', [], Response::HTTP_SEE_OTHER);
