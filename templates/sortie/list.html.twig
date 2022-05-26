@@ -31,18 +31,14 @@
 				</div>
 
 				<div class="col-4">
-					<div style="text-overflow: '-'">{{ form_widget(form.sortiesOrganisateur) }} {# trouver comment mettre le texte à la ligne text-overflow ne fonctionne pas #}
-						{{ form_label(form.sortiesOrganisateur) }}</div>
-					<div>{{ form_widget(form.sortiesInscrit) }}
-						{{ form_label(form.sortiesInscrit) }}</div>
-					<div>{{ form_widget(form.sortiesNonInscrit) }}
-						{{ form_label(form.sortiesNonInscrit) }}</div>
-					<div>{{ form_widget(form.sortiesPassees) }}
-						{{ form_label(form.sortiesPassees) }}</div>
+					<div class="text-nowrap">{{ form_widget(form.sortiesOrganisateur) }}{{ form_label(form.sortiesOrganisateur) }}</div>
+					<div class="text-nowrap">{{ form_widget(form.sortiesInscrit) }}{{ form_label(form.sortiesInscrit) }}</div>
+					<div class="text-nowrap">{{ form_widget(form.sortiesNonInscrit) }}{{ form_label(form.sortiesNonInscrit) }}</div>
+					<div class="text-nowrap">{{ form_widget(form.sortiesPassees) }}{{ form_label(form.sortiesPassees) }}</div>
 				</div>
 
-				<div class="col-3 d-flex justify-content-center align-items-start">
-					<button type="submit" class="btn btn-info btn-lg border-dark border-3 shadow">Rechercher
+				<div class="col-3 d-flex justify-content-center align-items-end align-items-lg-start">
+					<button type="submit" class="btn btn-info btn-lg border-dark border-3 shadow ">Rechercher
 					</button>
 				</div>
 
@@ -123,7 +119,7 @@
 							{# SORTIES OUVERTES OU CLOTUREES : #}
 							{% if (sortie in app.user.sortiesInscrit) and (sortie.etat.idLibelle is constant('App\\Entity\\Etat::OUVERTE') or sortie.etat.idLibelle is constant('App\\Entity\\Etat::CLOTUREE')) %}
 								<a href="{{ path('sortie_unsubscribe', {'id': sortie.id}) }}" class="text-decoration-none">
-									<button class="btn btn-warning">Se désister</button>
+									<button class="btn btn-warning">Se&nbsp;désister</button>
 								</a>
 							{% endif %}
 
@@ -152,7 +148,7 @@
 		<button class="btn btn-success btn-lg">Organiser une sortie</button>
 	</a>
 	{# la div suivante apparaît sur petit écran à la place de la div ci-dessus #}
-	<div class="d-lg-none">
+	<div class="d-md-none">
 		<h1>Mes sorties : </h1>
 		<table class="table mb-5 mt-5">
 			<thead>
