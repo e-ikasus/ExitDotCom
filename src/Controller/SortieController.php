@@ -192,7 +192,7 @@ class SortieController extends AbstractController
 						$etatCreee = $etatRepository->findOneBy(array('idLibelle' => Etat::ANNULEE));
 						$sortie->setEtat($etatCreee);
 
-						$this->addFlash('success', 'La sortie a été supprimée avec succès !');
+						$this->addFlash('success', 'La sortie a été annulée avec succès !');
 
 						$entityManager->persist($sortie);
 						$entityManager->flush();
@@ -201,4 +201,24 @@ class SortieController extends AbstractController
 				}
 				return $this->render('sortie/annulation_sortie.html.twig', ['sortie' => $sortie, 'cancellation' => $form->createView()]);
 		}
+
+        /**
+         * Supprime une sortie en création.
+         *
+         * @Route("/{id}/delete", name="sortie_delete", methods={"GET", "POST"})
+         */
+        public function delete(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
+        {
+            if ($this->isCsrfTokenValid('delete' . $sortie->getId(), $request->request->get('_token'))) {
+                try {
+                    $sortieRepository->remove($sortie, true);
+
+                    $this->addFlash('success', 'Suppression de la sortie effectuée avec succès.');
+                } catch (\Exception $exception) {
+                    $this->addFlash('warning', 'Vous ne pouvez pas supprimer la sortie.');
+                }
+            }
+            return $this->redirectToRoute('sortie_list', [], Response::HTTP_SEE_OTHER);
+        }
+
 }

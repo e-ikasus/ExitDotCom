@@ -1,4 +1,4 @@
 <form method="post" action="{{ path('sortie_delete', {'id': sortie.id}) }}" onsubmit="return confirm('Confirmez-vous la suppression de cette sortie ?');" class="d-inline-block">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ sortie.id) }}">
-    <button class="btn btn-danger">Annuler la sortie</button>
+    <button class="btn btn-danger">Supprimer la sortie</button>
 </form>
