@@ -4,20 +4,27 @@
 
 {% block body %}
 
-	<div class="w-50 mx-auto d-flex flex-column align-items-center">
+    <div class="d-flex flex-column align-items-center">
 
-		<h1>Modification d'un campus</h1>
+        <h1>Modification d'un campus</h1>
 
-		{{ form_start(form) }}
+        <div class="w-50">
+            {% form_theme form 'bootstrap_5_horizontal_layout.html.twig' %}
 
-		{{ form_widget(form) }}
+            {{ form_start(form) }}
 
-		{{ include('inc/buttons.html.twig', {'isForm': true, 'update': true, 'bigButton': true}) }}
+            {{ form_widget(form) }}
+        </div>
 
-		<a class="btn btn-success" onclick="history.go(-1);">Retour</a>
+        <div class="d-flex">
+            {{ include('inc/buttons.html.twig', {'isForm': true, 'update': true, 'bigButton': true}) }}
 
-		{{ form_end(form) }}
+            <a class="btn btn-success" onclick="history.go(-1);">Retour</a>
+        </div>
 
-	</div>
+
+        {{ form_end(form) }}
+
+    </div>
 
 {% endblock %}
