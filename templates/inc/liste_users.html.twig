@@ -15,19 +15,24 @@
 	<tbody>
 	{% for i in 0..participants|length-1 %}
 		<tr class="hover-pointer table-{% if i is even %}info{% else %}secondary{% endif %}">
-			<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].pseudo }}</td>
-			<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].nom }}</td>
-			<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].prenom }}</td>
-			<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].campus.nom }}</td>
-			<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].telephone }}</td>
-			<td onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].email }}</td>
-{#			<td class="text-center" onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].actif ? 'x' : ' ' }}</td>#}
+			<td onclick="document.location.href='{{ path(app.request.get('_route') == 'groupe_prive_new' ? 'participant_profil' : 'participant_edit' , {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].pseudo }}</td>
+			<td onclick="document.location.href='{{ path(app.request.get('_route') == 'groupe_prive_new' ? 'participant_profil' : 'participant_edit' , {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].nom }}</td>
+			<td onclick="document.location.href='{{ path(app.request.get('_route') == 'groupe_prive_new' ? 'participant_profil' : 'participant_edit' , {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].prenom }}</td>
+			<td onclick="document.location.href='{{ path(app.request.get('_route') == 'groupe_prive_new' ? 'participant_profil' : 'participant_edit' , {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].campus.nom }}</td>
+			<td onclick="document.location.href='{{ path(app.request.get('_route') == 'groupe_prive_new' ? 'participant_profil' : 'participant_edit' , {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].telephone }}</td>
+			<td onclick="document.location.href='{{ path(app.request.get('_route') == 'groupe_prive_new' ? 'participant_profil' : 'participant_edit' , {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].email }}</td>
+
+			{% if app.request.get('_route') == 'groupe_prive_new' %}
+			<td class="text-center" onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].actif ? 'x' : ' ' }}</td>
+			{% else %}
 			{% if app.request.get('_route') == 'participant_list' %}
 				<td class="text-center"><input class="pb-2" type="checkbox" onclick="checkEtat({{ participants[i].id }})" name="actif" {{ participants[i].actif  ? "checked" }}></td>
 			{% else %}
 				<td class="text-center">{{ participants[i].actif  ? "x" }}</td>
 			{% endif %}
-			<td class="text-center" onclick="document.location.href='{{ path('participant_edit', {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].administrateur ? 'x' : ' ' }}</td>
+			{% endif %}
+
+			<td class="text-center" onclick="document.location.href='{{ path(app.request.get('_route') == 'groupe_prive_new' ? 'participant_profil' : 'participant_edit' , {'pseudo': participants[i].pseudo}) }}'">{{ participants[i].administrateur ? 'x' : ' ' }}</td>
 			<td> {% if app.request.get('_route') == 'participant_list' %}
 				<div>
 					{{ include ('participant/_delete_form.html.twig', {'participant' : participants[i]}) }}
