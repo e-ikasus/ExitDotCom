@@ -23,11 +23,36 @@ class ParticipantType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('pseudo', TextType::class, ['label' => 'Pseudo'])
-            ->add('prenom', TextType::class, ['label' => 'Prénom'])
-            ->add('nom', TextType::class, ['label' => 'Nom'])
-            ->add('telephone', TextType::class, ['label' => 'Téléphone'])
-            ->add('email', EmailType::class, ['label' => 'E-mail'])
+            ->add('pseudo', TextType::class, [
+                'label' => 'Pseudo',
+                'attr' => [
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un pseudo.")'
+                ]
+            ])
+            ->add('prenom', TextType::class, [
+                'label' => 'Prénom',
+                'attr' => [
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un prénom.")'
+                ]
+            ])
+            ->add('nom', TextType::class, [
+                'label' => 'Nom',
+                'attr' => [
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un nom.")'
+                ]
+            ])
+            ->add('telephone', TextType::class, [
+                'label' => 'Téléphone',
+                'attr' => [
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un numéro de téléphone.")'
+                ]
+            ])
+            ->add('email', EmailType::class, [
+                'label' => 'E-mail',
+                'attr' => [
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un email.")'
+                ]
+            ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe doivent être identiques.',
@@ -36,7 +61,10 @@ class ParticipantType extends AbstractType
                 'second_options' => ['label' => 'Confirmation'],
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
-                'attr' => ['autocomplete' => 'new-password'],
+                'attr' => [
+                    'autocomplete' => 'new-password',
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un mot de passe.")'
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez saisir un mot de passe',
