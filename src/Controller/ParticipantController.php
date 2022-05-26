@@ -136,12 +136,6 @@ class ParticipantController extends AbstractController
                 $participant->setPhoto($importFile->getNewFileName());
             }
 
-            if ($form->get('password')->getData() != null) {
-                $participant->setPassword($passwordHasher->hashPassword($participant, $form->get('password')->getData()));
-            } else {
-                $participant->setPassword($participant->getPassword());
-            }
-
             try {
                 $participantRepository->add($participant, true);
 

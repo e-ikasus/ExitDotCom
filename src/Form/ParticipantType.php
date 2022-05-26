@@ -61,7 +61,7 @@ class ParticipantType extends AbstractType
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe doivent être identiques.',
-                'required' => false,
+                'required' => true,
                 'first_options' => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmation'],
                 // instead of being set onto the object directly,
@@ -70,17 +70,6 @@ class ParticipantType extends AbstractType
                     'autocomplete' => 'new-password',
                     'oninvalid' => 'this.setCustomValidity("Veuillez saisir un mot de passe.")',
                     'oninput' => 'this.setCustomValidity("")'
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez saisir un mot de passe',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Le mot de passe doit faire au minimum {{ limit }} caractères',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
                 ],
             ])
             ->add('campus', EntityType::class, [
