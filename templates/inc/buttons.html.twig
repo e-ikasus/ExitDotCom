@@ -15,7 +15,7 @@
 	{% endif %}
 
 	{% if delete|default(false) %}
-		<form method="post" action="{{ path(type ~ '_delete', {'id': id}) }}" class="d-inline-block" onsubmit="return (function(e){ e.stopPropagation(); return confirm('Etes-vous sûr ?'); })(event)">
+		<form method="post" action="{{ path(type ~ '_delete', {'id': id}) }}" class="d-inline-block" onsubmit="return (function(e){ e.stopPropagation(); return confirm('Confirmez-vous la suppression ?'); })(event)">
 			<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ id) }}">
 			<button class="btn btn-danger {{ size }}">Supprimer</button>
 		</form>
