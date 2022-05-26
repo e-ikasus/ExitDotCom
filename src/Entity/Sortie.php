@@ -36,7 +36,6 @@ class Sortie
 
     /**
      * @Assert\NotBlank(message="Veuillez saisir un horaire de début de la sortie")
-     * @Assert\GreaterThan(propertyPath="dateLimiteInscription", message="La date de début de sortie doit être postérieure à la date d'inscription.")
      * @ORM\Column(type="datetime")
      */
     private $dateHeureDebut;
