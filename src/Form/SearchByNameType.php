@@ -10,20 +10,20 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 class SearchByNameType extends AbstractType
 {
-	public function buildForm(FormBuilderInterface $builder, array $options): void
-	{
-		$builder->add('pattern', SearchType::class, [
-				'required' => false,
-				'label' => 'Le nom contient : ',
-				'constraints' => [new Regex("/^[^0-9#@\\;:!<>{}\[\]`()]*$/")],
-				'attr' => ['placeholder' => '🔎 Recherche', 'class' => 'px-2 ms-2 me-3']
-		]);
-	}
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder->add('pattern', SearchType::class, [
+            'required' => false,
+            'label' => 'Le nom contient : ',
+            'constraints' => [new Regex("/^[^0-9#@\\;:!<>{}\[\]`()]*$/")],
+            'attr' => ['placeholder' => '🔎 Recherche', 'class' => 'px-2 ms-2 me-3']
+        ]);
+    }
 
-	public function configureOptions(OptionsResolver $resolver): void
-	{
-		$resolver->setDefaults([
-			// Configure your form options here
-		]);
-	}
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            // Configure your form options here
+        ]);
+    }
 }

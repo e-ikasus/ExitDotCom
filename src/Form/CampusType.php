@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Campus;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -11,7 +12,12 @@ class CampusType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
-		$builder->add('nom');
+		$builder->add('nom', TextType::class, [
+            'attr' => [
+                'oninvalid' => 'this.setCustomValidity("Veuillez saisir un nom.")',
+                'oninput' => 'this.setCustomValidity("")'
+            ]
+        ]);
 	}
 
 	public function configureOptions(OptionsResolver $resolver): void

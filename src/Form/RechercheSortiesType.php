@@ -26,7 +26,7 @@ class RechercheSortiesType extends AbstractType
                 ],
             ])
             ->add('searchOutingName', SearchType::class, [
-								'constraints' => [new Regex("/^[^0-9#@\\;:!<>{}\[\]`()]*$/")],
+                'constraints' => [new Regex("/^[^0-9#@\\;:!<>{}\[\]`()]*$/")],
                 'label' => 'Le nom de la sortie contient : ',
                 'attr' => [
                     'placeholder' => '🔎 Recherche',
@@ -38,21 +38,20 @@ class RechercheSortiesType extends AbstractType
                 'label' => 'Entre ',
                 'widget' => 'single_text',
                 'required' => false,
-                                'attr' => [
-        'class' => 'm-2 px-2'
-    ],
+                'attr' => [
+                    'class' => 'm-2 px-2'
+                ],
             ])
             ->add('dateOutingEnd', DateType::class, [
-								'label' => 'et',
+                'label' => 'et',
                 'widget' => 'single_text',
                 'required' => false,
                 'attr' => [
                     'class' => 'm-2 px-2'
                 ],
-						])
-
+            ])
             ->add('sortiesOrganisateur', CheckboxType::class, [
-								'label' => 'Sorties dont je suis l\'organisateur/trice',
+                'label' => 'Sorties dont je suis l\'organisateur/trice',
                 'required' => false,
                 'attr' => [
                     'class' => 'm-2 px-2 pb-1'

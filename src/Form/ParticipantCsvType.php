@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Ville;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,7 +13,7 @@ class ParticipantCsvType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('moncsv', FileType::class, ['label' => 'Fichier .csv' , 'mapped' => false,
+            ->add('moncsv', FileType::class, ['label' => 'Fichier .csv', 'mapped' => false,
                 'constraints' => [new File([
                     'maxSize' => '4096k',   //revoir la taille du fichier
                     'mimeTypes' => [
@@ -33,8 +32,7 @@ class ParticipantCsvType extends AbstractType
                     'mimeTypesMessage' => 'Merci d\'utiliser un des formats suivant : .csv',
                 ])
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

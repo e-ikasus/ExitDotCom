@@ -26,31 +26,36 @@ class ParticipantType extends AbstractType
             ->add('pseudo', TextType::class, [
                 'label' => 'Pseudo',
                 'attr' => [
-                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un pseudo.")'
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un pseudo.")',
+                    'oninput' => 'this.setCustomValidity("")'
                 ]
             ])
             ->add('prenom', TextType::class, [
                 'label' => 'Prénom',
                 'attr' => [
-                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un prénom.")'
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un prénom.")',
+                    'oninput' => 'this.setCustomValidity("")'
                 ]
             ])
             ->add('nom', TextType::class, [
                 'label' => 'Nom',
                 'attr' => [
-                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un nom.")'
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un nom.")',
+                    'oninput' => 'this.setCustomValidity("")'
                 ]
             ])
             ->add('telephone', TextType::class, [
                 'label' => 'Téléphone',
                 'attr' => [
-                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un numéro de téléphone.")'
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un numéro de téléphone.")',
+                    'oninput' => 'this.setCustomValidity("")'
                 ]
             ])
             ->add('email', EmailType::class, [
                 'label' => 'E-mail',
                 'attr' => [
-                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un email.")'
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un email.")',
+                    'oninput' => 'this.setCustomValidity("")'
                 ]
             ])
             ->add('password', RepeatedType::class, [
@@ -63,7 +68,8 @@ class ParticipantType extends AbstractType
                 // this is read and encoded in the controller
                 'attr' => [
                     'autocomplete' => 'new-password',
-                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un mot de passe.")'
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un mot de passe.")',
+                    'oninput' => 'this.setCustomValidity("")'
                 ],
                 'constraints' => [
                     new NotBlank([

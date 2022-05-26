@@ -18,25 +18,33 @@ class LieuType extends AbstractType
             ->add('nom', TextType::class, [
                 'label' => 'Nom : ',
                 'attr' => [
-                    'class' => 'm-2 px-2'
+                    'class' => 'm-2 px-2',
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un nom.")',
+                    'oninput' => 'this.setCustomValidity("")'
                 ],
             ])
             ->add('rue', TextType::class, [
                 'label' => 'Rue : ',
                 'attr' => [
-                    'class' => 'm-2 px-2'
+                    'class' => 'm-2 px-2',
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un nom.")',
+                    'oninput' => 'this.setCustomValidity("")'
                 ],
             ])
             ->add('latitude', TextType::class, [
                 'label' => 'Latitude : ',
                 'attr' => [
-                    'class' => 'm-2 px-2'
+                    'class' => 'm-2 px-2',
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un nom.")',
+                    'oninput' => 'this.setCustomValidity("")'
                 ],
             ])
             ->add('longitude', TextType::class, [
                 'label' => 'Longitude : ',
                 'attr' => [
-                    'class' => 'm-2 px-2'
+                    'class' => 'm-2 px-2',
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un nom.")',
+                    'oninput' => 'this.setCustomValidity("")'
                 ],
             ])
             ->add('ville', EntityType::class, [
