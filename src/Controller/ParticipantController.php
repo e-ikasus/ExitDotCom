@@ -127,6 +127,8 @@ class ParticipantController extends AbstractController
             $form->remove('administrateur');
         }
 
+        $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             if ($form->get('photo')->getData() != null) {
@@ -146,8 +148,6 @@ class ParticipantController extends AbstractController
 
             return $this->redirectToRoute('sortie_list');
         }
-
-        $form->handleRequest($request);
 
         return $this->renderForm('participant/edit.html.twig', ['participant' => $participant, 'form' => $form,]);
     }
