@@ -103,15 +103,15 @@
 		<table class="table table-borderless">
 			<tbody>
 			<tr>
-				<th class="col-4">Nom :</th>
+				<th class="col-4">Nom:</th>
 				<td>{{ sortie.nom }}</td>
 			</tr>
 			<tr>
-				<th class="col-4">Date et heure :</th>
+				<th class="col-4">Date et heure:</th>
 				<td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i') : '' }}</td>
 			</tr>
 			<tr>
-				<th class="col-3">Ville :</th>
+				<th class="col-3">Ville:</th>
 				<td>{{ sortie.lieu.ville.nom }}</td>
 			</tr>
 			<tr>
@@ -119,15 +119,15 @@
 				<td>{{ sortie.lieu.rue }}</td>
 			</tr>
 			<tr>
-				<th class="col-4">Code postal :</th>
+				<th class="col-4">Code postal&nbsp;:</th>
 				<td>{{ sortie.lieu.ville.codePostal }}</td>
 			</tr>
 			<tr>
-				<th class="col-4">Latitude :</th>
+				<th class="col-4">Latitude&nbsp;:</th>
 				<td>{{ sortie.lieu.latitude }}</td>
 			</tr>
 			<tr>
-				<th class="col-4">Longitude :</th>
+				<th class="col-4">Longitude&nbsp;:</th>
 				<td>{{ sortie.lieu.longitude }}</td>
 			</tr>
 			<tr>
@@ -135,7 +135,7 @@
 				<td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d') : '' }}</td>
 			</tr>
 			<tr>
-				<th class="col-4">Nombre de places :</th>
+				<th class="col-4">Nombre&nbsp;de&nbsp;places&nbsp;:</th>
 				<td>{{ sortie.nbInscriptionsMax }}</td>
 			</tr>
 			<tr>
