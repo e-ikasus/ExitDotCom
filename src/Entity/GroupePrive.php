@@ -21,12 +21,15 @@ class GroupePrive
     private $id;
 
     /**
+     *
      * @Assert\NotBlank(message="Veuillez saisir un nom")
+     * @Assert\Regex(
+     *     pattern="/^[[:alpha:]]([-' ]*[[:alpha:]])*$/",
+     *     message="Seuls les lettres et les symboles - et ' sont autorisés"
+     * )
      * @Assert\Length(
-     *      min=3,
-     *      max=48,
-     *      minMessage="Le nom du groupe doit faire au minimum {{ limit }} caractères",
-     *      maxMessage="Le nom du groupe doit faire au maximum {{ limit }} caractères"
+     *     max=30,
+     *     maxMessage="Le nom doit faire au maximum {{ limit }} caractères"
      * )
      * @ORM\Column(type="string", length=50)
      */
