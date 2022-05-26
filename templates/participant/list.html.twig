@@ -5,14 +5,12 @@
 {% block body %}
 
 	<h1>Gestion Participants</h1>
-	<a id="test" onclick="recupValeurs();" href="{{ path('participant_list') }}"> test </a>
-	{#    <a id="test" onclick="recupValeurs();" href="#"> test </a> #}
-
 
 	<div class="d-flex gap-2">
 		<div>
 			<a class="btn btn-success" href="{{ path('participant_new') }}">Ajouter un utilisateur</a>
 			<button class="btn btn-info" onclick='toggleHtmlElementVisibility("form-csv")'>Importer CSV</button>
+			<a class="btn btn-warning" id="test" onclick="recupValeurs();" href="{{ path('participant_list') }}">Valider la selection des actifs</a>
 		</div>
 
 		<div id="form-csv" class="invisible">
