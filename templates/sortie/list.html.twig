@@ -54,13 +54,13 @@
 		<table class="table mb-5 mt-5">
 			<thead>
 			<tr>
-				<th>Nom de la sortie</th>
-				<th>Date de la sortie</th>
-				<th>Clôture</th>
-				<th>Inscrits/places</th>
-				<th>Etat</th>
+				<th>{{ include('inc/thead_listes.html.twig', {'nomColonne' : 'Nom de la sortie', 'colonneTable' : 'nom'}) }}</th>
+				<th>{{ include('inc/thead_listes.html.twig', {'nomColonne' : 'Date de la sortie', 'colonneTable' : 'dateHeureDebut'}) }}</th>
+				<th>{{ include('inc/thead_listes.html.twig', {'nomColonne' : 'Clôture', 'colonneTable' : 'dateLimiteInscription'}) }}</th>
+				<th>{{ include('inc/thead_listes.html.twig', {'nomColonne' : 'Inscrits/places', 'colonneTable' : 'nbInscriptionsMax'}) }}</th>
+				<th>{{ include('inc/thead_listes.html.twig', {'nomColonne' : 'Etat', 'colonneTable' : 'etat'}) }}</th>
 				<th>Inscrit</th>
-				<th>Organisateur</th>
+				<th>{{ include('inc/thead_listes.html.twig', {'nomColonne' : 'Organisateur', 'colonneTable' : 'organisateur'}) }}</th>
 				<th>Actions</th>
 			</tr>
 			</thead>

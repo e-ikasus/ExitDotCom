@@ -8,13 +8,10 @@ use App\Form\ReasonForCancellationType;
 use App\Form\RechercheSortiesType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
-use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use App\Services\Research;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,11 +40,22 @@ class SortieController extends AbstractController
         // Mets à jour l'état des sorties.
         $sortieRepository->refreshList();
 
+        //Récupération des paramètres passés dans l'URL.
+        $col = $request->get('col');
+        $order = $request->get('order');
+
+        //Si le tableau est null, càd aucun filtre n'a été appliqué, alors on le trie sur les pseudos, par ordre alphabétique ascendant.
+        if ($col == null) $col = 'nom';
+        if ($order == null) $order = 'ASC';
+
         if ($form->isSubmitted() && $form->isValid()) {
             $sorties = $sortieRepository->findByCreteria($user, $this->research);
         } else {
             $sorties = $sortieRepository->findAllButArchived();
         }
+
+        $sorties = $sortieRepository->findBy([], [$col => $order]);
+
         return $this->render('sortie/list.html.twig', [
                 'sorties' => $sorties,
                 'form' => $form->createView()
