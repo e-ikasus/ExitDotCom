@@ -72,8 +72,6 @@
 				</tbody>
 			</table>
 
-			{
-
 			{% if is_granted ('ROLE_ADMIN') or app.user.id == participant.id %}
 				<a class="text-decoration-none" href="{{ path('participant_edit', {'pseudo': participant.pseudo}) }}">
 					<button class="btn btn-warning btn-sm">Modifier</button>
