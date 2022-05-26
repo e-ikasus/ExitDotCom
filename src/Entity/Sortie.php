@@ -49,8 +49,8 @@ class Sortie
 
     /**
      * @Assert\NotBlank(message="Veuillez saisir la date limite d'inscription")
-     * @Assert\LessThan(propertyPath="dateHeureDebut", message="La date de début de sortie doit être antérieure à la date d'inscription.")
-     * @Assert\GreaterThanOrEqual("today", message="La date limite d'inscription doit être supérieure ou égale à la date du jour.")
+     * @Assert\LessThan(propertyPath="dateHeureDebut", message="La date d'inscription doit être antérieure à la date de début de sortie.")
+     * @Assert\GreaterThanOrEqual("today", message="La date limite d'inscription doit être postérieure ou égale à la date du jour.")
      * @ORM\Column(type="datetime")
      */
     private $dateLimiteInscription;
