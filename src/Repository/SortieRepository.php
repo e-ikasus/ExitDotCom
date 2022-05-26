@@ -21,160 +21,178 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SortieRepository extends ServiceEntityRepository
 {
-	public function __construct(ManagerRegistry $registry)
-	{
-		parent::__construct($registry, Sortie::class);
-	}
-
-	/**
-	 * @return void
-	 * @throws \Doctrine\DBAL\Exception
-	 */
-
-	public function refreshList()
-	{
-		$conn = $this->getEntityManager()->getConnection();
-
-		$sql = 'SET @state = 8; CALL check_sorties(0, TRUE, FALSE, TRUE, @state);';
-		$stmt = $conn->prepare($sql);
-
-		$stmt->executeQuery();
-	}
-
-	/**
-	 * Ajoute une sortie à la base de données.
-	 *
-	 * @param Sortie $entity Sortie à ajouter
-	 * @param bool   $flush  Mets à jour la base de données.
-	 *
-	 * @return void
-	 */
-
-	public function add(Sortie $entity, bool $flush = false): void
-	{
-		$this->getEntityManager()->persist($entity);
-
-		if ($flush) $this->getEntityManager()->flush();
-	}
-
-	/**
-	 * Supprime une sortie de la base de données
-	 *
-	 * @param Sortie $entity Sortie à retirer/supprimer.
-	 * @param bool   $flush  Mets à jour la base de données.
-	 *
-	 * @return void
-	 */
-
-	public function remove(Sortie $entity, bool $flush = false): void
-	{
-		$this->getEntityManager()->remove($entity);
-
-		if ($flush) $this->getEntityManager()->flush();
-	}
-
-	/**
-	 * Requête pour le formulaire de recherche filtrée parmi la liste des sorties existantes.
-	 *
-	 * @param Participant $user     Utilisateur actuellement connecté
-	 * @param Research    $research critère de recherche.
-	 *
-	 * @return Paginator Liste des sorties trouvées.
-	 */
-
-	public function findByCreteria(Participant $user, Research $research)
-	{
-		$queryBuilder = $this->createQueryBuilder('s');
-		$queryBuilder->Join('s.campus', 'c');
-		$queryBuilder->addSelect('c');
-		$queryBuilder->addOrderBy("s.dateHeureDebut", "ASC");
-
-		$queryBuilder->andWhere('s.campus = :campus');
-		$queryBuilder->setParameter('campus', $research->getCampus());
-
-        $queryBuilder->Join('s.etat', 'e');
-        $queryBuilder->addSelect('e');
-
-        //Filtre des sorties : les archivées ne sont plus consultables.
-        $queryBuilder->andWhere('e.idLibelle != :idArchive');
-        $queryBuilder->setParameter('idArchive', Etat::ARCHIVEE);
-
-		// Si le nom d'une sortie doit contenir un terme en particulier.
-		if ($research->getSearchOutingName())
+		public function __construct(ManagerRegistry $registry)
 		{
-			$queryBuilder->andWhere('s.nom LIKE :name');
-			$queryBuilder->setParameter('name', '%' . $research->getSearchOutingName() . '%');
+				parent::__construct($registry, Sortie::class);
 		}
 
-		// Si une date de début à été renseignée dans le formulaire.
-		if ($research->getDateOutingStart())
+		/**
+		 * @return void
+		 * @throws \Doctrine\DBAL\Exception
+		 */
+
+		public function refreshList()
 		{
-			$queryBuilder->andWhere('s.dateHeureDebut >= :dateOutingStart');
-			$queryBuilder->setParameter('dateOutingStart', $research->getDateOutingStart());
+				$conn = $this->getEntityManager()->getConnection();
+
+				$sql = 'SET @state = 8; CALL check_sorties(0, TRUE, FALSE, TRUE, @state);';
+				$stmt = $conn->prepare($sql);
+
+				$stmt->executeQuery();
 		}
 
-		// Si une date de fin à été renseignée dans le formulaire.
-		if ($research->getDateOutingEnd())
+		/**
+		 * Ajoute une sortie à la base de données.
+		 *
+		 * @param Sortie $entity Sortie à ajouter
+		 * @param bool   $flush  Mets à jour la base de données.
+		 *
+		 * @return void
+		 */
+
+		public function add(Sortie $entity, bool $flush = false): void
 		{
-			$queryBuilder->andWhere('s.dateHeureDebut <= :dateOutingEnd');
-			$queryBuilder->setParameter('dateOutingEnd', $research->getDateOutingEnd());
+				$this->getEntityManager()->persist($entity);
+
+				if ($flush) $this->getEntityManager()->flush();
 		}
 
-		// S'il faut filtrer les sorties dont l'utilisateur en est l'organisateur.
-		if ($research->getSortiesOrganisateur())
+		/**
+		 * Supprime une sortie de la base de données
+		 *
+		 * @param Sortie $entity Sortie à retirer/supprimer.
+		 * @param bool   $flush  Mets à jour la base de données.
+		 *
+		 * @return void
+		 */
+
+		public function remove(Sortie $entity, bool $flush = false): void
 		{
-			$queryBuilder->andWhere('s.organisateur = :organisateur');
-			$queryBuilder->setParameter('organisateur', $user);
+				$this->getEntityManager()->remove($entity);
+
+				if ($flush) $this->getEntityManager()->flush();
 		}
 
-		// S'il faut filtrer les sorties passées.
-		if ($research->getSortiesPassees())
+		/**
+		 * Requête pour le formulaire de recherche filtrée parmi la liste des sorties existantes.
+		 *
+		 * @param Participant $user     Utilisateur actuellement connecté
+		 * @param Research    $research critère de recherche.
+		 *
+		 * @return Paginator Liste des sorties trouvées.
+		 */
+
+		public function findByCreteria(Participant $user, Research $research, string $col, string $order)
 		{
-			$queryBuilder->andWhere('e.idLibelle = :etat');
-			$queryBuilder->setParameter('etat', Etat::TERMINEE);
+				$queryBuilder = $this->createQueryBuilder('s');
+
+				$queryBuilder->Join('s.campus', 'c');
+				$queryBuilder->addSelect('c');
+
+				$queryBuilder->Join('s.etat', 'e');
+				$queryBuilder->addSelect('e');
+
+				$queryBuilder->Join('s.organisateur', 'o');
+				$queryBuilder->addSelect('o');
+
+				if ($col == 'campus') $queryBuilder->addOrderBy("c.nom", $order);
+				else if ($col =='etat') $queryBuilder->addOrderBy("e.libelle", $order);
+				else if ($col =='organisateur') $queryBuilder->addOrderBy("o.pseudo", $order);
+				else $queryBuilder->addOrderBy("s." . $col, $order);
+
+				$queryBuilder->andWhere('s.campus = :campus');
+				$queryBuilder->setParameter('campus', $research->getCampus());
+
+				//Filtre des sorties : les archivées ne sont plus consultables.
+				$queryBuilder->andWhere('e.idLibelle != :idArchive');
+				$queryBuilder->setParameter('idArchive', Etat::ARCHIVEE);
+
+				// Si le nom d'une sortie doit contenir un terme en particulier.
+				if ($research->getSearchOutingName())
+				{
+						$queryBuilder->andWhere('s.nom LIKE :name');
+						$queryBuilder->setParameter('name', '%' . $research->getSearchOutingName() . '%');
+				}
+
+				// Si une date de début à été renseignée dans le formulaire.
+				if ($research->getDateOutingStart())
+				{
+						$queryBuilder->andWhere('s.dateHeureDebut >= :dateOutingStart');
+						$queryBuilder->setParameter('dateOutingStart', $research->getDateOutingStart());
+				}
+
+				// Si une date de fin à été renseignée dans le formulaire.
+				if ($research->getDateOutingEnd())
+				{
+						$queryBuilder->andWhere('s.dateHeureDebut <= :dateOutingEnd');
+						$queryBuilder->setParameter('dateOutingEnd', $research->getDateOutingEnd());
+				}
+
+				// S'il faut filtrer les sorties dont l'utilisateur en est l'organisateur.
+				if ($research->getSortiesOrganisateur())
+				{
+						$queryBuilder->andWhere('s.organisateur = :organisateur');
+						$queryBuilder->setParameter('organisateur', $user);
+				}
+
+				// S'il faut filtrer les sorties passées.
+				if ($research->getSortiesPassees())
+				{
+						$queryBuilder->andWhere('e.idLibelle = :etat');
+						$queryBuilder->setParameter('etat', Etat::TERMINEE);
+				}
+
+				// S'il faut filtrer les sorties auxquelles l'utilisateur est inscrit.
+				if (($research->getSortiesInscrit()) && (!$research->getSortiesNonInscrit()))
+				{
+						$queryBuilder->Join('s.participants', 'parts');
+						$queryBuilder->addSelect('parts');
+						$queryBuilder->andWhere('parts = :part');
+						$queryBuilder->setParameter('part', $user);
+				}
+
+				// S'il faut filtrer les sorties auxquelles l'utilisateur n'est pas inscrit.
+				if (($research->getSortiesNonInscrit()) && (!$research->getSortiesInscrit()))
+				{
+						$queryBuilder->Join('s.participants', 'parts');
+						$queryBuilder->addSelect('parts');
+						$queryBuilder->andWhere('parts != :part');
+						$queryBuilder->setParameter('part', $user);
+						$queryBuilder->groupBy("s.id");
+				}
+
+				$query = $queryBuilder->getQuery();
+
+				return new Paginator($query);
 		}
 
-		// S'il faut filtrer les sorties auxquelles l'utilisateur est inscrit.
-		if (($research->getSortiesInscrit()) && (!$research->getSortiesNonInscrit()))
+		/**
+		 * Méthode afin d'occulter les sorties archivées en arrivant sur la liste des sorties.
+		 *
+		 * @return float|int|mixed|string
+		 */
+		public function findAllButArchived(string $col, string $order)
 		{
-			$queryBuilder->Join('s.participants', 'parts');
-			$queryBuilder->addSelect('parts');
-			$queryBuilder->andWhere('parts = :part');
-			$queryBuilder->setParameter('part', $user);
+				$queryBuilder = $this->createQueryBuilder('s');
+
+				$queryBuilder->Join('s.etat', 'e');
+				$queryBuilder->addSelect('e');
+
+				$queryBuilder->Join('s.campus', 'c');
+				$queryBuilder->addSelect('c');
+
+				$queryBuilder->Join('s.organisateur', 'o');
+				$queryBuilder->addSelect('o');
+
+				if ($col == 'campus') $queryBuilder->addOrderBy("c.nom", $order);
+				else if ($col =='etat') $queryBuilder->addOrderBy("e.libelle", $order);
+				else if ($col =='organisateur') $queryBuilder->addOrderBy("o.pseudo", $order);
+				else $queryBuilder->addOrderBy("s." . $col, $order);
+
+				//Filtre des sorties : les archivées ne sont plus consultables.
+				$queryBuilder->andWhere('e.idLibelle != :idArchive');
+				$queryBuilder->setParameter('idArchive', Etat::ARCHIVEE);
+
+				return $queryBuilder->getQuery()->getResult();
 		}
-
-		// S'il faut filtrer les sorties auxquelles l'utilisateur n'est pas inscrit.
-		if (($research->getSortiesNonInscrit()) && (!$research->getSortiesInscrit()))
-		{
-			$queryBuilder->Join('s.participants', 'parts');
-			$queryBuilder->addSelect('parts');
-			$queryBuilder->andWhere('parts != :part');
-			$queryBuilder->setParameter('part', $user);
-			$queryBuilder->groupBy("s.id");
-		}
-
-		$query = $queryBuilder->getQuery();
-
-		return new Paginator($query);
-	}
-
-    /**
-     * Méthode afin d'occulter les sorties archivées en arrivant sur la liste des sorties.
-     * @return float|int|mixed|string
-     */
-    public function findAllButArchived()
-    {
-        $queryBuilder = $this->createQueryBuilder('s');
-
-        $queryBuilder->addOrderBy("s.dateHeureDebut", "ASC");
-
-        $queryBuilder->Join('s.etat', 'e');
-        $queryBuilder->addSelect('e');
-
-        //Filtre des sorties : les archivées ne sont plus consultables.
-        $queryBuilder->andWhere('e.idLibelle != :idArchive');
-        $queryBuilder->setParameter('idArchive', Etat::ARCHIVEE);
-
-        return $queryBuilder->getQuery()->getResult();
-    }
 }
