@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\GroupePrive;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,7 +16,9 @@ class GroupePriveType extends AbstractType
             ->add('nom', TextType::class, [
                 'label' => 'Nom du groupe privé : ',
                 'attr' => [
-                    'class' => 'm-2 px-2'
+                    'class' => 'm-2 px-2',
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un nom.")',
+                    'oninput' => 'this.setCustomValidity("")'
                 ],
             ])
 //            ->add('participant', EntityType::class, [

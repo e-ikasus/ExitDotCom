@@ -15,10 +15,13 @@ class ReasonForCancellationType extends AbstractType
             ->add('motifAnnulation', TextareaType::class, [
                 'required' => true,
                 'label' => 'Motif :',
-                'attr' => ['rows' => "5",
-                            'cols' => "33",
-                            'placeholder' => 'Veuillez renseigner le motif d\'annulation de la sortie.']
-
+                'attr' => [
+                    'rows' => "5",
+                    'cols' => "33",
+                    'placeholder' => 'Veuillez renseigner le motif d\'annulation de la sortie.',
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un Motif d\'annulation.")',
+                    'oninput' => 'this.setCustomValidity("")'
+                ]
             ]);
     }
 

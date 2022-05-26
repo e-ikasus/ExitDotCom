@@ -14,15 +14,18 @@ class ResetPasswordRequestFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'attr' => ['autocomplete' => 'email',
-                            'class' => 'm-2 px-2'],
+                'attr' => [
+                    'autocomplete' => 'email',
+                    'class' => 'm-2 px-2',
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir votre email.")',
+                    'oninput' => 'this.setCustomValidity("")'
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez entrer votre email',
                     ]),
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

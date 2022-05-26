@@ -26,6 +26,8 @@ class ChangePasswordFormType extends AbstractType
                 'mapped' => false,
                 'attr' => [
                     'autocomplete' => 'new-password',
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un mot de passe.")',
+                    'oninput' => 'this.setCustomValidity("")'
 
                 ],
                 'constraints' => [
@@ -39,8 +41,7 @@ class ChangePasswordFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
