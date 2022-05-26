@@ -40,12 +40,12 @@
 					<th>Campus</th>
 					<td>{{ participant.campus.nom }}</td>
 				</tr>
-				<tr>
-					<th>Photo</th>
-					<td>{{ participant.photo }}</td>
-				</tr>
 
 				{% if is_granted ('ROLE_ADMIN') %}
+					<tr>
+						<th>Photo</th>
+						<td>{{ participant.photo }}</td>
+					</tr>
 					<tr>
 						<th>Id</th>
 						<td>{{ participant.id }}</td>
@@ -66,11 +66,14 @@
 						<th>Actif</th>
 						<td>{{ participant.actif ? 'Yes' : 'No' }}</td>
 					</tr>
-
 				{% endif %}
 
 				</tbody>
 			</table>
+
+			<a class="text-decoration-none" onclick="history.go(-1);">
+				<button class="btn btn-success">Retour</button>
+			</a>
 
 			{% if is_granted ('ROLE_ADMIN') or app.user.id == participant.id %}
 				<a class="text-decoration-none" href="{{ path('participant_edit', {'pseudo': participant.pseudo}) }}">
@@ -79,10 +82,7 @@
 			{% endif %}
 
 			{% if is_granted ('ROLE_ADMIN') %}
-				<a class="text-decoration-none" onclick="history.go(-1);">
-					<button class="btn btn-success">Retour</button>
-				</a>
-				{{ include('participant/_delete_form.html.twig') }}
+								{{ include('participant/_delete_form.html.twig') }}
 			{% endif %}
 
 		</div>
