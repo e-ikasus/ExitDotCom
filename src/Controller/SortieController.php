@@ -67,7 +67,7 @@ class SortieController extends AbstractController
 						$entityManager->flush();
 						$this->addFlash('success', 'Vous vous êtes bien désinscrit de la sortie ' . $sortie->getNom() . ' !');
 				}
-				catch (Exception $exc)
+				catch (\Exception $exc)
 				{
 						$this->addFlash('danger', 'Opération impossible !');
 				}
