@@ -89,14 +89,14 @@
 
 							{# PUBLICATION A FAIRE #}
 							{# SORTIES EN CREATION #}
-							{% if sortie.etat is constant('App\\Entity\\Etat::ENCREATION') and app.user == sortie.organisateur %}
+							{% if sortie.etat.idLibelle is constant('App\\Entity\\Etat::ENCREATION') and app.user == sortie.organisateur %}
 								<a href="{{ path('sortie_show', {'id': sortie.id}) }}" class="text-decoration-none">
 									<button class="btn btn-info">Publier</button>
 								</a>
 							{% endif %}
 
 							{# SORTIES CONSULTABLES #}
-							{% if sortie.etat is not constant('App\\Entity\\Etat::ENCREATION') %}
+							{% if sortie.etat.idLibelle is not constant('App\\Entity\\Etat::ENCREATION') %}
 								<a href="{{ path('sortie_show', {'id': sortie.id}) }}" class="text-decoration-none">
 									<button class="btn btn-info">Détails</button>
 								</a>
@@ -125,7 +125,7 @@
 
 							{# SORTIES AVEC POSSIBLE ANNULATION #}
 							{% if is_granted('ROLE_ADMIN') or app.user == sortie.organisateur %}
-								{% if sortie.etat.idLibelle is constant('App\\Entity\\Etat::ENCREATION') or sortie.etat.idLibelle is constant('App\\Entity\\Etat::OUVERTE') or sortie.etat is constant('App\\Entity\\Etat::CLOTUREE') %}
+								{% if sortie.etat.idLibelle is constant('App\\Entity\\Etat::OUVERTE') or sortie.etat is constant('App\\Entity\\Etat::CLOTUREE') %}
 									<a href="{{ path('sortie_cancellation', {'id': sortie.id}) }}"
 									   class="text-decoration-none">
 										<button class="btn btn-danger">Annuler</button>

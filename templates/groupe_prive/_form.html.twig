@@ -5,4 +5,9 @@
     {{ include('inc/liste_users.html.twig') }}
 
     <button type="submit" class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+
+    {% if app.request.get('_route') != "participant_list"%}
+        <a href="{{ path('groupe_prive_list') }}" class="btn btn-info">Retour</a>
+    {% endif %}
+
 {{ form_end(form) }}
