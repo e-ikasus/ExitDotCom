@@ -138,13 +138,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $sortiesInscrit;
 
     /**
-     * @Assert\File(
-     *     maxSize="10M",
-     *     mimeTypes={"image/jpeg","image/png"},
-     *     mimeTypesMessage="Merci d'utiliser un des formats suivant : .jpg .jpeg .png",
-     *     maxSizeMessage="L'image fait ({{ size }} {{ suffix }}). La taille maximale autorisée est de {{ limit }} {{ suffix }}."
-     * )
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $photo;

@@ -7,7 +7,7 @@
 
 <button class="btn btn btn-success">{{ button_label|default('Sauvegarder') }}</button>
 
-<button class="btn btn btn-danger" onclick="history.go(-1);">{{ button_return|default('Retour') }}</button>
+<a class="btn btn btn-danger" onclick="history.go(-1);">{{ button_return|default('Retour') }}</a>
 
 
 {{ form_end(form) }}

@@ -61,7 +61,7 @@ class ParticipantType extends AbstractType
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe doivent être identiques.',
-                'required' => true,
+                'required' => false,
                 'first_options' => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmation'],
                 // instead of being set onto the object directly,
@@ -89,12 +89,21 @@ class ParticipantType extends AbstractType
                 'choice_label' => 'nom'
             ])
             ->add('photo', FileType::class, [
-                'label' => 'Ma photo',
+                'label' => 'Photo',
+                'mapped' => false,
                 'required' => false,
-                'mapped' => false
-                ])
-            ->add('administrateur', CheckboxType::class, ['required' => false])
-        ;
+                'constraints' => [
+                    new File([
+                        'maxSize' => '10M',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Merci d\'utiliser un des formats suivant : .jpg .jpeg .png',
+                    ])
+                ],
+            ])
+            ->add('administrateur', CheckboxType::class, ['required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
