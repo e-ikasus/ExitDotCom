@@ -13,6 +13,7 @@ class CampusType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
 		$builder->add('nom', TextType::class, [
+            'label' => "Nom : ",
             'attr' => [
                 'oninvalid' => 'this.setCustomValidity("Veuillez saisir un nom.")',
                 'oninput' => 'this.setCustomValidity("")'

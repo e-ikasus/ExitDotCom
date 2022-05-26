@@ -19,7 +19,7 @@
 
             {% if app.user.id == participant.id or app.user.administrateur %}
 
-                {{ include('participant/_form.html.twig', {'button_label': 'Enregistrer', 'button_return': 'annuler' }) }}
+                {{ include('participant/_form.html.twig', {'button_label': 'Enregistrer', 'button_return': 'Annuler' }) }}
 
             {% else %}
 

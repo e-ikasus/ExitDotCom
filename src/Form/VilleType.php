@@ -13,9 +13,8 @@ class VilleType extends AbstractType
     {
         $builder
             ->add('nom', null, [
-                'label' => 'Nom de la ville : ',
+                'label' => 'Nom de la ville :',
                 'attr' => [
-                    'class' => 'px-5 ms-5',
                     'oninvalid' => 'this.setCustomValidity("Veuillez saisir un nom.")',
                     'oninput' => 'this.setCustomValidity("")'
                 ]
@@ -23,7 +22,6 @@ class VilleType extends AbstractType
             ->add('codePostal', null, [
                 'label' => 'Code postal : ',
                 'attr' => [
-                    'class' => 'px-5 ms-5',
                     'oninvalid' => 'this.setCustomValidity("Veuillez saisir un code postal.")',
                     'oninput' => 'this.setCustomValidity("")'
                 ]
