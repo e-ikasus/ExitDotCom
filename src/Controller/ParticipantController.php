@@ -64,10 +64,10 @@ class ParticipantController extends AbstractController
             return $this->redirectToRoute('participant_list');
         }
 
-        return $this->renderForm('participant/list.html.twig', [
-            'participants' => $participantRepository->findBy([], [$col => $order]),
-            'form' => $form,
-        ]);
+				// Récupère la liste des participants triés en fonction du choix de l'utilisateur.
+				$participants = ($col == 'campus') ? ($participantRepository->findAllOrderedByCampus($order)) : ($participantRepository->findBy([], [$col => $order]));
+
+        return $this->renderForm('participant/list.html.twig', ['participants' => $participants, 'form' => $form]);
     }
 
     /**
