@@ -45,6 +45,10 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @Assert\NotBlank(message="Veuillez saisir un mot de passe")
+     * @Assert\Regex(
+     *     pattern="/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!;:#*$@%_])([-+!;:#*$@%_\w]{6,48})$/",
+     *     message="Le mot de passe doit contenir une majuscule, une minuscule, un chiffre, un des caractères suivants : -+!;:#*$@%_ et faire entre 6 et 48 caractères"
+     * )
      *
      * @var string The hashed password
      * @ORM\Column(type="string")
