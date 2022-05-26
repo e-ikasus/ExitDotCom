@@ -6,7 +6,7 @@
     <div class="div_form_login mx-auto">
         <form method="post">
             {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                <div class="alert alert-danger">Identifiant ou mot de passe invalide!</div>
             {% endif %}
 
             {% if app.user %}
