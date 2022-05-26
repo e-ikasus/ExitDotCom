@@ -3,7 +3,7 @@
 {% block title %} {{ parent() }} | Liste Participant {% endblock %}
 
 {% block body %}
-    <h1>Lieu index</h1>
+    <h1>Gestion des lieux</h1>
 
     <table class="table">
         <thead>
@@ -24,16 +24,17 @@
                 <td>{{ lieux[i].latitude }}</td>
                 <td>{{ lieux[i].longitude }}</td>
                 <td>
-                    <a href="{{ path('lieu_edit', {'id': lieux[i].id}) }}"><button class="btn btn-info">Éditer</button></a>
+                    <a href="{{ path('lieu_edit', {'id': lieux[i].id}) }}"><button class="btn btn-warning">Modifier</button></a>
                 </td>
             </tr>{% endfor %}
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="6"></td>
             </tr>
         {% endif %}
+
         </tbody>
     </table>
 
-    <a href="{{ path('lieu_new') }}">Create new</a>
+    <a href="{{ path('lieu_new') }}" class="btn btn-success">Créer un nouveau lieu</a>
 {% endblock %}
