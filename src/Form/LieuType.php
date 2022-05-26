@@ -27,23 +27,23 @@ class LieuType extends AbstractType
                 'label' => 'Rue : ',
                 'attr' => [
                     'class' => 'm-2 px-2',
-                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un nom.")',
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir une rue.")',
                     'oninput' => 'this.setCustomValidity("")'
                 ],
             ])
-            ->add('latitude', TextType::class, [
+            ->add('latitude', null, [
                 'label' => 'Latitude : ',
                 'attr' => [
                     'class' => 'm-2 px-2',
-                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un nom.")',
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un latitude au format decimal.")',
                     'oninput' => 'this.setCustomValidity("")'
                 ],
             ])
-            ->add('longitude', TextType::class, [
+            ->add('longitude', null, [
                 'label' => 'Longitude : ',
                 'attr' => [
                     'class' => 'm-2 px-2',
-                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un nom.")',
+                    'oninvalid' => 'this.setCustomValidity("Veuillez saisir un longitude au format decimal.")',
                     'oninput' => 'this.setCustomValidity("")'
                 ],
             ])
