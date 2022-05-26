@@ -16,14 +16,16 @@
                 </div>
             {% endif %}
 
-            <h1 class="h3 mb-3 font-weight-normal"></h1>
             <label for="inputPseudo">Identifiant :</label>
             <input type="text" value="{{ last_username }}" name="pseudo" id="inputPseudo"
                    class="form-control input_pseudo_login mb-2" autocomplete="username" required autofocus
-                   placeholder="pseudo ou email...">
+                   placeholder="pseudo ou email..." oninvalid="this.setCustomValidity('Veuillez saisir votre identifiant.')"
+                   oninput="this.setCustomValidity('')">
+
             <label for="inputPassword">Mot de Passe :</label>
             <input type="password" name="password" id="inputPassword" class="form-control"
-                   autocomplete="current-password" required>
+                   autocomplete="current-password" required oninvalid="this.setCustomValidity('Veuillez saisir votre mot de passe.')"
+                   oninput="this.setCustomValidity('')">
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
