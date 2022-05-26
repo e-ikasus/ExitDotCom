@@ -71,17 +71,6 @@ class ParticipantType extends AbstractType
                     'oninvalid' => 'this.setCustomValidity("Veuillez saisir un mot de passe.")',
                     'oninput' => 'this.setCustomValidity("")'
                 ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez saisir un mot de passe',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Le mot de passe doit faire au minimum {{ limit }} caractères',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
             ])
             ->add('campus', EntityType::class, [
                 'label' => 'Campus',
@@ -89,12 +78,21 @@ class ParticipantType extends AbstractType
                 'choice_label' => 'nom'
             ])
             ->add('photo', FileType::class, [
-                'label' => 'Ma photo',
+                'label' => 'Photo',
+                'mapped' => false,
                 'required' => false,
-                'mapped' => false
-                ])
-            ->add('administrateur', CheckboxType::class, ['required' => false])
-        ;
+                'constraints' => [
+                    new File([
+                        'maxSize' => '10M',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Merci d\'utiliser un des formats suivant : .jpg .jpeg .png',
+                    ])
+                ],
+            ])
+            ->add('administrateur', CheckboxType::class, ['required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
