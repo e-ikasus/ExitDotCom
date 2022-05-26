@@ -22,53 +22,47 @@ use Symfony\Component\Security\Core\Security;
  */
 class SortieController extends AbstractController
 {
-    public function __construct()
-    {
-        $this->research = new Research();
-    }
+		/**
+		 * @Route("/list", name="sortie_list", methods={"POST", "GET"})
+		 */
+		public function searchInList(Security $security, SortieRepository $sortieRepository, Request $request): Response
+		{
+				$research = new Research();
 
-    /**
-     * @Route("/list", name="sortie_list", methods={"POST", "GET"})
-     */
-    public function searchInList(Security $security, SortieRepository $sortieRepository, Request $request): Response
-    {
-        $user = $security->getUser();
+				$user = $security->getUser();
 
-        $form = $this->createForm(RechercheSortiesType::class, $this->research);
-        $form->handleRequest($request);
+				$form = $this->createForm(RechercheSortiesType::class, $research);
+				$form->handleRequest($request);
 
-        // Mets à jour l'état des sorties.
-        $sortieRepository->refreshList();
+				// Mets à jour l'état des sorties.
+				$sortieRepository->refreshList();
 
-        //Récupération des paramètres passés dans l'URL.
-        $col = $request->get('col');
-        $order = $request->get('order');
+				//Récupération des paramètres passés dans l'URL.
+				$col = $request->get('col');
+				$order = $request->get('order');
 
-        //Si le tableau est null, càd aucun filtre n'a été appliqué, alors on le trie sur les pseudos, par ordre alphabétique ascendant.
-        if ($col == null) $col = 'nom';
-        if ($order == null) $order = 'ASC';
+				//Si le tableau est null, càd aucun filtre n'a été appliqué, alors on le trie sur les pseudos, par ordre alphabétique ascendant.
+				if ($col == null) $col = 'nom';
+				if ($order == null) $order = 'ASC';
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $sorties = $sortieRepository->findByCreteria($user, $this->research);
-        } else {
-            $sorties = $sortieRepository->findAllButArchived();
-        }
+				if ($form->isSubmitted() && $form->isValid())
+				{
+						$sorties = $sortieRepository->findByCreteria($user, $research, $col, $order);
+				}
+				else
+				{
+						$sorties = $sortieRepository->findAllButArchived($col, $order);
+				}
 
-        $sorties = $sortieRepository->findBy([], [$col => $order]);
+				return $this->render('sortie/list.html.twig', ['sorties' => $sorties, 'form' => $form->createView()]);
+		}
 
-        return $this->render('sortie/list.html.twig', [
-                'sorties' => $sorties,
-                'form' => $form->createView()
-            ]
-        );
-    }
-
-    /**
-     * @Route("/unsubscribe/{id}", name="sortie_unsubscribe", methods={"GET"})
-     */
-    public function unsubscribe(Sortie $sortie, Security $security, EntityManagerInterface $entityManager): Response
-    {
-        $security->getUser()->removeSortiesInscrit($sortie);
+		/**
+		 * @Route("/unsubscribe/{id}", name="sortie_unsubscribe", methods={"GET"})
+		 */
+		public function unsubscribe(Sortie $sortie, Security $security, EntityManagerInterface $entityManager): Response
+		{
+				$security->getUser()->removeSortiesInscrit($sortie);
 
 				try
 				{
@@ -80,15 +74,15 @@ class SortieController extends AbstractController
 						$this->addFlash('danger', 'Opération impossible !');
 				}
 
-        return $this->redirectToRoute("sortie_list");
-    }
+				return $this->redirectToRoute("sortie_list");
+		}
 
-    /**
-     * @Route("/subscribe/{id}", name="sortie_subscribe", methods={"GET"})
-     */
-    public function subscribe(Sortie $sortie, Security $security, EntityManagerInterface $entityManager): Response
-    {
-        $security->getUser()->addSortiesInscrit($sortie);
+		/**
+		 * @Route("/subscribe/{id}", name="sortie_subscribe", methods={"GET"})
+		 */
+		public function subscribe(Sortie $sortie, Security $security, EntityManagerInterface $entityManager): Response
+		{
+				$security->getUser()->addSortiesInscrit($sortie);
 
 				try
 				{
@@ -100,139 +94,111 @@ class SortieController extends AbstractController
 						$this->addFlash('danger', 'Opération impossible !');
 				}
 
-        return $this->redirectToRoute("sortie_list");
-    }
+				return $this->redirectToRoute("sortie_list");
+		}
 
-    /**
-     * @Route("/new", name="sortie_new", methods={"GET", "POST"})
-     * @Route("/{id}/edit", name="sortie_edit", methods={"GET", "POST"})
-     */
-    public function new(Request $request, SortieRepository $sortieRepository, EtatRepository $etatRepository, Security $security): Response
-    {
-        if ($request->get('_route') == "sortie_new") {
+		/**
+		 * @Route("/new", name="sortie_new", methods={"GET", "POST"})
+		 * @Route("/{id}/edit", name="sortie_edit", methods={"GET", "POST"})
+		 */
+		public function new(Request $request, SortieRepository $sortieRepository, EtatRepository $etatRepository, Security $security): Response
+		{
+				if ($request->get('_route') == "sortie_new")
+				{
+						$sortie = new Sortie();
 
-            $sortie = new Sortie();
+						$form = $this->createForm(SortieType::class, $sortie);
+						$form->handleRequest($request);
 
-            $form = $this->createForm(SortieType::class, $sortie);
-            $form->handleRequest($request);
+						//Nous allons chercher les différents états via l'EtatRepository.
+						//Nous créons une méthode qui sera auto-interprétée par Symfony pour aller chercher le bon libellé selon la constante dans l'entity Etat.
 
-            //Nous allons chercher les différents états via l'EtatRepository.
-            //Nous créons une méthode qui sera auto-interprétée par Symfony pour aller chercher le bon libellé selon la constante dans l'entity Etat.
+						// $etatCreee = $etatRepository->findByIdLibelle(Etat::OUVERTE);
+						// $sortie->setEtat($etatCreee[0]);
+						//Methode plus adaptée pour faire la meme requête il me semble...
 
-            // $etatCreee = $etatRepository->findByIdLibelle(Etat::OUVERTE);
-            // $sortie->setEtat($etatCreee[0]);
-            //Methode plus adaptée pour faire la meme requête il me semble...
+						if ($request->get('enregistrer'))
+						{
+								$etatCreee = $etatRepository->findOneBy(array('idLibelle' => Etat::ENCREATION));
+						}
+						else
+						{
+								$etatCreee = $etatRepository->findOneBy(array('idLibelle' => Etat::OUVERTE));
+						}
+						$sortie->setEtat($etatCreee);
 
-            if ($request->get('enregistrer')) {
-            $etatCreee = $etatRepository->findOneBy(array('idLibelle' => Etat::ENCREATION));
-        } else {
-                $etatCreee = $etatRepository->findOneBy(array('idLibelle' => Etat::OUVERTE));
-            }
-            $sortie->setEtat($etatCreee);
+						// Nous récupérons l'instance du participant connecté.
+						// Puis nous avons fixé la propriété campus de sortie selon le participant.
+						$user = $security->getUser();
+						$sortie->setCampus($user->getCampus());
 
-            //Nous récupérons l'instance du participant connecté.
-            //Puis nous avons fixé la propriété campus de sortie selon le participant.
-            $user = $security->getUser();
-            $sortie->setCampus($user->getCampus());
+						$sortie->setOrganisateur($user);
+				}
+				else
+				{
+						$sortie = $sortieRepository->findOneBy(array('id' => $request->get('id')));
+						$form = $this->createForm(SortieType::class, $sortie);
+						$form->handleRequest($request);
 
-            $sortie->setOrganisateur($user);
+						if ($request->get('enregistrer'))
+								$etatCreee = $etatRepository->findOneBy(array('idLibelle' => Etat::ENCREATION));
+						else
+								$etatCreee = $etatRepository->findOneBy(array('idLibelle' => Etat::OUVERTE));
 
-        } else {
+						$sortie->setEtat($etatCreee);
+				}
 
-            $sortie = $sortieRepository->findOneBy(array('id' => $request->get('id')));
-            $form = $this->createForm(SortieType::class, $sortie);
-            $form->handleRequest($request);
+				if ($form->isSubmitted() && $form->isValid())
+				{
+						try
+						{
+								$sortieRepository->add($sortie, true);
 
-            if ($request->get('enregistrer')) {
-                $etatCreee = $etatRepository->findOneBy(array('idLibelle' => Etat::ENCREATION));
-            } else {
-                $etatCreee = $etatRepository->findOneBy(array('idLibelle' => Etat::OUVERTE));
-            }
-            $sortie->setEtat($etatCreee);
-        }
+								$this->addFlash('success', 'La sortie ' . $sortie->getNom() . ' a bien été mise à jour.');
+						}
+						catch (\Exception $exception)
+						{
+								$this->addFlash('warning', 'La sortie ' . $sortie->getNom() . ' n\'a pu être mise à jour!');
+						}
 
+						return $this->redirectToRoute('sortie_list', [], Response::HTTP_SEE_OTHER);
+				}
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $sortieRepository->add($sortie, true);
-            $this->addFlash('success', 'La sortie ' . $sortie->getNom() . ' a bien été mise à jour .');
+				return $this->renderForm('sortie/new.html.twig', ['sortie' => $sortie, 'form' => $form,]);
+		}
 
-            return $this->redirectToRoute('sortie_list', [], Response::HTTP_SEE_OTHER);
-        }
+		/**
+		 * @Route("/{id}", name="sortie_show", methods={"GET"})
+		 */
+		public function show(Sortie $sortie): Response
+		{
+				return $this->render('sortie/show.html.twig', [
+						'sortie' => $sortie,
+				]);
+		}
 
-        return $this->renderForm('sortie/new.html.twig', [
-            'sortie' => $sortie,
-            'form' => $form,
-        ]);
-    }
+		/**
+		 * @Route("/{id}/cancel", name="sortie_cancellation", methods={"GET", "POST"})
+		 */
+		public function cancel(Request $request, Sortie $sortie, EntityManagerInterface $entityManager, EtatRepository $etatRepository): Response
+		{
+				$form = $this->createForm(ReasonForCancellationType::class);
+				$form->handleRequest($request);
 
-    /**
-     * @Route("/{id}", name="sortie_show", methods={"GET"})
-     */
-    public function show(Sortie $sortie): Response
-    {
-        return $this->render('sortie/show.html.twig', [
-            'sortie' => $sortie,
-        ]);
-    }
+				if ($form->isSubmitted() && $form->isValid())
+				{
+						$sortie->setInfosSortie($form->get('motifAnnulation')->getData());
 
-//    /**
-//     * @Route("/{id}/edit", name="sortie_edit", methods={"GET", "POST"})
-//     */
-//    public function edit(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
-//    {
-//        $form = $this->createForm(SortieType::class, $sortie);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $sortieRepository->add($sortie, true);
-//
-//            return $this->redirectToRoute('sortie_list', [], Response::HTTP_SEE_OTHER);
-//        }
-//
-//        return $this->renderForm('sortie/edit.html.twig', [
-//            'sortie' => $sortie,
-//            'form' => $form,
-//        ]);
-//    }
+						$etatCreee = $etatRepository->findOneBy(array('idLibelle' => Etat::ANNULEE));
+						$sortie->setEtat($etatCreee);
 
-//    /**
-//     * @Route("/{id}", name="sortie_delete", methods={"POST"})
-//     */
-//    public function delete(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
-//    {
-//        if ($this->isCsrfTokenValid('delete' . $sortie->getId(), $request->request->get('_token'))) {
-//            $sortieRepository->remove($sortie, true);
-//        }
-//
-//        return $this->redirectToRoute('sortie_list', [], Response::HTTP_SEE_OTHER);
-//    }
+						$this->addFlash('success', 'La sortie a été supprimée avec succès !');
 
-    /**
-     * @Route("/{id}/cancel", name="sortie_cancellation", methods={"GET", "POST"})
-     */
-    public function cancel(Request $request, Sortie $sortie, EntityManagerInterface $entityManager, EtatRepository $etatRepository): Response
-    {
-        $form = $this->createForm(ReasonForCancellationType::class);
-        $form->handleRequest($request);
+						$entityManager->persist($sortie);
+						$entityManager->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $sortie->setInfosSortie($form->get('motifAnnulation')->getData());
-
-            $etatCreee = $etatRepository->findOneBy(array('idLibelle' => Etat::ANNULEE));
-            $sortie->setEtat($etatCreee);
-
-            $this->addFlash('success', 'La sortie a été supprimée avec succès !');
-
-            $entityManager->persist($sortie);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('sortie_list', [], Response::HTTP_SEE_OTHER);
-        }
-        return $this->render('sortie/annulation_sortie.html.twig', [
-                'sortie' => $sortie,
-                'cancellation' => $form->createView()
-            ]
-        );
-
-    }
+						return $this->redirectToRoute('sortie_list', [], Response::HTTP_SEE_OTHER);
+				}
+				return $this->render('sortie/annulation_sortie.html.twig', ['sortie' => $sortie, 'cancellation' => $form->createView()]);
+		}
 }
