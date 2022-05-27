@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }} | Afficher Lieu {% endblock %}
+{% block title %} {{ parent() }} | Détails lieu {% endblock %}
 
 {% block body %}
-    <h1>Lieu</h1>
+    <h1>Détails du lieu {{ lieu.nom }}</h1>
 
     <table class="table">
         <tbody>
@@ -30,9 +30,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('lieu_list') }}">back to list</a>
+    <a href="{{ path('lieu_list') }}">Retour</a>
 
-    <a href="{{ path('lieu_edit', {'id': lieu.id}) }}">edit</a>
+    <a href="{{ path('lieu_edit', {'id': lieu.id}) }}">Modifier</a>
 
     {{ include('lieu/_delete_form.html.twig') }}
 {% endblock %}
