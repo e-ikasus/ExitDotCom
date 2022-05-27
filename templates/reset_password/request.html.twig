@@ -10,13 +10,11 @@
 
     {{ form_start(requestForm) }}
         {{ form_row(requestForm.email) }}
-        <div>
-            <small>
+        <h3 class="text-justify">
                 Alors, tête de linotte. T'as oublié ton mot de passe ? C'est pas bien. Le mot de passe est un élément important
                 de ton compte qui te permet de te connecter à notre site. Bon, pour cette fois, je passe l'éponge et je t'envoie
                 un p'tit mail pour le réinitialiser, mais que cela ne se reproduise plus ! Sinon, des sanctions seront prises.
-            </small>
-        </div>
+        </h3>
 
         <button class="btn btn-warning btn-lg">Envoi du mail de réinitialisation</button>
     {{ form_end(requestForm) }}
