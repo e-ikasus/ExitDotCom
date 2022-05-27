@@ -11,7 +11,7 @@ class Research extends AbstractController
 	private $campus;
 
 	/**
-	 * @Assert\Regex("/^[^0-9#@\\\/;:!<>{}\[\]`()]*$/", message="carctères non aurorisés")
+	 * @Assert\Regex("/^[^0-9#@\\\/;:!<>{}\[\]`()]*$/", message="caractères non autorisés")
 	 */
 	private $searchOutingName;
 

@@ -34,7 +34,7 @@ class SortieController extends AbstractController
 				$form = $this->createForm(RechercheSortiesType::class, $research);
 				$form->handleRequest($request);
 
-				// Mets à jour l'état des sorties.
+				// Met à jour l'état des sorties.
 				$sortieRepository->refreshList();
 
 				//Récupération des paramètres passés dans l'URL.
@@ -112,10 +112,6 @@ class SortieController extends AbstractController
 
 						//Nous allons chercher les différents états via l'EtatRepository.
 						//Nous créons une méthode qui sera auto-interprétée par Symfony pour aller chercher le bon libellé selon la constante dans l'entity Etat.
-
-						// $etatCreee = $etatRepository->findByIdLibelle(Etat::OUVERTE);
-						// $sortie->setEtat($etatCreee[0]);
-						//Methode plus adaptée pour faire la meme requête il me semble...
 
 						if ($request->get('enregistrer'))
 						{

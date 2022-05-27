@@ -74,7 +74,7 @@ class Lieu
     private $ville;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="Lieu", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="Lieu")
      */
     private $sorties;
 

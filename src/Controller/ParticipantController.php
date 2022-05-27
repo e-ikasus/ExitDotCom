@@ -36,7 +36,7 @@ class ParticipantController extends AbstractController
         //Si le tableau est null, càd aucun filtre n'a été appliqué, alors on le trie sur les pseudos, par ordre alphabétique ascendant.
         if ($col == null) $col = 'pseudo';
         if ($order == null) $order = 'ASC';
-
+        //association du formulaire à la variable $form puis récupération des données du formulaire
         $form = $this->createForm(ParticipantCsvType::class);
         $form->handleRequest($request);
 
@@ -99,9 +99,8 @@ class ParticipantController extends AbstractController
                 $importFile->storeFile();
                 $participant->setPhoto($importFile->getNewFileName());
             }
-
+            //on hydrate
             $participant->setPassword($passwordHasher->hashPassword($participant, $form->get('password')->getData()));
-
             $participant->setRoles($form->get('administrateur')->getData() ? ['ROLE_ADMIN'] : ['ROLE_USER']);
             $participant->setActif(true);
 
@@ -112,7 +111,7 @@ class ParticipantController extends AbstractController
             } catch (\Exception $exception) {
                 $this->addFlash('warning', 'L\'ajout de ' . $participant->getPrenom() . ' ' . $participant->getNom() . ' n\'a pu se faire!');
             }
-
+            //redirection vers la liste des participants
             return $this->redirectToRoute('participant_list');
         }
 
@@ -174,10 +173,10 @@ class ParticipantController extends AbstractController
                 $sortiesOrganisee->setOrganisateur(null);
 
             try {
-                // Supprime maintenant le participant. Sera également "flushées" les sorties précédemment modifiées.
+                // Supprime maintenant le participant. Seront également "flushées" les sorties précédemment modifiées.
                 $participantRepository->remove($participant, true);
 
-                // Avertis l'adfmin que tout s'est bien déroulé.
+                // Avertit l'admin que tout s'est bien déroulé.
                 $this->addFlash('success', 'Vous venez de vous débarrasser de ' . $participant->getPrenom() . ' ' . $participant->getNom() . ' . Veillez à bien effacer toutes les preuves, et vérifiez qu\'il n\'y ait pas de témoin gênant...!');
             } catch (\Exception $exception) {
                 $this->addFlash('warning', 'Impossible de virer ' . $participant->getPrenom() . ' ' . $participant->getNom() . '!');
