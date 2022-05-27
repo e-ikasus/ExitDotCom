@@ -3,11 +3,11 @@
 {% block title %}A l'attention des étourdis.{% endblock %}
 
 {% block body %}
-	<h1>Alors, tête de linotte. T'as oublié ton mot de passe ? Ce n'est pas bien. Le mot de passe est un élément important
+	<h1>Alors, tête de linotte. T'as oublié ton mot de passe ? C'est pââââs bien. Le mot de passe est un élément important
 		de ton compte qui te permet de te connecter à notre site. Bon, pour cette fois, je passe l'éponge et je t'envoie
 		un message pour le réinitialiser, mais que cela ne se reproduise plus ! Sinon, des sanctions seront prises.</h1>
 
-	{% form_theme form 'bootstrap_5_horizontal_layout.html.twig' %}
+	{% form_theme resetForm 'bootstrap_5_horizontal_layout.html.twig' %}
 	{{ form_start(resetForm) }}
 	{{ form_widget(resetForm) }}
 	<button class="btn btn-warning btn-lg">OK, j'ai compris...</button>
