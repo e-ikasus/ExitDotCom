@@ -36,7 +36,7 @@ class CampusController extends AbstractController
 				$form = $this->createForm(CampusType::class, $campus);
 				$form->handleRequest($request);
 
-				// Si une ville valide doit être ajoutée à la base.
+				// Si un campus valide doit être ajouté à la base.
 				if ($form->isSubmitted() && $form->isValid())
 				{
 						try
