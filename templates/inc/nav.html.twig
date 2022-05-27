@@ -3,7 +3,7 @@
 	<div class="monLogo">
 		<img src="{{ asset('image/EXIT LOGO.png') }}" alt="Logo du site">
 	</div>
-
+{% if app.user %}
 	<div class="maNavBar align-self-center">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary ms-5 d-none d-sm-block">
 			<div class="container-fluid">
@@ -57,13 +57,11 @@
 								<a class="nav-link" href="{{ path('login') }}">Se connecter</a>
 							</li>
 						{% endif %}
+
 					</ul>
-					{#            <form class="d-flex"> #}
-					{#                <input class="form-control me-sm-2" type="text" placeholder="Search"> #}
-					{#                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button> #}
-					{#            </form> #}
 				</div>
 			</div>
 		</nav>
 	</div>
+{% endif %}
 </div>
