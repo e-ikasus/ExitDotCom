@@ -90,7 +90,7 @@
 							{# PUBLICATION A FAIRE #}
 							{# SORTIES EN CREATION #}
 							{% if sortie.etat.idLibelle is constant('App\\Entity\\Etat::ENCREATION') and app.user == sortie.organisateur %}
-								<a href="{{ path('sortie_show', {'id': sortie.id}) }}" class="text-decoration-none">
+								<a href="{{ path('sortie_edit', {'id': sortie.id}) }}" class="text-decoration-none">
 									<button class="btn btn-info">Publier</button>
 								</a>
 							{% endif %}
