@@ -29,7 +29,7 @@ class ParticipantController extends AbstractController
     public function list(Request $request, ParticipantRepository $participantRepository, CampusRepository $campusRepository, SluggerInterface $slugger, EntityManagerInterface $entityManager, Security $security): Response
     {
 
-        //Récupération des paramètres passés dans l'URL.
+        // Récupération des paramètres passés dans l'URL.
         $col = $request->get('col');
         $order = $request->get('order');
 
